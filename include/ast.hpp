@@ -1,4 +1,5 @@
-
+#ifndef ast.hpp
+#define ast.hpp
 
 
 #include <iostream>
