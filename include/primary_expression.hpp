@@ -7,5 +7,8 @@ using namespace std;
 
 class primary_expression : public expression{
 public:
-  primary_expression():
+  ~primary_expression(){};
+
+private:
+   
 }
