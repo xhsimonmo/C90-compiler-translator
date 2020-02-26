@@ -1,4 +1,5 @@
-#include ast.hpp
+#ifndef ast_cast_expression
+#define ast_cast_expression
 #include <iostream>
 #include <string>
 using namespace std;
