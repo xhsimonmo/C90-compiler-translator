@@ -1,19 +1,18 @@
-#ifndef ast.hpp
-#define ast.hpp
+#ifndef ast_hpp
+#define ast_hpp
 
 #include <iostream>
 #include <vector>
-
+#include <string>
 using namespace std;
 
-extern indentation;
+extern int indentation;//specify number of tab/"/t"
 
 typedef std::shared_ptr<astnode> treeptr;
 
 class astnode{
 public:
   virtual astnode();
-
   virtual translate()=0;
   virtual compile();
   virtual ~astnode() {};
@@ -42,3 +41,5 @@ class statement : public astnode{
 void NotImplemented(){
   std::cerr << "Not Implemented." << '\n';//for function not needed to Implement
 }
+
+#endif

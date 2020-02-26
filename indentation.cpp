@@ -18,8 +18,6 @@ void add_indentation(string pyout)
 
 
 
-
-
 int count_ind(int indentation, string temp_py)
 {
   int left = 0;

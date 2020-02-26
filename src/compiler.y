@@ -367,16 +367,16 @@ statement
 	;
 
 labeled_statement
-	: IDENTIFIER ':' statement
+	: IDENTIFIER ':' statement  
 	| CASE constant_expression ':' statement
 	| DEFAULT ':' statement
 	;
 
 compound_statement
-	: '{' '}'
-	| '{' statement_list '}'
-	| '{' declaration_list '}'
-	| '{' declaration_list statement_list '}'
+	: '{' '}'    {$$ = new compound_statement(0)}
+	| '{' statement_list '}'   {$$ = new compound_statement(1, $2)}
+	| '{' declaration_list '}'   {$$ = new compound_statement(1, $2)}
+	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(1, $2, $3)}
 	;
 
 declaration_list

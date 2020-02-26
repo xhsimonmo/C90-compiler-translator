@@ -1,5 +1,5 @@
-#ifndef ast.hpp
-#define ast.hpp
+#ifndef primary_expression_h
+#define primary_expression_h
 #include <iostream>
 #include <vector>
 #include <string>
@@ -7,7 +7,9 @@ using namespace std;
 
 class primary_expression : public expression{
 public:
-  ~primary_expression(){};
+  ~primary_expression(){
+    delete expre_ptr;
+  };
   primary_expression(int type, string _element):element(_element){};
   primary_expression(int type, treeptr _ptr):expre_ptr(_ptr){};
 
@@ -25,9 +27,9 @@ void primary_expression::translate(string& pyout)
       pyout = element;
       break;
 
-    case 1://case of string leteral, python has '' instead of ""
-
-
+    case 1://constant representation in c different from python
+      pyout = c2pyconstant(element);
+      break;
 
     case 2:
       pyout = element;
@@ -40,7 +42,8 @@ void primary_expression::translate(string& pyout)
 
 }
 
-string c2pystringliteral(string cstring)
+string c2pyconstant(string cconst)
 {
 
 }
+#endif

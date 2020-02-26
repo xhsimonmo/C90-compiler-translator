@@ -9,7 +9,9 @@ class multiplicative_expression : public expression{
   public:
     //multiplicative_expression(int _type, treeptr _cast):type(_type),cast(_cast){};
     multiplicative_expression(int _type, treeptr _mul, treeptr _cast):type(_type),mul(_mul),cast(_cast){};
-    ~multiplicative_expression(){};
+    ~multiplicative_expression(){
+      delete l, r;
+    };
   private:
     int type;
     treeptr mul, cast;
@@ -26,15 +28,15 @@ void multiplicative_expression::translate(string& pyout)
     // break;
 
     case 1:
-    pyout = mul -> translate(ls) + "*" + cast -> translate(rs);
+    pyout = mul -> translate(ls) + "*" + cast -> translate(rs)+'/n';
     break;
 
     case 2:
-    pyout = mul -> translate(ls) + "/" + cast -> translate(rs);
+    pyout = mul -> translate(ls) + "/" + cast -> translate(rs)+'/n';
     break;
 
     case 3:
-    pyout = mul -> translate(ls) + "%" + cast -> translate(rs);
+    pyout = mul -> translate(ls) + "%" + cast -> translate(rs)+'/n';
     break;
 
   }
@@ -47,7 +49,9 @@ class additive_expression : public expression{
   public:
     //additive_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
     additive_expression(int _type, treeptr _add, treeptr _mul):type(_type),add(_add),mul(_mul){};
-    ~additive_expression(){};
+    ~additive_expression(){
+      delete l, r;
+    };
   private:
     int type;
     treeptr add, mul;
@@ -64,11 +68,11 @@ void additive_expression:: translate(string& pyout)
     // break;
 
     case 1:
-    pyout = ls + "+" + rs;
+    pyout = ls + "+" + rs+'/n';
     break;
 
     case 2:
-    pyout = ls + "_" + rs;
+    pyout = ls + "_" + rs+'/n';
     break;
   }
 }
@@ -84,7 +88,9 @@ class shift_expression : public expression{
   public:
     //shift_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
     shift_expression(int _type, treeptr _shift, treeptr _add):type(_type),l(_shift),r(_add){};
-    ~additive_expression(){};
+    ~additive_expression(){
+      delete l, r;
+    };
   private:
     int type;
     treeptr l, r;
@@ -101,11 +107,11 @@ void shift_expression:: translate(string& pyout)
     // break;
 
     case 1:
-    pyout = ls + "<<" + rs;
+    pyout = ls + "<<" + rs+'/n';
     break;
 
     case 2:
-    pyout = ls + ">>" + rs;
+    pyout = ls + ">>" + rs+'/n';
     break;
   }
 }
