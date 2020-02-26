@@ -1,19 +1,20 @@
 #ifndef ast.hpp
 #define ast.hpp
 
-
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
+extern indentation;
+
 typedef std::shared_ptr<astnode> treeptr;
 
-class ast_node{
+class astnode{
 public:
   virtual astnode();
 
-  virtual translate();
+  virtual translate()=0;
   virtual compile();
   virtual ~astnode() {};
 private:
@@ -24,6 +25,7 @@ private:
 class expression : public astnode{
   virtual expression();
   virtual ~expression(){};
+
 };
 
 class declaration : public astnode{
@@ -35,3 +37,8 @@ class statement : public astnode{
   virtual statement();
   virtual ~statement(){};
 };
+
+
+void NotImplemented(){
+  std::cerr << "Not Implemented." << '\n';//for function not needed to Implement
+}
