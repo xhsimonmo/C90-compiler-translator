@@ -1,4 +1,5 @@
-#include ast.hpp
+#ifndef ast_unary_expression
+#define ast_unary_expression
 #include <iostream>
 #include <string>
 using namespace std;

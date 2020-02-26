@@ -1,4 +1,5 @@
-#include ast.hpp
+#ifndef ast_postfix_expression
+#define ast_postfix_expression
 #include <iostream>
 #include <string>
 using namespace std;
