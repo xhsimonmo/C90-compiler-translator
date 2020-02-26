@@ -32,10 +32,10 @@
 %%
 
 primary_expression
-	: IDENTIFIER
-	| CONSTANT
-	| STRING_LITERAL
-	| '(' expression ')'
+	: IDENTIFIER    {$$ = new primary_expression(0,*$1)}
+	| CONSTANT      {$$ = new primary_expression(1,*$1)}
+	| STRING_LITERAL {$$ = new primary_expression(2,*$1)}
+	| '(' expression ')' {$$ = new primary_expression(3,$1)}
 	;
 
 postfix_expression
@@ -358,12 +358,12 @@ initializer_list
 	;
 
 statement
-	: labeled_statement
-	| compound_statement
-	| expression_statement
-	| selection_statement
-	| iteration_statement
-	| jump_statement
+	: labeled_statement   {$$ = $1}
+	| compound_statement {$$ = $1}
+	| expression_statement {$$ = $1}
+	| selection_statement  {$$ = $1}
+	| iteration_statement  {$$ = $1}
+	| jump_statement {$$ = $1}
 	;
 
 labeled_statement
@@ -408,7 +408,7 @@ iteration_statement
 	;
 
 jump_statement
-	: GOTO IDENTIFIER ';'
+	: GOTO IDENTIFIER ';' ///no goto statement
 	| CONTINUE ';'
 	| BREAK ';'
 	| RETURN ';'
