@@ -1,5 +1,5 @@
-#ifndef ast.hpp
-#define ast.hpp
+#ifndef labeled_statement_h
+#define labeled_statement_h
 
 
 #include <iostream>
@@ -27,3 +27,5 @@ void labeled_statement::translate(){
 }
 
 //no tranlation to python required?
+
+#endif

@@ -6,7 +6,9 @@
 #include <string>
 using namespace std;
 
-extern int indentation;//specify number of tab/"/t"
+extern int indentation = 0;//specify number of tab/"/t"
+//this basically indicate the difference between "{" and "}", which is the number of "\t" to add
+//it will change dynamically during parsing
 
 typedef std::shared_ptr<astnode> treeptr;
 
@@ -15,7 +17,7 @@ public:
   virtual astnode();
   virtual translate()=0;
   virtual compile();
-  virtual ~astnode() {};
+  virtual ~astnode();
 private:
   vector<treeptr> branches;
 
@@ -38,7 +40,7 @@ class statement : public astnode{
 };
 
 
-void NotImplemented(){
+extern void NotImplemented(){
   std::cerr << "Not Implemented." << '\n';//for function not needed to Implement
 }
 

@@ -1,5 +1,5 @@
-#ifndef ast.hpp
-#define ast.hpp
+#ifndef mul_add_shift_h
+#define mul_add_shift_h
 #include <iostream>
 #include <vector>
 #include <string>
@@ -10,7 +10,8 @@ class multiplicative_expression : public expression{
     //multiplicative_expression(int _type, treeptr _cast):type(_type),cast(_cast){};
     multiplicative_expression(int _type, treeptr _mul, treeptr _cast):type(_type),mul(_mul),cast(_cast){};
     ~multiplicative_expression(){
-      delete l, r;
+      delete mul;
+      delete cast;
     };
   private:
     int type;
@@ -115,3 +116,5 @@ void shift_expression:: translate(string& pyout)
     break;
   }
 }
+
+#endif

@@ -22,7 +22,8 @@ public:
   compound_statement(int _type, treeptr _list):type(_type), left(_list);
   compound_statement(int _type, treeptr dec_list, treeptr sta_list):type(_type), left(dec_list),right(sta_list);
   ~compound_statement(){
-    delete left, right;
+    delete left;
+    delete right;
   }
 private:
   int type;

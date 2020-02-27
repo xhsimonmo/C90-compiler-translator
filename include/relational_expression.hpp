@@ -71,3 +71,5 @@ switch (type)
   NotImplemented();
 }
 }
+
+#endif

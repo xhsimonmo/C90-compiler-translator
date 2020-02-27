@@ -72,3 +72,5 @@ void postfix_operator::translate(string& pyout){
     NotImplemented();
   }
 }
+
+#endif

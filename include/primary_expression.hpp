@@ -28,7 +28,7 @@ void primary_expression::translate(string& pyout)
       break;
 
     case 1://constant representation in c different from python
-      pyout = c2pyconstant(element);
+      pyout = element;
       break;
 
     case 2:
@@ -42,8 +42,8 @@ void primary_expression::translate(string& pyout)
 
 }
 
-string c2pyconstant(string cconst)
-{
-
-}
+// string c2pyconstant(string cconst)
+// {
+//
+// }
 #endif

@@ -62,3 +62,5 @@ switch (type)
   NotImplemented();
 }
 }
+
+#endif
