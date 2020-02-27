@@ -161,7 +161,7 @@ assignment_operator
 
 expression
 	: assignment_expression                  {$$ = $1;}
-	| expression ',' assignment_expression   {$$ = new expression($1, $3);}
+	| expression ',' assignment_expression   {$$ = new base_expression($1, $3);}
 	;
 
 constant_expression
