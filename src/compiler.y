@@ -32,16 +32,16 @@
 %%
 
 primary_expression
-	: IDENTIFIER    {$$ = new primary_expression(0,*$1)}
-	| CONSTANT      {$$ = new primary_expression(1,*$1)}
-	| STRING_LITERAL {$$ = new primary_expression(2,*$1)}
-	| '(' expression ')' {$$ = new primary_expression(3,$1)}
+	: IDENTIFIER    {$$ = new primary_expression(0,*$1);}
+	| CONSTANT      {$$ = new primary_expression(1,*$1);}
+	| STRING_LITERAL {$$ = new primary_expression(2,*$1);}
+	| '(' expression ')' {$$ = new primary_expression(3,$1);}
 	;
 
 postfix_expression
 	: primary_expression                                   {$$ = $1;}
 	| postfix_expression '[' expression ']'                {$$ = new unary_expression(0, $1, $3);}
-	| postfix_expression '(' ')'                           {$$ = new unary_expression(1, $1)}
+	| postfix_expression '(' ')'                           {$$ = new unary_expression(1, $1);}
 	| postfix_expression '(' argument_expression_list ')'  {$$ = new unary_expression(2, $1, $3);}
 	| postfix_expression '.' IDENTIFIER                    {$$ = new unary_expression(3, $1, $3);}
 	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new unary_expression(4, $1, $3);}
@@ -64,12 +64,12 @@ unary_expression
 	;
 
 unary_operator
-	: '&'
-	| '*'
-	| '+'
-	| '-'
-	| '~'
-	| '!'
+	: '&'      {$$ = "&";}
+	| '*'      {$$ = "*";}
+	| '+'      {$$ = "+";}
+	| '-'      {$$ = "-";}
+	| '~'      {$$ = "~";}
+	| '!'      {$$ = "!";}
 	;
 
 cast_expression
@@ -97,7 +97,7 @@ shift_expression
 	;
 
 relational_expression
-	: shift_expression                                 {$$ = $1}
+	: shift_expression                                 {$$ = $1;}
 	| relational_expression '<' shift_expression       {$$ = new relational_expression(0, $1, $3);}
 	| relational_expression '>' shift_expression       {$$ = new relational_expression(1, $1, $3);}
 	| relational_expression LE_OP shift_expression     {$$ = new relational_expression(2, $1, $3);}
@@ -105,63 +105,63 @@ relational_expression
 	;
 
 equality_expression
-	: relational_expression                              {$$ = $1}
+	: relational_expression                              {$$ = $1;}
 	| equality_expression EQ_OP relational_expression    {$$ = new relational_expression(4, $1, $3);}
 	| equality_expression NE_OP relational_expression    {$$ = new relational_expression(5, $1, $3);}
 	;
 
 and_expression
-	: equality_expression                                {$$ = $1}
+	: equality_expression                                {$$ = $1;}
 	| and_expression '&' equality_expression             {$$ = new relational_expression(6, $1, $3);}
 	;
 
 exclusive_or_expression
-	: and_expression                                     {$$ = $1}
+	: and_expression                                     {$$ = $1;}
 	| exclusive_or_expression '^' and_expression         {$$ = new relational_expression(7, $1, $3);}
 	;
 
 inclusive_or_expression
-	: exclusive_or_expression                                {$$ = $1}
+	: exclusive_or_expression                                {$$ = $1;}
 	| inclusive_or_expression '|' exclusive_or_expression    {$$ = new relational_expression(8, $1, $3);}
 	;
 
 logical_and_expression
-	: inclusive_or_expression                                {$$ = $1}
+	: inclusive_or_expression                                {$$ = $1;}
 	| logical_and_expression AND_OP inclusive_or_expression  {$$ = new relational_expression(9, $1, $3);}
 	;
 
 logical_or_expression
-	: logical_and_expression                                 {$$ = $1}
+	: logical_and_expression                                 {$$ = $1;}
 	| logical_or_expression OR_OP logical_and_expression     {$$ = new relational_expression(10, $1, $3);}
 	;
 
 conditional_expression
-	: logical_or_expression                                              {$$ = $1}
-	| logical_or_expression '?' expression ':' conditional_expression    {$$ = new conditional_expression($1, $3, $5)}
+	: logical_or_expression                                              {$$ = $1;}
+	| logical_or_expression '?' expression ':' conditional_expression    {$$ = new conditional_expression($1, $3, $5);}
 	;
 
 assignment_expression
-	: conditional_expression
-	| unary_expression assignment_operator assignment_expression
+	: conditional_expression                                             {$$ = $1;}
+	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3);}
 	;
 
 assignment_operator
-	: '='
-	| MUL_ASSIGN
-	| DIV_ASSIGN
-	| MOD_ASSIGN
-	| ADD_ASSIGN
-	| SUB_ASSIGN
-	| LEFT_ASSIGN
-	| RIGHT_ASSIGN
-	| AND_ASSIGN
-	| XOR_ASSIGN
-	| OR_ASSIGN
+	: '='                {$$ = "ASSIGN";}
+	| MUL_ASSIGN         {$$ = "MUL";}
+	| DIV_ASSIGN         {$$ = "DIV";}
+	| MOD_ASSIGN         {$$ = "MOD";}
+	| ADD_ASSIGN         {$$ = "ADD";}
+	| SUB_ASSIGN         {$$ = "SUB";}
+	| LEFT_ASSIGN        {$$ = "LEFT";}
+	| RIGHT_ASSIGN       {$$ = "RIGHT";}
+	| AND_ASSIGN         {$$ = "AND";}
+	| XOR_ASSIGN         {$$ = "XOR";}
+	| OR_ASSIGN          {$$ = "OR";}
 	;
 
 expression
-	: assignment_expression
-	| expression ',' assignment_expression
+	: assignment_expression                  {$$ = $1;}
+	| expression ',' assignment_expression   {$$ = new expression($1, $3);}
 	;
 
 constant_expression

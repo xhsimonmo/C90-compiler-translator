@@ -1,9 +1,7 @@
 #ifndef ast_conditional_expression
 #define ast_conditional_expression
-#include <iostream>
-#include <string>
-using namespace std;
 
+#include "ast.hpp"
 
 class conditional_expression : public expression{
 public:
@@ -20,3 +18,5 @@ private:
 void conditional_expression::translate(string& pyout){
   NotImplemented();
 }
+
+#endif
