@@ -1,10 +1,7 @@
 #ifndef mul_add_shift_h
 #define mul_add_shift_h
-#include <iostream>
-#include <vector>
-#include <string>
-using namespace std;
 
+#include "ast.hpp"
 class multiplicative_expression : public expression{
   public:
     //multiplicative_expression(int _type, treeptr _cast):type(_type),cast(_cast){};

@@ -1,12 +1,7 @@
 #ifndef compound_statement_h
 #define compound_statement_h
 
-#include <iostream>
-#include <vector>
-
-
-
-using namespace std;
+#include "ast.hpp"
 
 // compound_statement
 // 	: '{' '}'
@@ -37,14 +32,22 @@ void compound_statement::translate(string& pyout){
     case 0:
     break;//do nothing?
     case 1:
+    indentation++; //encounter "{"
     left->translate(pyout);
+    indentation--; //exit with "}"
     break;
     case 2:
+    indentation++; //encounter "{"
     left->translate(pyout);
+    indentation--; //exit with "}"
     break
     case 3:
     string ds, ss;
-    pyout = left->translate(ds) + '/n' + right->translate(ss);;
+    indentation++;
+    left->translate(ds) ;
+    right->translate(ss);
+    indentation--;
+    pyout = ds + '\n' + ss;
     break;
 
   }

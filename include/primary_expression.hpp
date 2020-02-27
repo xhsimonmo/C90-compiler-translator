@@ -1,9 +1,6 @@
 #ifndef primary_expression_h
 #define primary_expression_h
-#include <iostream>
-#include <vector>
-#include <string>
-using namespace std;
+#include "ast.hpp"
 
 class primary_expression : public expression{
 public:

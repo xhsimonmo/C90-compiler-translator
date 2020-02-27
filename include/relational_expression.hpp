@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-
+#include "ast.hpp"
 
 class relational_expression : public expression{
 public:

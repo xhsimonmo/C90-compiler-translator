@@ -1,8 +1,7 @@
 #ifndef ast_postfix_expression
 #define ast_postfix_expression
-#include <iostream>
-#include <string>
-using namespace std;
+
+#include "ast.hpp"
 
 
 class postfix_expression : public expression{

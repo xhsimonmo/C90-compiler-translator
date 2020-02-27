@@ -1,5 +1,6 @@
 #ifndef selection_statement_h
 #define selection_statement_h
+#include "ast.hpp"
 
 // selection_statement
 // 	: IF '(' expression ')' statement
@@ -35,11 +36,14 @@ void selection_statement::translate(string& pyout)
   ifsta -> translate(ifs);
   switch (type) {
     case 0:
-    pyout = "if(" + expres + "):" + '\n'  ;
+    //indentation++;
+    pyout = "if (" + expres + "):" + '\n' + indent(ifs) ;
     break;
     case 1:
+    elsesta->(elses);
+    pyout = "if (" + expres + "):" + '\n' + indent(ifs) + "else:" + '\n'+ indent(elses) + '\n';
     break;
-    case 2:
+    case 2: //no required to translate switch
     NotImplemented();
     break;
   }

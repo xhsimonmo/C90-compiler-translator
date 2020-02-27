@@ -39,6 +39,19 @@ class statement : public astnode{
   virtual ~statement(){};
 };
 
+void indent(string& source) //PLEASE WORK PLEASE
+{ //add x number of "\t" after every '\n'
+  string delimiter = '/t';
+  for (auto it = source.begin(); it != source.end(); it++)
+  {
+    if(*it == '\n'){
+      for(int i = 0; i <= indentation; i++){
+        source = delimiter + source;//add corresponding number of indentation
+        it++;// wo nuo
+      }
+    }
+  }
+}
 
 extern void NotImplemented(){
   std::cerr << "Not Implemented." << '\n';//for function not needed to Implement

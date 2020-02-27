@@ -1,11 +1,7 @@
 #ifndef labeled_statement_h
 #define labeled_statement_h
 
-
-#include <iostream>
-#include <vector>
-
-using namespace std;
+#include "ast.hpp"
 
 // labeled_statement
 // 	: IDENTIFIER ':' statement

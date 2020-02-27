@@ -1,8 +1,7 @@
 #ifndef ast_cast_expression
 #define ast_cast_expression
-#include <iostream>
-#include <string>
-using namespace std;
+
+#include "ast.hpp"
 
 
 class cast_expression : public expression{
@@ -31,3 +30,5 @@ std::string op;
     NotImplemented();
   }
 }
+
+#endif

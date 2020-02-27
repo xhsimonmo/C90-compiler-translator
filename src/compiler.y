@@ -367,7 +367,7 @@ statement
 	;
 
 labeled_statement
-	: IDENTIFIER ':' statement  
+	: IDENTIFIER ':' statement
 	| CASE constant_expression ':' statement
 	| DEFAULT ':' statement
 	;
@@ -401,10 +401,10 @@ selection_statement
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement
-	| DO statement WHILE '(' expression ')' ';'
-	| FOR '(' expression_statement expression_statement ')' statement
-	| FOR '(' expression_statement expression_statement expression ')' statement
+	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5)}
+	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5)}
+	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6)}
+	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7)}
 	;
 
 jump_statement

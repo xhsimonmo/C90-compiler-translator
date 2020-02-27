@@ -1,9 +1,7 @@
 #ifndef ast_unary_expression
 #define ast_unary_expression
-#include <iostream>
-#include <string>
-using namespace std;
 
+#include "ast.hpp"
 
 class unary_expression : public expression{
 public:
