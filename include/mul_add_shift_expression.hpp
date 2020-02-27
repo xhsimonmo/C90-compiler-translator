@@ -2,6 +2,14 @@
 #define mul_add_shift_h
 
 #include "ast.hpp"
+
+// multiplicative_expression
+// 	: cast_expression {$$ = $1}
+// 	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3);}
+// 	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3);}
+// 	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3);}
+// 	;
+
 class multiplicative_expression : public expression{
   public:
     //multiplicative_expression(int _type, treeptr _cast):type(_type),cast(_cast){};
@@ -18,23 +26,23 @@ class multiplicative_expression : public expression{
 void multiplicative_expression::translate(string& pyout)
 {
   string ls, rs;
-  l -> translate(ls);
-  r -> translate(rs);
+  mul -> translate(ls);
+  cast -> translate(rs);
   switch(type){
     // case 0:
     // cast->translate(pyout);
     // break;
 
     case 1:
-    pyout = mul -> translate(ls) + "*" + cast -> translate(rs)+'/n';
+    pyout = ls + "*" + rs+'/n';
     break;
 
     case 2:
-    pyout = mul -> translate(ls) + "/" + cast -> translate(rs)+'/n';
+    pyout = ls + "/" + rs +'/n';
     break;
 
     case 3:
-    pyout = mul -> translate(ls) + "%" + cast -> translate(rs)+'/n';
+    pyout = ls + "%" + rs +'/n';
     break;
 
   }
@@ -43,6 +51,11 @@ void multiplicative_expression::translate(string& pyout)
 
 /////////////////////////////////////additive_expression///////////////////////////////////////////////////
 
+// additive_expression
+// 	: multiplicative_expression  {$$ = $1}
+// 	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3);}
+// 	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3);}
+// 	;
 class additive_expression : public expression{
   public:
     //additive_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
@@ -78,9 +91,10 @@ void additive_expression:: translate(string& pyout)
 /////////////////////////////////////bitwise_shift_expression///////////////////////////////////////////////////
 
 // shift_expression
-// 	: additive_expression
-// 	| shift_expression LEFT_OP additive_expression
-// 	| shift_expression RIGHT_OP additive_expression
+// 	: additive_expression  {$$ = $1}
+// 	| shift_expression LEFT_OP additive_expression {$$ = new shift_expression(1,$1,$3)}
+// 	| shift_expression RIGHT_OP additive_expression {$$ = new shift_expression(2,$1,$3)}
+// 	;
 
 class shift_expression : public expression{
   public:

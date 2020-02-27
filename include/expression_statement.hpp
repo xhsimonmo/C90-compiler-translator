@@ -9,11 +9,13 @@
 
 class expression_statement : public statement{
  public:
+  expression_statement(int _type):type(_type);
   expression_statement(treeptr _ptr_expr):ptr_expr(_ptr_expr){};
   ~expression_statement(){
     delete ptr_expr;
   }
  private:
+   int type;
   treeptr ptr_expr = NULL;
 };
 

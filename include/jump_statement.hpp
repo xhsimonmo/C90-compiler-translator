@@ -7,7 +7,7 @@
 // 	: GOTO IDENTIFIER ';' ///no goto statement
 // 	| CONTINUE ';'
 // 	| BREAK ';'
-// 	| RETURN ';'
+// 	| RETURN ';' //return nothing is undefined in C90 standard
 // 	| RETURN expression ';'
 // 	;
 
@@ -23,6 +23,19 @@ private:
   int type;
   string identifier;
   treeptr expre_ptr;
+};
+
+void jump_statement::translate(string& pyout)
+{
+  switch (type) {
+    case 4://return
+    string return_expression;
+    pyout = "return " + expre_ptr -> translate(return_expression) + "\n";
+    break;
+    default:
+    NotImplemented();
+    break;
+  }
 }
 
 

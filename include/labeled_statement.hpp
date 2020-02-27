@@ -19,7 +19,7 @@ private:
 };
 
 void labeled_statement::translate(){
-  NotImplemented;
+  NotImplemented();
 }
 
 //no tranlation to python required?

@@ -78,22 +78,22 @@ cast_expression
 	;
 
 multiplicative_expression
-	: cast_expression
-	| multiplicative_expression '*' cast_expression
-	| multiplicative_expression '/' cast_expression
-	| multiplicative_expression '%' cast_expression
+	: cast_expression {$$ = $1}
+	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3);}
+	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3);}
+	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3);}
 	;
 
 additive_expression
-	: multiplicative_expression
-	| additive_expression '+' multiplicative_expression
-	| additive_expression '-' multiplicative_expression
+	: multiplicative_expression  {$$ = $1}
+	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3);}
+	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3);}
 	;
 
 shift_expression
-	: additive_expression
-	| shift_expression LEFT_OP additive_expression
-	| shift_expression RIGHT_OP additive_expression
+	: additive_expression  {$$ = $1}
+	| shift_expression LEFT_OP additive_expression {$$ = new shift_expression(1,$1,$3)}
+	| shift_expression RIGHT_OP additive_expression {$$ = new shift_expression(2,$1,$3)}
 	;
 
 relational_expression
@@ -373,10 +373,10 @@ labeled_statement
 	;
 
 compound_statement
-	: '{' '}'    {$$ = new compound_statement(0)}
-	| '{' statement_list '}'   {$$ = new compound_statement(1, $2)}
-	| '{' declaration_list '}'   {$$ = new compound_statement(1, $2)}
-	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(1, $2, $3)}
+	: '{' '}'    {$$ = new compound_statement(0);}
+	| '{' statement_list '}'   {$$ = new compound_statement(1, $2);}
+	| '{' declaration_list '}'   {$$ = new compound_statement(1, $2);}
+	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(1, $2, $3);}
 	;
 
 declaration_list
@@ -385,34 +385,34 @@ declaration_list
 	;
 
 statement_list
-	: statement
-	| statement_list statement
+	: statement    {$$ = $1}
+	| statement_list statement   {$$ = new statement_list($1,$2);}
 	;
 
 expression_statement
-	: ';'
-	| expression ';'
+	: ';'    {$$ = new expression_statement(0)}
+	| expression ';'   {$$ = new expression_statement($1)}
 	;
 
 selection_statement
-	: IF '(' expression ')' statement
-	| IF '(' expression ')' statement ELSE statement
-	| SWITCH '(' expression ')' statement
+	: IF '(' expression ')' statement    {$$ = new selection_statement(0, $3, $5);}
+	| IF '(' expression ')' statement ELSE statement   {$$ = new selection_statement(1, $3, $5, $7);}
+	| SWITCH '(' expression ')' statement    {$$ = new selection_statement(2, $3, $5);}
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5)}
-	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5)}
-	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6)}
-	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7)}
+	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5);}
+	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);}
+	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);}
+	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);}
 	;
 
 jump_statement
-	: GOTO IDENTIFIER ';' ///no goto statement
-	| CONTINUE ';'
-	| BREAK ';'
-	| RETURN ';'
-	| RETURN expression ';'
+	: GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}
+	| CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");}
+	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");}
+	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");}
+	| RETURN expression ';'    {$$ = new jump_statement(4, $2);}
 	;
 
 translation_unit
