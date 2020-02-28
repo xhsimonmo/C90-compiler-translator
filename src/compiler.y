@@ -165,7 +165,7 @@ expression
 	;
 
 constant_expression
-	: conditional_expression
+	: conditional_expression   {$$ = $1} // what is this for?
 	;
 
 declaration
@@ -178,8 +178,8 @@ declaration_specifiers
 	| storage_class_specifier declaration_specifiers
 	| type_specifier
 	| type_specifier declaration_specifiers
-	| type_qualifier
-	| type_qualifier declaration_specifiers
+	//| type_qualifier
+	//| type_qualifier declaration_specifiers
 	;
 
 init_declarator_list
@@ -193,26 +193,26 @@ init_declarator
 	;
 
 storage_class_specifier
-	: TYPEDEF
-	| EXTERN
-	| STATIC
-	| AUTO
-	| REGISTER
+	: TYPEDEF  {$$ = new storage_class_specifier("TYPEDEF");}
+	| EXTERN   {$$ = new storage_class_specifier("EXTERN");}
+//	| STATIC
+//	| AUTO
+//	| REGISTER
 	;
 
 type_specifier
-	: VOID
-	| CHAR
-	| SHORT
-	| INT
-	| LONG
-	| FLOAT
-	| DOUBLE
-	| SIGNED
-	| UNSIGNED
-	| struct_or_union_specifier
-	| enum_specifier
-	| TYPE_NAME
+	: VOID   {$$ = new type_specifier(0)}
+	| CHAR   {$$ = new type_specifier(0)}
+	| SHORT   {$$ = new type_specifier(0)}
+	| INT   {$$ = new type_specifier(0)}
+	| LONG   {$$ = new type_specifier(0)}
+	| FLOAT   {$$ = new type_specifier(0)}
+	| DOUBLE   {$$ = new type_specifier(0)}
+	| SIGNED   {$$ = new type_specifier(0)}
+	| UNSIGNED   {$$ = new type_specifier(0)}
+	| struct_or_union_specifier   {$$ = new type_specifier(0)}
+	| enum_specifier   {$$ = new type_specifier(0)}
+	| TYPE_NAME   {$$ = new type_specifier(0)}
 	;
 
 struct_or_union_specifier
@@ -223,7 +223,7 @@ struct_or_union_specifier
 
 struct_or_union
 	: STRUCT
-	| UNION
+	//| UNION  no requoement for union
 	;
 
 struct_declaration_list
@@ -238,8 +238,8 @@ struct_declaration
 specifier_qualifier_list
 	: type_specifier specifier_qualifier_list
 	| type_specifier
-	| type_qualifier specifier_qualifier_list
-	| type_qualifier
+	//| type_qualifier specifier_qualifier_list
+	//| type_qualifier
 	;
 
 struct_declarator_list
@@ -269,10 +269,10 @@ enumerator
 	| IDENTIFIER '=' constant_expression
 	;
 
-type_qualifier
+/* type_qualifier       no need to Implement type_qualifier
 	: CONST
-	| VOLATILE
-	;
+	： VOLATILE
+	; */
 
 declarator
 	: pointer direct_declarator
@@ -291,15 +291,15 @@ direct_declarator
 
 pointer
 	: '*'
-	| '*' type_qualifier_list
+	//| '*' type_qualifier_list
 	| '*' pointer
-	| '*' type_qualifier_list pointer
+	//| '*' type_qualifier_list pointer
 	;
 
-type_qualifier_list
+/* type_qualifier_list
 	: type_qualifier
 	| type_qualifier_list type_qualifier
-	;
+	; */
 
 
 parameter_type_list
@@ -367,9 +367,9 @@ statement
 	;
 
 labeled_statement
-	: IDENTIFIER ':' statement
-	| CASE constant_expression ':' statement
-	| DEFAULT ':' statement
+	: IDENTIFIER ':' statement   {$$ = new labeled_statement(0, $3);}
+	| CASE constant_expression ':' statement   {$$ = new labeled_statement(1, $2, $4);}
+	| DEFAULT ':' statement    {$$ = new labeled_statement(2, $3);}
 	;
 
 compound_statement
@@ -408,8 +408,8 @@ iteration_statement
 	;
 
 jump_statement
-	: GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}
-	| CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");}
+	 //GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}  // no need to Implement this
+	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");}
 	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");}
 	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");}
 	| RETURN expression ';'    {$$ = new jump_statement(4, $2);}
