@@ -29,6 +29,11 @@ class expression : public astnode{
 
 };
 
+class definition : public astnode{
+  virtual definition();
+  virtual ~definition(){};
+};
+
 class declaration : public astnode{
   virtual declaration();
   virtual ~declaration(){};
