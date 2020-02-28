@@ -3,9 +3,9 @@
 
 There is a single assessed code deliverable, which is due on Tue 24 March at 23:59. This deliverable contains two components:
 
-- [*C-translator*](c_translator.md) (35%): Your compiler will be able to translate a subset of C into equivalent Python. This allows each submission to demonstrate lexing and parsing functionality, even if the code generation is weak.
+- [*C-translator*](spec/c_translator.md) (35%): Your compiler will be able to translate a subset of C into equivalent Python. This allows each submission to demonstrate lexing and parsing functionality, even if the code generation is weak.
 
-- [*C-compiler*](c_compiler.md) (55%): This is a compiler from C to MIPS assembly.
+- [*C-compiler*](spec/c_compiler.md) (55%): This is a compiler from C to MIPS assembly.
   
 In all cases, the source language is pre-processed C90. The target environment is Ubuntu 16.04, so the lab Ubuntu distribution, or equivalently an Ubuntu 16.04 VM as configured in the attached Vagrantfile.
 

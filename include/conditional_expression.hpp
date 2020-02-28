@@ -9,7 +9,6 @@ public:
   ~conditional_expression(){delete p_one; delete p_three; delete p_five};
   void translate(string& pyout);
 private:
-  int type;
   treeptr p_one;
   treeptr p_three;
   treeptr p_five;

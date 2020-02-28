@@ -415,21 +415,22 @@ jump_statement
 	| RETURN expression ';'    {$$ = new jump_statement(4, $2);}
 	;
 
+/*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration
-	| translation_unit external_declaration
+	: external_declaration                     {$$ = $1;}
+	| translation_unit external_declaration    {$$ = new translation_unit($1, $2);}
 	;
 
 external_declaration
-	: function_definition
-	| declaration
+	: function_definition        {$$ = $1;}
+	| declaration                {$$ = $1;}/*global variable???*/
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement
-	| declaration_specifiers declarator compound_statement
-	| declarator declaration_list compound_statement
-	| declarator compound_statement
+	: declaration_specifiers declarator declaration_list compound_statement  喵喵喵
+	| declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
+	| declarator declaration_list compound_statement  喵喵喵
+	| declarator compound_statement                                          {$$ = new function_definition($1, $1, $2);}
 	;
 
 %%
