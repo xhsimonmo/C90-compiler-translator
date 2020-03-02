@@ -283,13 +283,13 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER
-	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
-	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_type_list ')'
-	| direct_declarator '(' identifier_list ')'
-	| direct_declarator '(' ')'
+	: IDENTIFIER   {$$ = new direct_declarator(*$1);}
+	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
+	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
+	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
+	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);}
+	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);}
+	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);}
 	;
 
 pointer
