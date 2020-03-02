@@ -1,8 +1,10 @@
-#ifndef ast.hpp
-#define ast.hpp
 
 #include "compiler.y"
 #include "lexer.flex"
+#include"ast.hpp"
+
+///include every hpp file
+
 
 #include <iostream>
 #include <vector>
@@ -23,6 +25,8 @@ int main(argc, argv[]){
   treeptr root;
   string pyout;
   root-> translate(pyout);
+  string addmain;
+  addmain = "";
 
   ofstream pyfile;//output ...py
   pyfile.open(argv[1]);

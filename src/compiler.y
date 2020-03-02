@@ -283,7 +283,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER   {$$ = new direct_declarator(*$1);}
+	: IDENTIFIER   {$$ = new direct_declarator(0,$1);}
 	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
 	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
 	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
