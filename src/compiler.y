@@ -169,27 +169,27 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';'
-	| declaration_specifiers init_declarator_list ';'
+	: declaration_specifiers ';'  {$$ = new declaration($1);}
+	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);}
 	;
 
 declaration_specifiers
-	: storage_class_specifier
-	| storage_class_specifier declaration_specifiers
-	| type_specifier
-	| type_specifier declaration_specifiers
+	: storage_class_specifier    {$$ = $1}
+	| storage_class_specifier declaration_specifiers   {$$ = new declaration_specifiers($1,$2);}
+	| type_specifier   {$$ = $1}
+	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);}
 	//| type_qualifier
 	//| type_qualifier declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator
-	| init_declarator_list ',' init_declarator
+	: init_declarator   {$$ = $1}
+	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$2);}
 	;
 
 init_declarator
-	: declarator
-	| declarator '=' initializer
+	: declarator   {$$ = $1}
+	| declarator '=' initializer   {$$ = new init_declarator($1,$2);}
 	;
 
 storage_class_specifier
@@ -201,21 +201,21 @@ storage_class_specifier
 	;
 
 type_specifier
-	: VOID   {$$ = new type_specifier(0)}
-	| CHAR   {$$ = new type_specifier(0)}
-	| SHORT   {$$ = new type_specifier(0)}
-	| INT   {$$ = new type_specifier(0)}
-	| LONG   {$$ = new type_specifier(0)}
-	| FLOAT   {$$ = new type_specifier(0)}
-	| DOUBLE   {$$ = new type_specifier(0)}
-	| SIGNED   {$$ = new type_specifier(0)}
-	| UNSIGNED   {$$ = new type_specifier(0)}
-	| struct_or_union_specifier   {$$ = new type_specifier(0)}
-	| enum_specifier   {$$ = new type_specifier(0)}
-	| TYPE_NAME   {$$ = new type_specifier(0)}
+	: VOID   {$$ = new type_specifier("VOID");}
+	| CHAR   {$$ = new type_specifier("CHAR");}
+	| SHORT   {$$ = new type_specifier("SHORT");}
+	| INT   {$$ = new type_specifier("INT");}
+	| LONG   {$$ = new type_specifier("LONG");}
+	| FLOAT   {$$ = new type_specifier("FLOAT");}
+	| DOUBLE   {$$ = new type_specifier("DOUBLE");}
+	| SIGNED   {$$ = new type_specifier("SIGNED");}
+	| UNSIGNED   {$$ = new type_specifier("UNSIGNED");}
+	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
+	| enum_specifier   {$$ = new type_specifier("ENUM");}
+	| TYPE_NAME   {$$ = new type_specifier("TYPE_NAME");}
 	;
-
-struct_or_union_specifier
+/////////////////////////////////struct ////////////////////////////////////////////////
+/* struct_or_union_specifier
 	: struct_or_union IDENTIFIER '{' struct_declaration_list '}'
 	| struct_or_union '{' struct_declaration_list '}'
 	| struct_or_union IDENTIFIER
@@ -233,16 +233,17 @@ struct_declaration_list
 
 struct_declaration
 	: specifier_qualifier_list struct_declarator_list ';'
-	;
+	; */
+/////////////////////////////////struct ////////////////////////////////////////////////
 
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list
-	| type_specifier
+	: type_specifier specifier_qualifier_list {$$ = new specifier_qualifier_list($1,$2);}
+	| type_specifier  {$$ = $1}
 	//| type_qualifier specifier_qualifier_list
 	//| type_qualifier
 	;
-
-struct_declarator_list
+ /////////////////////////////////struct && enum////////////////////////////////////////////////
+/* struct_declarator_list
 	: struct_declarator
 	| struct_declarator_list ',' struct_declarator
 	;
@@ -267,16 +268,18 @@ enumerator_list
 enumerator
 	: IDENTIFIER
 	| IDENTIFIER '=' constant_expression
-	;
+	; */
 
 /* type_qualifier       no need to Implement type_qualifier
 	: CONST
 	： VOLATILE
 	; */
 
+ /////////////////////////////////struct && enum////////////////////////////////////////////////
+
 declarator
-	: pointer direct_declarator
-	| direct_declarator
+	: pointer direct_declarator  {$$ = new declarator($1, $2);}
+	| direct_declarator    {$$ = $1}
 	;
 
 direct_declarator

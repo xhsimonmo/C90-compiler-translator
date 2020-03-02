@@ -15,7 +15,7 @@ typedef std::shared_ptr<astnode> treeptr;
 class astnode{
 public:
   virtual astnode();
-  virtual translate()=0;
+  virtual translate(string& pyout) = 0;
   virtual compile();
   virtual ~astnode();
 private:
@@ -43,6 +43,11 @@ class statement : public astnode{
   virtual statement();
   virtual ~statement(){};
 };
+
+// class declaration : public astnode{
+//   virtual declaration();
+//   virtual ~declaration(){};
+// };
 
 void indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
