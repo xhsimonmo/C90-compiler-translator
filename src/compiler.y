@@ -306,19 +306,19 @@ pointer
 
 
 parameter_type_list
-	: parameter_list
-	| parameter_list ',' ELLIPSIS
+	: parameter_list                   {$$ = $1;}
+/*	| parameter_list ',' ELLIPSIS */
 	;
 
 parameter_list
-	: parameter_declaration
-	| parameter_list ',' parameter_declaration
+	: parameter_declaration                        {$$ = $1;}
+	| parameter_list ',' parameter_declaration     {$$ = new parameter_list($1, $3);}
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator
-	| declaration_specifiers abstract_declarator
-	| declaration_specifiers
+	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2)}
+	| declaration_specifiers abstract_declarator    {$$ = new parameter_declarator(1, $1, $2)}
+	| declaration_specifiers喵喵喵                   {$$ = new parameter_declarator(2, $1)}
 	;
 
 identifier_list
