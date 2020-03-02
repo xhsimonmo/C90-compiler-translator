@@ -3,6 +3,10 @@
 
 #include "ast.hpp"
 
+// cast_expression
+// 	: unary_expression                       {$$ = $1;}
+// 	| '(' type_name ')' cast_expression      {$$ = new cast_expression(0, $2, $4);}
+// 	;
 
 class cast_expression : public expression{
 public:

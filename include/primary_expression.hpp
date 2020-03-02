@@ -3,6 +3,13 @@
 
 #include "ast.hpp"
 
+// primary_expression
+// 	: IDENTIFIER    {$$ = new primary_expression(0,*$1);}
+// 	| CONSTANT      {$$ = new primary_expression(1,*$1);}
+// 	| STRING_LITERAL {$$ = new primary_expression(2,*$1);}
+// 	| '(' expression ')' {$$ = new primary_expression(3,$1);}
+// 	;
+
 class primary_expression : public expression{
 public:
   ~primary_expression(){

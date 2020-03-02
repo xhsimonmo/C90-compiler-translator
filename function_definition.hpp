@@ -3,7 +3,14 @@
 
 #include "ast.hpp"
 
-class function_defintion : public expression{
+// function_definition
+// 	: declaration_specifiers declarator declaration_list compound_statement
+// 	| declaration_specifiers declarator compound_statement
+// 	| declarator declaration_list compound_statement
+// 	| declarator compound_statement
+// 	;
+
+class function_defintion : public definition{
 public:
   function_defintion(treeptr o, treeptr t, treeptr f){p_o = o; p_t = t; p_f = f;}
   ~function_defintion(){delete p_one; delete p_three; delete p_five};

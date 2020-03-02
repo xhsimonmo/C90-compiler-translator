@@ -3,6 +3,11 @@
 
 #include "ast.hpp"
 
+// conditional_expression
+// 	: logical_or_expression                                              {$$ = $1;}
+// 	| logical_or_expression '?' expression ':' conditional_expression    {$$ = new conditional_expression($1, $3, $5);}
+// 	;
+
 class conditional_expression : public expression{
 public:
   conditional_expression(treeptr o, treeptr t, treeptr f){p_one = o; p_three = t; p_five = f;}

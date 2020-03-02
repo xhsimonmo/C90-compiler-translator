@@ -3,6 +3,25 @@
 
 #include "ast.hpp"
 
+// assignment_expression
+// 	: conditional_expression                                             {$$ = $1;}
+// 	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3);}
+// 	;
+// 
+// assignment_operator
+// 	: '='                {$$ = "ASSIGN";}
+// 	| MUL_ASSIGN         {$$ = "MUL";}
+// 	| DIV_ASSIGN         {$$ = "DIV";}
+// 	| MOD_ASSIGN         {$$ = "MOD";}
+// 	| ADD_ASSIGN         {$$ = "ADD";}
+// 	| SUB_ASSIGN         {$$ = "SUB";}
+// 	| LEFT_ASSIGN        {$$ = "LEFT";}
+// 	| RIGHT_ASSIGN       {$$ = "RIGHT";}
+// 	| AND_ASSIGN         {$$ = "AND";}
+// 	| XOR_ASSIGN         {$$ = "XOR";}
+// 	| OR_ASSIGN          {$$ = "OR";}
+// 	;
+
 class assignment_expression : public expression{
 public:
   assignment_expression(treeptr o, string t, treeptr f){p_one = o; p_three = t; p_five = f;}

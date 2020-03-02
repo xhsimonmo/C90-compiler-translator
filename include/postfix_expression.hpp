@@ -3,6 +3,17 @@
 
 #include "ast.hpp"
 
+// postfix_expression
+// 	: primary_expression                                   {$$ = $1;}
+// 	| postfix_expression '[' expression ']'                {$$ = new unary_expression(0, $1, $3);}
+// 	| postfix_expression '(' ')'                           {$$ = new unary_expression(1, $1);}
+// 	| postfix_expression '(' argument_expression_list ')'  {$$ = new unary_expression(2, $1, $3);}
+// 	| postfix_expression '.' IDENTIFIER                    {$$ = new unary_expression(3, $1, $3);}
+// 	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new unary_expression(4, $1, $3);}
+// 	| postfix_expression INC_OP                            {$$ = new unary_expression(5, $1);}
+// 	| postfix_expression DEC_OP                            {$$ = new unary_expression(6, $1);}
+// 	;
+
 
 class postfix_expression : public expression{
 public:
