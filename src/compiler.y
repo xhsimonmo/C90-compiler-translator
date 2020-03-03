@@ -322,19 +322,19 @@ parameter_declaration
 	;
 
 identifier_list
-	: IDENTIFIER
-	| identifier_list ',' IDENTIFIER
+	: IDENTIFIER                                     {$$ = $1;}
+	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, $3);}
 	;
 
 type_name
-	: specifier_qualifier_list
-	| specifier_qualifier_list abstract_declarator
+	: specifier_qualifier_list                       {$$ = $1;}
+	| specifier_qualifier_list abstract_declarator   {$$ = new type_name($1, $2);}
 	;
 
 abstract_declarator
-	: pointer
-	| direct_abstract_declarator
-	| pointer direct_abstract_declarator
+	: pointer                                        {$$ = $1;}
+	| direct_abstract_declarator                     {$$ = $1;}
+	| pointer direct_abstract_declarator             {$$ = new abstract_declarator($1, $2);}
 	;
 
 direct_abstract_declarator
