@@ -13,15 +13,11 @@ src/c_compiler.o : src/c_compiler.cpp
 	g++ $(CPPFLAGS) -o src/c_compiler.o $^
 
 
-
 src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
 	bison -v -d src/parser.y -o src/parser.tab.cpp
 
 src/lexer.yy.cpp : src/lexer.flex src/parser.tab.hpp
 	flex -o src/lexer.yy.cpp  src/lexer.flex
-
-
-
 
 clean :
 		rm src/*.o
