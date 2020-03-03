@@ -12,9 +12,6 @@
   void yyerror(const char *);
 }
 
-%union{
-
-}
 
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
@@ -210,8 +207,8 @@ type_specifier
 	| DOUBLE   {$$ = new type_specifier("DOUBLE");}
 	| SIGNED   {$$ = new type_specifier("SIGNED");}
 	| UNSIGNED   {$$ = new type_specifier("UNSIGNED");}
-	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
-	| enum_specifier   {$$ = new type_specifier("ENUM");}
+//	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
+//	| enum_specifier   {$$ = new type_specifier("ENUM");}
 	| TYPE_NAME   {$$ = new type_specifier("TYPE_NAME");}
 	;
 /////////////////////////////////struct ////////////////////////////////////////////////
