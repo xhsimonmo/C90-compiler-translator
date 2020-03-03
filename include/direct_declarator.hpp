@@ -31,12 +31,13 @@ private:
 void direct_declarator::translate(string& pyout){
   switch (case) {
     case 0:
-    pyout = id;
+    pyout = id; // directly output IDENTIFIER, as python doesn't have type
     break;
     case 1:
+    one->translate(pyout); // parenthsis does not matter in IDENTIFIER
     break;
     case 2:
-    NotImplemented();
+    NotImplemented(); // no array
     break;
     case 3:
     NotImplemented();

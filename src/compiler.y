@@ -274,9 +274,7 @@ enumerator
 	: CONST
 	： VOLATILE
 	; */
-
  /////////////////////////////////struct && enum////////////////////////////////////////////////
-
 declarator
 	: pointer direct_declarator  {$$ = new declarator($1, $2);}
 	| direct_declarator    {$$ = $1}
@@ -293,9 +291,9 @@ direct_declarator
 	;
 
 pointer
-	: '*'
+	: '*'  {$$ = new pointer(0);}
 	//| '*' type_qualifier_list
-	| '*' pointer
+	| '*' pointer {$$ = new pointer(1,$1);}
 	//| '*' type_qualifier_list pointer
 	;
 
