@@ -317,7 +317,7 @@ parameter_list
 parameter_declaration
 	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2)}
 	| declaration_specifiers abstract_declarator    {$$ = new parameter_declarator(1, $1, $2)}
-	| declaration_specifiers喵喵喵                   {$$ = new parameter_declarator(2, $1)}
+	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declarator(2, $1)}
 	;
 
 identifier_list
@@ -430,9 +430,9 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement  喵喵喵
+	: declaration_specifiers declarator declaration_list compound_statement  /*喵喵喵*/
 	| declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
-	| declarator declaration_list compound_statement  喵喵喵
+	| declarator declaration_list compound_statement  /*喵喵喵*/
 	| declarator compound_statement                                          {$$ = new function_definition($1, $1, $2);}
 	;
 
