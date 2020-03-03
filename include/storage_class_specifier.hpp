@@ -10,7 +10,7 @@ include "ast.hpp"
 class storage_class_specifier : public declaration{
 public:
   storage_class_specifier(string _type):type(_type){};
-  ~storage_class_specifier(){};
+  ~storage_class_specifier(){}
   translate(string& pysource);
 private:
   string type;

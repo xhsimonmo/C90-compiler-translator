@@ -11,8 +11,8 @@
 class initializer_list : public declaration{
 public:
   initializer_list(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
-  initializer_list(int type_in, treeptr o){type = type_in; left = o}
-  ~initializer_list(){delete left; delete right;};
+  initializer_list(int type_in, treeptr o){type = type_in; left = o;}
+  ~initializer_list(){delete left; delete right;}
   void translate(string& pyout);
 private:
   int type;

@@ -12,7 +12,7 @@
 class initializer : public declaration{
 public:
   initializer(int type_in, treeptr o){type_in = type; p = o;}
-  ~initializer(){delete p};
+  ~initializer(){delete p;}
   void translate(string& pyout);
 private:
   int type;

@@ -15,7 +15,7 @@
 class unary_expression : public expression{
 public:
   unary_expression(string type_in, treeptr p){type = type_in; ptr = p;}
-  ~unary_expression(){delete ptr;};
+  ~unary_expression(){delete ptr;}
   void translate(string& pyout);
 private:
   string type;

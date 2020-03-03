@@ -13,7 +13,7 @@
 class function_defintion : public definition{
 public:
   function_defintion(treeptr o, treeptr t, treeptr f){p_o = o; p_t = t; p_f = f;}
-  ~function_defintion(){delete p_one; delete p_three; delete p_five};
+  ~function_defintion(){delete p_one; delete p_three; delete p_five;}
   void translate(string& pyout);
 private:
   treeptr p_o;

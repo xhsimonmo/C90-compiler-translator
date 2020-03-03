@@ -11,7 +11,7 @@
 class identifier_list : public declaration{
 public:
   identifier_list(treeptr o, treeptr t){left = o; right = t;}
-  ~identifier_list(){delete left; delete right;};
+  ~identifier_list(){delete left; delete right;}
   void translate(string& pyout);
 private:
   treeptr left;

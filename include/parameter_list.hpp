@@ -11,7 +11,7 @@
 class parameter_list : public declaration{
 public:
   parameter_list(treeptr o, treeptr t){left = o; right = t;}
-  ~parameter_list(){delete left; delete right;};
+  ~parameter_list(){delete left; delete right;}
   void translate(string& pyout);
 private:
   treeptr left;

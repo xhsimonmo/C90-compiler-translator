@@ -18,7 +18,7 @@
 class direct_abstract_declarator : public declaration{
 public:
   direct_abstract_declarator(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
-  ~direct_abstract_declarator(){delete left; delete right;};
+  ~direct_abstract_declarator(){delete left; delete right;}
   void translate(string& pyout);
 private:
   int type;

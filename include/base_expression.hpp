@@ -6,7 +6,7 @@
 class base_expression : public expression{
 public:
   base_expression(treeptr o, treeptr f){p_one = o; p_five = f;}
-  ~base_expression(){delete p_one; delete p_five};
+  ~base_expression(){delete p_one; delete p_five}
   void translate(string& pyout);
 private:
   int type;

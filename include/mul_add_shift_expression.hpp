@@ -17,7 +17,7 @@ class multiplicative_expression : public expression{
     ~multiplicative_expression(){
       delete mul;
       delete cast;
-    };
+    }
   private:
     int type;
     treeptr mul, cast;

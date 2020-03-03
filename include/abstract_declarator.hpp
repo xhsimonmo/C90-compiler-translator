@@ -12,7 +12,7 @@
 class abstract_declarator : public declaration{
 public:
   abstract_declarator(treeptr o, treeptr t){left = o; right = t;}
-  ~abstract_declarator(){delete left; delete right;};
+  ~abstract_declarator(){delete left; delete right;}
   void translate(string& pyout);
 private:
   treeptr left;

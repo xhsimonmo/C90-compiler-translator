@@ -6,7 +6,7 @@
 class translation_unit : public definition{
 public:
   translation_unit(treeptr o, treeptr t){p_yi = o; p_er = t;}
-  ~translation_unit(){delete p_yi; delete p_er;};
+  ~translation_unit(){delete p_yi; delete p_er;}
   void translate(string& pyout);
 private:
   treeptr p_yi;
