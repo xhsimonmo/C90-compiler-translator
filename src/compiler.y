@@ -448,3 +448,10 @@ char *s;
 	fflush(stdout);
 	printf("\n%*s\n%*s\n", column, "^", column, s);
 }
+
+const astnode *parseAST()
+{
+  g_root=0;
+  yyparse();
+  return g_root;
+}
