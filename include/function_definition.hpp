@@ -25,11 +25,15 @@ void function_defintion::translate(string& pyout){
   string specify;
   string declarator;
   string statement;
+  string global;
 
   p_t->py(declarator);
   p_f->py(statement;
-
-  pyout = "def" + declarator + ":/n" + statement + "/n";//喵喵喵
+  for (int i = 0; i < global_variable.size(); i++)
+  {
+    global = global + "global " + global_variable[i] + "\n";
+  }
+  pyout = "def" + declarator + ":/n" + global + statement + "/n";//喵喵喵
 }
 
 #endif

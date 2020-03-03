@@ -427,9 +427,9 @@ external_declaration
 	;
 
 function_definition
-	: declaration_specifiers declarator declaration_list compound_statement  /*喵喵喵*/
-	| declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
-	| declarator declaration_list compound_statement                      /*喵喵喵*/
+	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
+	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
+	/*| declarator declaration_list compound_statement                      喵喵喵*/
 	| declarator compound_statement                                          {$$ = new function_definition($1, $1, $2);}
 	;
 
