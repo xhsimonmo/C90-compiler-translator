@@ -1,15 +1,16 @@
 D            [0-9]
 L            [a-zA-Z_]
-H            [a-fA-F0-9]    /*hex*/
-E            [Ee][+-]?{D}+  /*preprocessing numbers*/
-FS            (f|F|l|L)     /*folating suffix*/
-IS            (u|U|l|L)*    /*integer suffix*/
+H            [a-fA-F0-9]
+E            [Ee][+-]?{D}+
+FS            (f|F|l|L)
+IS            (u|U|l|L)*
 
 %{
 #include <stdio.h>
-#include "compiler.tab.hpp"
+#include "parser.tab.hpp"
 
 void count();
+int check_type();
 %}
 
 %%
@@ -29,7 +30,7 @@ void count();
 "extern"        { /*count();*/ return(EXTERN); }
 "float"            { /*count();*/ return(FLOAT); }
 "for"            { /*count();*/ return(FOR); }
-"goto"            { /*/*count();*/*/ return(GOTO); }
+"goto"            { /*count();*/ return(GOTO); }
 "if"            { /*count();*/ return(IF); }
 "int"            { /*count();*/ return(INT); }
 "long"            { /*count();*/ return(LONG); }
