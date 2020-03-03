@@ -3,6 +3,10 @@
 
 include "ast.hpp"
 
+// storage_class_specifier
+// 	: TYPEDEF  {$$ = new storage_class_specifier("TYPEDEF");}
+// 	| EXTERN   {$$ = new storage_class_specifier("EXTERN");}
+
 class storage_class_specifier : public declaration{
 public:
   storage_class_specifier(string _type):type(_type){};
@@ -13,6 +17,6 @@ private:
 };
 
 void storage_class_specifier::translate(string& pyout){
-  NotImplemented();
+  NotImplemented(); // e.g typedef so on not in python
 }
 #endif

@@ -3,7 +3,7 @@
 
   #include <cassert>
 
-  extern const Expression *g_root; // A way of getting the AST out
+  extern const astnode *g_root; // A way of getting the AST out
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
@@ -28,7 +28,7 @@
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%start translation_unit
+%start translation_unit // TODO where to start
 %%
 
 primary_expression
@@ -274,28 +274,26 @@ enumerator
 	: CONST
 	： VOLATILE
 	; */
-
  /////////////////////////////////struct && enum////////////////////////////////////////////////
-
 declarator
 	: pointer direct_declarator  {$$ = new declarator($1, $2);}
 	| direct_declarator    {$$ = $1}
 	;
 
 direct_declarator
-	: IDENTIFIER
-	| '(' declarator ')'
-	| direct_declarator '[' constant_expression ']'
-	| direct_declarator '[' ']'
-	| direct_declarator '(' parameter_type_list ')'
-	| direct_declarator '(' identifier_list ')'
-	| direct_declarator '(' ')'
+	: IDENTIFIER   {$$ = new direct_declarator(0,$1);}
+	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
+	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
+	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
+	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);}
+	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);}
+	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);}
 	;
 
 pointer
-	: '*'
+	: '*'  {$$ = new pointer(0);}
 	//| '*' type_qualifier_list
-	| '*' pointer
+	| '*' pointer {$$ = new pointer(1,$1);}
 	//| '*' type_qualifier_list pointer
 	;
 

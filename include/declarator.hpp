@@ -20,11 +20,8 @@ private:
 }；
 
 void declarator :: translate(string& pyout){
-  
+  //skip for translation
 }
-
-
-
 
 
 

@@ -21,6 +21,7 @@ private:
 };
 
 void declaration_specifiers::translate(string& pyout){
+  
   //for struct, skip for translation
   //translation would not be requied here
 }
