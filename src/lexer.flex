@@ -10,6 +10,7 @@ IS            (u|U|l|L)*
 #include "parser.tab.hpp"
 
 void count();
+int check_type();
 %}
 
 %%
