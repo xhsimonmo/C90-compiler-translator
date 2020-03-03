@@ -3,7 +3,7 @@
 
   #include <cassert>
 
-  extern const astnode *g_root; // A way of getting the AST out
+  extern const Expression *g_root; // A way of getting the AST out
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
@@ -28,7 +28,7 @@
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%start translation_unit // TODO where to start
+%start translation_unit
 %%
 
 primary_expression
@@ -274,7 +274,9 @@ enumerator
 	: CONST
 	： VOLATILE
 	; */
+
  /////////////////////////////////struct && enum////////////////////////////////////////////////
+
 declarator
 	: pointer direct_declarator  {$$ = new declarator($1, $2);}
 	| direct_declarator    {$$ = $1}
@@ -288,12 +290,11 @@ direct_declarator
 	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);}
 	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);}
 	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);}
-	;
 
 pointer
-	: '*'  {$$ = new pointer(0);}
+	: '*'
 	//| '*' type_qualifier_list
-	| '*' pointer {$$ = new pointer(1,$1);}
+	| '*' pointer
 	//| '*' type_qualifier_list pointer
 	;
 
@@ -320,42 +321,43 @@ parameter_declaration
 	;
 
 identifier_list
-	: IDENTIFIER
-	| identifier_list ',' IDENTIFIER
+	: IDENTIFIER                                     {$$ = $1;}
+	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, $3);}
 	;
 
 type_name
-	: specifier_qualifier_list
-	| specifier_qualifier_list abstract_declarator
+	: specifier_qualifier_list                       {$$ = $1;}
+	| specifier_qualifier_list abstract_declarator   {$$ = new type_name($1, $2);}
 	;
 
 abstract_declarator
-	: pointer
-	| direct_abstract_declarator
-	| pointer direct_abstract_declarator
+	: pointer                                        {$$ = $1;}
+	| direct_abstract_declarator                     {$$ = $1;}
+	| pointer direct_abstract_declarator             {$$ = new abstract_declarator($1, $2);}
 	;
 
+/*喵喵喵*/
 direct_abstract_declarator
-	: '(' abstract_declarator ')'
-	| '[' ']'
-	| '[' constant_expression ']'
-	| direct_abstract_declarator '[' ']'
-	| direct_abstract_declarator '[' constant_expression ']'
-	| '(' ')'
-	| '(' parameter_type_list ')'
-	| direct_abstract_declarator '(' ')'
-	| direct_abstract_declarator '(' parameter_type_list ')'
+	: '(' abstract_declarator ')'                                {$$ = $2;}
+	| '[' ']'                                                    {$$ = new direct_abstract_declarator(0, $2);}
+	| '[' constant_expression ']'                                {$$ = new direct_abstract_declarator(1, $2);}
+	| direct_abstract_declarator '[' ']'                         {$$ = new direct_abstract_declarator(2, $1);}
+	| direct_abstract_declarator '[' constant_expression ']'     {$$ = new direct_abstract_declarator(3, $1, $3);}
+	| '(' ')'                                                    {$$ = new direct_abstract_declarator(4, $2);}
+	| '(' parameter_type_list ')'                                {$$ = new direct_abstract_declarator(5, $2);}
+	| direct_abstract_declarator '(' ')'                         {$$ = new direct_abstract_declarator(6, $1);}
+	| direct_abstract_declarator '(' parameter_type_list ')'     {$$ = new direct_abstract_declarator(7, $1, $3);}
 	;
 
 initializer
-	: assignment_expression
-	| '{' initializer_list '}'
-	| '{' initializer_list ',' '}'
+	: assignment_expression                  {$$ = $1;}
+	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
+	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
 	;
 
 initializer_list
-	: initializer
-	| initializer_list ',' initializer
+	: initializer                            {$$ = new initializer_list(0, $1);}
+	| initializer_list ',' initializer       {$$ = new initializer_list(1, $1, $3);}
 	;
 
 statement
