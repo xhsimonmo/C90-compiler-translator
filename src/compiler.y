@@ -336,27 +336,28 @@ abstract_declarator
 	| pointer direct_abstract_declarator             {$$ = new abstract_declarator($1, $2);}
 	;
 
+/*喵喵喵*/
 direct_abstract_declarator
-	: '(' abstract_declarator ')'                    {$$ = $2;}
-	/*| '[' ']'*/
-	| '[' constant_expression ']'
-	| direct_abstract_declarator '[' ']'
-	| direct_abstract_declarator '[' constant_expression ']'
-	| '(' ')'
-	| '(' parameter_type_list ')'
-	| direct_abstract_declarator '(' ')'
-	| direct_abstract_declarator '(' parameter_type_list ')'
+	: '(' abstract_declarator ')'                                {$$ = $2;}
+	| '[' ']'                                                    {$$ = new direct_abstract_declarator(0, $2);}
+	| '[' constant_expression ']'                                {$$ = new direct_abstract_declarator(1, $2);}
+	| direct_abstract_declarator '[' ']'                         {$$ = new direct_abstract_declarator(2, $1);}
+	| direct_abstract_declarator '[' constant_expression ']'     {$$ = new direct_abstract_declarator(3, $1, $3);}
+	| '(' ')'                                                    {$$ = new direct_abstract_declarator(4, $2);}
+	| '(' parameter_type_list ')'                                {$$ = new direct_abstract_declarator(5, $2);}
+	| direct_abstract_declarator '(' ')'                         {$$ = new direct_abstract_declarator(6, $1);}
+	| direct_abstract_declarator '(' parameter_type_list ')'     {$$ = new direct_abstract_declarator(7, $1, $3);}
 	;
 
 initializer
-	: assignment_expression
-	| '{' initializer_list '}'
-	| '{' initializer_list ',' '}'
+	: assignment_expression                  {$$ = $1;}
+	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
+	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
 	;
 
 initializer_list
-	: initializer
-	| initializer_list ',' initializer
+	: initializer                            {$$ = new initializer_list(0, $1);}
+	| initializer_list ',' initializer       {$$ = new initializer_list(1, $1, $3);}
 	;
 
 statement
