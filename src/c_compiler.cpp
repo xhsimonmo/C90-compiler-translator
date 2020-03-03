@@ -20,11 +20,11 @@ int main(int argc, argv*[]){
   if(argc != 5){
     std::cerr << "Totally 5 args are required, argument number not matched." << '\n';
   }
+  ifstream csource;//input ...c
+  csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
+  const treeptr = parseAST();
 
   if(argv[1] == "--translate"){
-    ifstream csource;//input ...c
-    csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
-
 
     std::cerr << "translator begin" << '\n';
     treeptr root;
@@ -38,7 +38,7 @@ int main(int argc, argv*[]){
 
   }
   else if(argv[1] == "-S"){
-    
+
   }
 
 }
