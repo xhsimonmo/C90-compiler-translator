@@ -50,8 +50,8 @@ postfix_expression
 	;
 
 argument_expression_list
-	: assignment_expression
-	| argument_expression_list ',' assignment_expression
+	: assignment_expression  {$$ = new argument_expression_list($1);}
+	| argument_expression_list ',' assignment_expression  {$$ = new argument_expression_list($1,$3);}
 	;
 
 unary_expression
@@ -292,9 +292,9 @@ direct_declarator
 	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);}
 
 pointer
-	: '*'
+	: '*' {$$ = new pointer(0);}
 	//| '*' type_qualifier_list
-	| '*' pointer
+	| '*' pointer   {$$ = new pointer(1, $2);}
 	//| '*' type_qualifier_list pointer
 	;
 
@@ -432,7 +432,7 @@ external_declaration
 function_definition
 	: declaration_specifiers declarator declaration_list compound_statement  /*喵喵喵*/
 	| declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
-	| declarator declaration_list compound_statement  /*喵喵喵*/
+	| declarator declaration_list compound_statement                      /*喵喵喵*/
 	| declarator compound_statement                                          {$$ = new function_definition($1, $1, $2);}
 	;
 

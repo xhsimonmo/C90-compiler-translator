@@ -14,10 +14,10 @@ src/c_compiler.o : src/c_compiler.cpp
 
 
 
-src/compiler.tab.cpp src/compiler.tab.hpp : src/compiler.y
-	bison -v -d src/compiler.y -o src/compiler.tab.cpp
+src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
+	bison -v -d src/parser.y -o src/parser.tab.cpp
 
-src/lexer.yy.cpp : src/lexer.flex src/compiler.tab.hpp
+src/lexer.yy.cpp : src/lexer.flex src/parser.tab.hpp
 	flex -o src/lexer.yy.cpp  src/lexer.flex
 
 
