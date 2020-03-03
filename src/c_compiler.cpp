@@ -15,9 +15,12 @@ typedef std::shared_ptr<astnode> treeptr;
 //bin/c_compiler -S [source-file.c] -o [dest-file.s]
 
 int main(int argc, argv*[]){
-  if(argc < 5)
+  if(argc != 5){
+    std::cerr << "Totally 5 args are required, argument number not matched." << '\n';
+  }
   ifstream csource;//input ...c
-  csourse.open(argv[0]);//open input c, tokenise it, lex, and parse.
+  csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
+  
 
   std::cerr << "translator begin" << '\n';
   treeptr root;

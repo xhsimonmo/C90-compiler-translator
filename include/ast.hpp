@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <memory>
 using namespace std;
 
 extern int indentation = 0;//specify number of tab/"/t"
