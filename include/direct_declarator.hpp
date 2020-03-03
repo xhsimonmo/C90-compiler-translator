@@ -43,8 +43,22 @@ void direct_declarator::translate(string& pyout){
     NotImplemented();
     break;
     case 4:
-
-
+    string ls, rs;
+    one -> translate(ls);
+    two -> translate(rs);
+    pyout = ls + "(" + rs + ")" + '\n';
+    break;
+    case 5:
+    string ls, rs;
+    one -> translate(ls);
+    two -> translate(rs);
+    pyout = ls + "(" + rs + ")" + '\n';
+    break;
+    case 6:
+    string ls, rs;
+    one -> translate(ls);
+    pyout = ls + "("  + ")" + '\n';
+    break;
   }
 }
 

@@ -3,7 +3,7 @@
 
   #include <cassert>
 
-  extern const Expression *g_root; // A way of getting the AST out
+  extern const astnode *g_root; // A way of getting the AST out
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
@@ -28,7 +28,7 @@
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
-%start translation_unit
+%start translation_unit // TODO where to start
 %%
 
 primary_expression

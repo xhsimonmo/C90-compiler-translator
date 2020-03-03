@@ -7,7 +7,7 @@ IS            (u|U|l|L)*    /*integer suffix*/
 
 %{
 #include <stdio.h>
-#include "y.tab.h"
+#include "compiler.tab.hpp"
 
 void count();
 %}

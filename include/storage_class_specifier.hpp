@@ -17,6 +17,6 @@ private:
 };
 
 void storage_class_specifier::translate(string& pyout){
-  NotImplemented(); // e.g typedef so on
+  NotImplemented(); // e.g typedef so on not in python
 }
 #endif
