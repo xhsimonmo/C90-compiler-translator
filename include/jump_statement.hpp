@@ -30,7 +30,8 @@ void jump_statement::translate(string& pyout)
   switch (type) {
     case 4://return
     string return_expression;
-    pyout = "return " + expre_ptr -> translate(return_expression) + "\n";
+    expre_ptr -> translate(return_expression)
+    pyout = "return " + return_expression + "\n";
     break;
     default:
     NotImplemented();

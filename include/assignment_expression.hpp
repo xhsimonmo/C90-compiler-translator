@@ -40,7 +40,7 @@ void assignment_expression::translate(string& pyout){
   p_one->translate(one);
   p_five->translate(five);
 
-  switch (three)
+  switch (p_three)
   {
     case "ASSIGN":
     pyout = one + "=" + five;

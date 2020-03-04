@@ -21,7 +21,6 @@ private:
 
 void abstract_declarator::translate(string& pyout){
     NotImplemented();
-  }
 }
 
 #endif

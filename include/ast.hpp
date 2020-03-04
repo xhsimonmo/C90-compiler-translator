@@ -30,22 +30,25 @@ private:
 };
 
 class expression : public astnode{
+public:
   expression(){};
   virtual ~expression(){};
-
 };
 
 class definition : public astnode{
+public:
   definition(){};
   virtual ~definition(){};
 };
 
 class declaration : public astnode{
+public:
   declaration();
   virtual ~declaration(){};
 };
 
 class statement : public astnode{
+public:
   statement(){};
   virtual ~statement(){};
 };

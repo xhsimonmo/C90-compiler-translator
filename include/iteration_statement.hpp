@@ -21,6 +21,7 @@ public:
 		delete san;
 		delete si;
 	}
+	void translate(string& pyout);
 private:
 	int type;
 	treeptr yi = NULL;
@@ -30,8 +31,8 @@ private:
 };
 
 void iteration_statement::translate(string& pyout){
+	string ones, twos, threes, fours;
 	switch (type) {
-		string ones, twos, threes, fours;
 		case 0:
 		yi -> translate(ones);
 		er -> translate(twos);
