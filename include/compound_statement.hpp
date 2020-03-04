@@ -32,21 +32,21 @@ void compound_statement::translate(string& pyout){
     case 0:
     break;//do nothing?
     case 1:
-    indentation++; //encounter "{"
+    // indentation++; //encounter "{"
     left->translate(pyout);
-    indentation--; //exit with "}"
+    // indentation--; //exit with "}"
     break;
     case 2:
-    indentation++; //encounter "{"
+    // indentation++; //encounter "{"
     left->translate(pyout);
-    indentation--; //exit with "}"
+    // indentation--; //exit with "}"
     break
     case 3:
     string ds, ss;
-    indentation++;
+    // indentation++;
     left->translate(ds) ;
     right->translate(ss);
-    indentation--;
+    // indentation--;
     pyout = ds + '\n' + ss;
     break;
 
