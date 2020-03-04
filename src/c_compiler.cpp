@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
   //ifstream csource;//input ...c
   //csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
   string filename = argv[2];
-  const treeptr root = parseAST(filename);
+  treeptr root = parseAST(filename);
 
   if(argv[1] == "--translate"){
     std::cerr << "translator begin" << '\n';

@@ -13,10 +13,10 @@ extern int indentation = 0;//specify number of tab/"/t"
 //it will change dynamically during parsing
 
 class astnode;
-extern const astnode *parseAST(string& filename);
+
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
-
+extern treeptr parseAST(string& filename);
 class astnode{
 public:
   astnode(){};
