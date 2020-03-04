@@ -9,7 +9,7 @@
 // 	| pointer direct_abstract_declarator             {$$ = new abstract_declarator($1, $2);}
 // 	;
 
-class abstract_declarator : public declaration{
+class abstract_declarator : public astnode {
 public:
   abstract_declarator(treeptr o, treeptr t){left = o; right = t;}
   ~abstract_declarator(){delete left; delete right;}

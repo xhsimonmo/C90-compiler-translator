@@ -1,7 +1,7 @@
 #ifndef declaration_h
 #define declaration_h
 
-#inclide "ast.hpp"
+#include "ast.hpp"
 
 // declaration
 // 	: declaration_specifiers ';'  {$$ = new declaration($1);}

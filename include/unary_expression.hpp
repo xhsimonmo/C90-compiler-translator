@@ -28,12 +28,12 @@ void unary_expression::translate(string& pyout){
   {
     case "0":
     ptr->translate(pyout);
-    pyout = pyout + “+=1”;
+    pyout = pyout + "+=1";
     break;
 
     case "1":
     ptr->translate(pyout);
-    pyout = pyout + “-=1”;
+    pyout = pyout + "-=1";
     break;
 
     // case "&":

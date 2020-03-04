@@ -1,7 +1,7 @@
 #ifndef ast_hpp
 #define ast_hpp
 
-//#include "menu.hpp" // include all the other header files
+#include "menu.hpp" // include all the other header files
 #include <iostream>
 #include <vector>
 #include <string>

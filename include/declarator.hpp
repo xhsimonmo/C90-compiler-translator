@@ -17,7 +17,7 @@ public:
 private:
   treeptr ptr == NULL;
   treeptr direct_decla == NULL;
-}；
+};
 
 void declarator :: translate(string& pyout){
   //skip for translation
