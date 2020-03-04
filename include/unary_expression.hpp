@@ -81,12 +81,20 @@ void unary_expression::translate(string& pyout){
   }
 }
 
-void unary_expression::compile(string& mp){
+void unary_expression::compile(string& dst){
   switch(type)
   {
     case "0":
-    ptr->compile(mp);
-    mips.addi()
+    ptr->compile(dst);
+    mips.addi(dst, dst, "1");
+    break;
+
+    case "1":
+    ptr->compile(dst);
+    mips.addi(dst, dst, "-1");
+    break;
+
+    case "*":
 
 
 

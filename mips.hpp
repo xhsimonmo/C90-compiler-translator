@@ -9,9 +9,9 @@ public:
     string mp = "add " + rd + "," + rs + "," + rt;
     mpcode.push_back(mp);
   }
-  void addi()
+  void addi(string rt, string rs, string imm)
   {
-    
+    string mp = "addi " + rt + "," + rs + "," + imm;
   }
 
 };
