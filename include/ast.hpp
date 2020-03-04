@@ -11,8 +11,7 @@ using namespace std;
 extern int indentation = 0;//specify number of tab/"/t"
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
-
-class astnode;
+extern vector<string> global_variable;
 
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;

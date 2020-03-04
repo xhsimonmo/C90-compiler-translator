@@ -33,6 +33,7 @@ void declaration::translate(string& pyout)
     //omit declaration specifier(int, double) for python translation
     list->translate(pyout);
   }
+  global_variable.push_back(pyout);
 }
 
 
