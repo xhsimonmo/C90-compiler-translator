@@ -12,6 +12,7 @@ public:
   void addi(string rt, string rs, string imm)
   {
     string mp = "addi " + rt + "," + rs + "," + imm;
+    mpcode.push_back(mp);
   }
 
 };
