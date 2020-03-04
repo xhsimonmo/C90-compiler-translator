@@ -5,7 +5,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
-//#include "menu.hpp"
+#include "menu.hpp"
 using namespace std;
 extern int indentation;//specify number of tab/"/t"
 //typedef std::shared_ptr<astnode> treeptr;
@@ -25,9 +25,8 @@ int main(int argc, char *argv[]){
 
   if(argv[1] == "--translate"){
     std::cerr << "translator begin" << '\n';
-    treeptr root;
     string pyout;
-    root-> translate(pyout);
+    root -> translate(pyout);
     string addmain;
     addmain = "\nif __name__ == \"__main__\":\nimport sys\nret=main()\nsys.exit(ret)"; // include in every python file to invoke main
     pyout = pyout + addmain;
