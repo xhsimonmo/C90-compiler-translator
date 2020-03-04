@@ -1,7 +1,7 @@
 #ifndef ast_hpp
 #define ast_hpp
 
-#include "*.hpp" // include all the other header files
+#include "menu.hpp" // include all the other header files
 #include <iostream>
 #include <vector>
 #include <string>
@@ -12,8 +12,9 @@ extern int indentation = 0;//specify number of tab/"/t"
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
 
-
-typedef std::shared_ptr<astnode> treeptr;
+class astnode;
+// typedef std::shared_ptr<astnode> treeptr;
+typedef astnode* treeptr;
 
 class astnode{
 public:
@@ -22,7 +23,7 @@ public:
   virtual compile();
   virtual ~astnode();
 private:
-  vector<treeptr> branches;
+  //vector<treeptr> branches;
 
 };
 

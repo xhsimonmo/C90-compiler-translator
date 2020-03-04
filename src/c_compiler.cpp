@@ -21,11 +21,10 @@ int main(int argc, argv*[]){
     std::cerr << "Totally 5 args are required, argument number not matched." << '\n';
   }
   ifstream csource;//input ...c
-  csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
-  const treeptr = parseAST();
+  //csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
+  const treeptr root = parseAST(argv[1]);
 
   if(argv[1] == "--translate"){
-
     std::cerr << "translator begin" << '\n';
     treeptr root;
     string pyout;
@@ -35,6 +34,7 @@ int main(int argc, argv*[]){
     pyout = pyout + addmain;
     ofstream pyfile;//output ...py
     pyfile.open(argv[1]);
+    pyfile << pyout;
 
   }
   else if(argv[1] == "-S"){

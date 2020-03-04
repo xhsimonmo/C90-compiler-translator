@@ -20,8 +20,9 @@ src/lexer.yy.cpp : src/lexer.flex src/parser.tab.hpp
 	flex -o src/lexer.yy.cpp  src/lexer.flex
 
 clean :
-		rm src/*.o
-		rm bin/*
 		rm src/*.tab.cpp
 		rm src/*.tab.hpp
 		rm src/*.yy.cpp
+		rm src/*.ouput
+		rm bin/*
+		rm src/*.o

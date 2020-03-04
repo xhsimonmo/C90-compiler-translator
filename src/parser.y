@@ -5,6 +5,8 @@
 
   extern const astnode *g_root; // A way of getting the AST out
 
+  extern FILE *yyin; // pointer to input stream
+
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
@@ -446,9 +448,12 @@ char *s;
 	printf("\n%*s\n%*s\n", column, "^", column, s);
 }
 
-const astnode *parseAST()
+const astnode *parseAST(string& filename)
 {
-  g_root=0;
-  yyparse();
+  if(yyin){
+    yyin = fopen(filename, "r");
+    g_root= new translation_unit();
+    yyparse();
+  }
   return g_root;
 }

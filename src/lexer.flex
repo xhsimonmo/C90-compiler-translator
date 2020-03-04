@@ -120,7 +120,7 @@ yywrap()
 }
 
 
-void comment()
+comment()
 {
     char c, c1;
 
