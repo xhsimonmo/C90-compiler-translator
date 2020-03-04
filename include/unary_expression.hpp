@@ -17,12 +17,13 @@ public:
   unary_expression(string type_in, treeptr p){type = type_in; ptr = p;}
   ~unary_expression(){delete ptr;}
   void translate(string& pyout);
+  void compile(string& mpout);
 private:
   string type;
   treeptr ptr;
 };
 
-void postfix_operator::translate(string& pyout){
+void unary_expression::translate(string& pyout){
   switch (type)
   {
     case "0":
@@ -79,5 +80,21 @@ void postfix_operator::translate(string& pyout){
     NotImplemented();
   }
 }
+
+void unary_expression::compile(string& mp){
+  switch(type)
+  {
+    case "0":
+    ptr->compile(mp);
+    mips.addi()
+
+
+
+  }
+
+
+}
+
+
 
 #endif

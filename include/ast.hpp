@@ -21,7 +21,8 @@ public:
   astnode(){};
   virtual void translate(string& pyout) = 0;
   //virtual compile();
-  virtual void translate() = 0;
+  virtual void translate() = 0;//translator
+  virtual void compile(string& mpout) = 0;//compiler
   virtual ~astnode();
 private:
   //vector<treeptr> branches;
@@ -71,5 +72,18 @@ void indent(string& source) //PLEASE WORK PLEASE
 extern void NotImplemented(){
   std::cerr << "Not Implemented." << '\n';//for function not needed to Implement
 }
+
+
+////////////////////////////MIPS////////////////////////////////
+
+
+
+
+
+
+
+
+
+
 
 #endif

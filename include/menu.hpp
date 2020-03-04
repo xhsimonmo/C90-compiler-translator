@@ -1,5 +1,5 @@
 #ifndef menu_hpp
-#define menu_hpp
+#define menu_hpp             
 
 #include "abstract_declarator.hpp"
 #include "initializer_list.hpp"
