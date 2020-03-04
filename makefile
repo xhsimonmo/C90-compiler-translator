@@ -3,9 +3,9 @@ CPPFLAGS += -I include
 #CPPFLAGS = -W -Wall
 
 # invoke by bin/c_compiler --translate [source-file.c] -o [dest-file.py]
+all : src/lexer.yy.cpp  bin/c_compiler
 
-
-bin/c_compiler : src/c_compiler.o src/compiler.tab.o src/lexer.yy.o src/compiler.tab.o  #format reference from Lab2
+bin/c_compiler : src/c_compiler.o src/parser.tab.o src/lexer.yy.o src/parser.tab.o  #format reference from Lab2
 	mkdir -p bin
 	g++ $(CPPFLAGS) -o bin/c_compiler $^
 

@@ -1,7 +1,7 @@
 #ifndef ast_hpp
 #define ast_hpp
 
-#include "menu.hpp" // include all the other header files
+//#include "menu.hpp" // include all the other header files
 #include <iostream>
 #include <vector>
 #include <string>
@@ -13,14 +13,16 @@ extern int indentation = 0;//specify number of tab/"/t"
 //it will change dynamically during parsing
 
 class astnode;
+extern const astnode *parseAST(string& filename);
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
 
 class astnode{
 public:
-  virtual astnode();
-  virtual translate(string& pyout) = 0;
-  virtual compile();
+  astnode(){};
+  virtual void translate(string& pyout) = 0;
+  //virtual compile();
+  virtual void translate() = 0;
   virtual ~astnode();
 private:
   //vector<treeptr> branches;
@@ -28,23 +30,23 @@ private:
 };
 
 class expression : public astnode{
-  virtual expression();
+  expression(){};
   virtual ~expression(){};
 
 };
 
 class definition : public astnode{
-  virtual definition();
+  definition(){};
   virtual ~definition(){};
 };
 
 class declaration : public astnode{
-  virtual declaration();
+  declaration();
   virtual ~declaration(){};
 };
 
 class statement : public astnode{
-  virtual statement();
+  statement(){};
   virtual ~statement(){};
 };
 
@@ -55,7 +57,7 @@ class statement : public astnode{
 
 void indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
-  string delimiter = '/t';
+  char delimiter = '/t';
   for (auto it = source.begin(); it != source.end(); it++)
   {
     if(*it == '\n'){

@@ -48,13 +48,15 @@ extern int yydebug;
 
   extern const astnode *g_root; // A way of getting the AST out
 
+  extern FILE *yyin; // pointer to input stream
+
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
   int yylex(void);
   void yyerror(const char *);
 
-#line 58 "src/parser.tab.hpp" /* yacc.c:1909  */
+#line 60 "src/parser.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
