@@ -1,6 +1,6 @@
 //#include "compiler.y"
 //#include "lexer.flex"
-#include"ast.hpp"
+//#include"ast.hpp"
 #include <iostream>
 #include <vector>
 #include <fstream>

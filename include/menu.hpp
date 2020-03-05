@@ -1,13 +1,14 @@
 #ifndef menu_hpp
-#define menu_hpp             
+#define menu_hpp
 
+#include "ast.hpp"
 #include "abstract_declarator.hpp"
 #include "initializer_list.hpp"
 #include "argument_expression_list.hpp"
 #include "iteration_statement.hpp"
 #include "assignment_expression.hpp"
 #include "jump_statement.hpp"
-#include "ast.hpp"
+
 #include "labeled_statement.hpp"
 #include "base_expression.hpp"
 #include "mul_add_shift_expression.hpp"

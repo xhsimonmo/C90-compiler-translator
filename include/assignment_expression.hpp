@@ -24,13 +24,13 @@
 
 class assignment_expression : public expression{
 public:
-  assignment_expression(treeptr o, string t, treeptr f){p_one = o; p_three = t; p_five = f;}
-  ~assignment_expression(){delete p_one; delete p_five};
+  assignment_expression(treeptr o, char t, treeptr f){p_one = o; p_three = t; p_five = f;}
+  ~assignment_expression(){delete p_one; delete p_five;};
   void translate(string& pyout);
 private:
   int type;
   treeptr p_one;
-  string p_three;//operator
+  char p_three;//operator
   treeptr p_five;
 };
 
@@ -42,11 +42,11 @@ void assignment_expression::translate(string& pyout){
 
   switch (p_three)
   {
-    case "ASSIGN":
+    case 'ASSIGN':
     pyout = one + "=" + five;
     break;
 
-    case "MUL":
+    case 'MUL':
     pyout = one + "*=" + five;
     break;
 

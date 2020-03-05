@@ -1,12 +1,13 @@
 #ifndef ast_hpp
 #define ast_hpp
 
-#include "menu.hpp" // include all the other header files
+//#include "menu.hpp" // include all the other header files
 #include <iostream>
 #include <vector>
 #include <string>
 #include <memory>
-using namespace std;
+using std::string;
+using std::vector;
 
 extern int indentation = 0;//specify number of tab/"/t"
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
@@ -14,7 +15,7 @@ extern int indentation = 0;//specify number of tab/"/t"
 extern vector<string> global_variable;
 class astnode;
 // typedef std::shared_ptr<astnode> treeptr;
-typedef astnode* treeptr;
+ typedef astnode* treeptr;
 extern treeptr parseAST(string& filename);
 class astnode{
 public:
@@ -58,7 +59,7 @@ public:
 //   virtual ~declaration(){};
 // };
 
-void indent(string& source) //PLEASE WORK PLEASE
+string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
   char delimiter = '/t';
   for (auto it = source.begin(); it != source.end(); it++)
@@ -70,6 +71,7 @@ void indent(string& source) //PLEASE WORK PLEASE
       }
     }
   }
+  return source;
 }
 
 extern void NotImplemented(){

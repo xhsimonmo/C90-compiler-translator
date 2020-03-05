@@ -15,6 +15,7 @@ class jump_statement : public statement{
 public:
   jump_statement(int _type, string _id):type(_type),identifier(_id){};
   jump_statement(int _type, treeptr _ptr):type(_type),expre_ptr(_ptr){};
+  void translate(string& pyout);
   ~jump_statement(){
     delete expre_ptr;
   }
