@@ -447,3 +447,13 @@ char *s;
 	fflush(stdout);
 	printf("\n%*s\n%*s\n", column, "^", column, s);
 }
+
+const astnode *parseAST(string& filename)
+{
+  if(yyin){
+    yyin = fopen(filename, "r");
+    g_root= new translation_unit();
+    yyparse();
+  }
+  return g_root;
+}
