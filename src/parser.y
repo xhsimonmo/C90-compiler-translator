@@ -2,8 +2,9 @@
   #include "ast.hpp"
 
   #include <cassert>
+  #include <string>
 
-  extern const astnode *g_root; // A way of getting the AST out
+  extern  astnode *g_root; // A way of getting the AST out
 
   extern FILE *yyin; // pointer to input stream
 
@@ -12,6 +13,7 @@
   // that Bison generated code can call them.
   int yylex(void);
   void yyerror(const char *);
+
 }
 
 
@@ -448,12 +450,17 @@ char *s;
 	printf("\n%*s\n%*s\n", column, "^", column, s);
 }
 
-const astnode *parseAST(string& filename)
+ g_root parseAST(char[] abc)
 {
-  if(yyin){
-    yyin = fopen(filename, "r");
-    g_root= new translation_unit();
+    yyin = fopen(abc, "r");
+    g_root= NULL;
     yyparse();
-  }
-  return g_root;
+   return g_root;
 }
+
+/* const ast_abs * g_root;
+const astnode* parseAST(void){
+  g_root= NULL;
+  yyparse();
+  return g_root;
+} */

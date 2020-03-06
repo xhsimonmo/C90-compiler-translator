@@ -45,8 +45,9 @@ extern int yydebug;
   #include "ast.hpp"
 
   #include <cassert>
+  #include <string>
 
-  extern const astnode *g_root; // A way of getting the AST out
+  extern  astnode *g_root; // A way of getting the AST out
 
   extern FILE *yyin; // pointer to input stream
 
@@ -56,7 +57,8 @@ extern int yydebug;
   int yylex(void);
   void yyerror(const char *);
 
-#line 60 "src/parser.tab.hpp" /* yacc.c:1909  */
+
+#line 62 "src/parser.tab.hpp" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE

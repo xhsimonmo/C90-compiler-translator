@@ -16,7 +16,7 @@ vector<string> global_variables;
 class astnode;
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
-extern treeptr parseAST(string& filename);
+//extern treeptr parseAST(string& filename);
 
 class astnode{
 public:
