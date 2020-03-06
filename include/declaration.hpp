@@ -12,7 +12,7 @@ class declaration : public astnode{
 public:
   declaration(treeptr _spec):spec(_spec){};
   declaration(treeptr _spec, treeptr _list):spec(_spec),lt(_list){};
-  virtual void translate(string& pyout);
+  virtual void translate(string& pyout, vector<string> global_variables);
   ~declaration(){
     delete spec;
     delete lt;
@@ -23,7 +23,7 @@ private:
 };
 
 
-void declaration::translate(string& pyout)
+void declaration::translate(string& pyout, vector<string> global_variables)
 {
   if(lt == NULL)
   {
@@ -33,7 +33,7 @@ void declaration::translate(string& pyout)
     //omit declaration specifier(int, double) for python translation
     lt->translate(pyout);
   }
-  global_variable.push_back(pyout);
+  global_variables.push_back(pyout);
 }
 
 

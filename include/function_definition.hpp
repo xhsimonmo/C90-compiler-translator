@@ -15,13 +15,15 @@ public:
   function_defintion(treeptr o, treeptr t, treeptr f){p_o = o; p_t = t; p_f = f;}
   ~function_defintion(){delete p_o; delete p_t; delete p_f;}
   void translate(string& pyout);
+  void translate(string& pyout, vector<string> global_variables);
 private:
   treeptr p_o;
   treeptr p_t;
   treeptr p_f;
 };
 
-void function_defintion::translate(string& pyout){
+extern void function_defintion::translate(string& pyout, vector<string> global_variables){
+
   string specify;
   string declarator;
   string statement;
@@ -29,9 +31,9 @@ void function_defintion::translate(string& pyout){
 
   p_t->translate(declarator);
   p_f->translate(statement);
-  for (int i = 0; i < global_variable.size(); i++)
+  for (int i = 0; i < global_variables.size(); i++)
   {
-    global = global + "global " + global_variable[i] + "\n";
+    global = global + "global " + global_variables[i] + "\n";
   }
   pyout = "def" + declarator + ":/n" + global + statement + "/n";//喵喵喵
 }

@@ -12,15 +12,17 @@ using std::vector;
 extern int indentation = 0;//specify number of tab/"/t"
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
-extern vector<string> global_variable;
+vector<string> global_variables;
 class astnode;
 // typedef std::shared_ptr<astnode> treeptr;
- typedef astnode* treeptr;
+typedef astnode* treeptr;
 extern treeptr parseAST(string& filename);
+
 class astnode{
 public:
-  //astnode(){};
+  astnode(){};
   virtual void translate(string& pyout){};
+  virtual void translate(string& pyout, vector<string> global_variables){};
   //virtual compile();
   //virtual void translate() = 0;//translator
   virtual void compile(string& mpout){};//compiler
@@ -33,6 +35,7 @@ private:
 class expression : public astnode{
 public:
   expression(){};
+  virtual void translate(string& pyout){};
   virtual ~expression(){};
 private:
 };
@@ -40,6 +43,7 @@ private:
 class definition : public astnode{
 public:
   definition(){};
+  virtual void translate(string& pyout){};
   virtual ~definition(){};
 private:
 
@@ -54,7 +58,7 @@ private:
 class statement : public astnode{
 public:
   statement(){};
-  virtual void translate(string& pyout);
+  virtual void translate(string& pyout){};
   virtual ~statement(){};
 private:
 };
