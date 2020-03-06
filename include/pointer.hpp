@@ -10,6 +10,7 @@ class pointer : public astnode{
 public:
   pointer(int _type):type(_type){};
   pointer(int _type, treeptr _ptr):type(_type),ptr(_ptr){};
+  void translate(string& pyout);
   ~pointer(){
     delete ptr;
   }

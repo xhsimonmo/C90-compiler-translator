@@ -20,7 +20,7 @@ extern treeptr parseAST(string& filename);
 class astnode{
 public:
   astnode(){};
-  virtual void translate(string& pyout) = 0;
+  virtual void translate(string& pyout);
   //virtual compile();
   virtual void translate() = 0;//translator
   virtual void compile(string& mpout) = 0;//compiler

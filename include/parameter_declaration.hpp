@@ -27,7 +27,7 @@ void identifier_list::translate(string& pyout){
   switch(type)
   {
     case 0:
-    pyout = right;
+    pyout = er;
 
     case 1:
     NotImplemented();

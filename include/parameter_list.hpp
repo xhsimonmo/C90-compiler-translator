@@ -23,7 +23,7 @@ void parameter_list::translate(string& pyout){
   string er;
   left -> translate(yi);
   right -> translate(er);
-  pyout = left + "," + right;
+  pyout = yi + "," + er;
 }
 
 #endif

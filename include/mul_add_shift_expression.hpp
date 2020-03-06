@@ -35,15 +35,15 @@ void multiplicative_expression::translate(string& pyout)
     // break;
 
     case 1:
-    pyout = ls + "*" + rs+'/n';
+    pyout = ls + '*' + rs + '/n';
     break;
 
     case 2:
-    pyout = ls + "/" + rs +'/n';
+    pyout = ls + '/' + rs +'/n';
     break;
 
     case 3:
-    pyout = ls + "%" + rs +'/n';
+    pyout = ls + '%' + rs +'/n';
     break;
 
   }

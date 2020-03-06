@@ -34,9 +34,8 @@ void jump_statement::translate(string& pyout)
     expre_ptr -> translate(return_expression);
     pyout = "return " + return_expression + "\n";
     break;
-    default:
+    default :
     NotImplemented();
-    break;
   }
 }
 
