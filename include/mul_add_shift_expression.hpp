@@ -21,7 +21,8 @@ class multiplicative_expression : public expression{
     }
   private:
     int type;
-    treeptr mul, cast;
+    treeptr mul;
+    treeptr cast;
 };
 
 void multiplicative_expression::translate(string& pyout)
@@ -35,15 +36,15 @@ void multiplicative_expression::translate(string& pyout)
     // break;
 
     case 1:
-    pyout = ls + '*' + rs + '/n';
+    pyout = ls + "*" + rs + "/n";
     break;
 
     case 2:
-    pyout = ls + '/' + rs +'/n';
+    pyout = ls + "/" + rs + "/n";
     break;
 
     case 3:
-    pyout = ls + '%' + rs +'/n';
+    pyout = ls + "%" + rs + "/n";
     break;
 
   }
@@ -74,19 +75,19 @@ class additive_expression : public expression{
 void additive_expression:: translate(string& pyout)
 {
   string ls, rs;
-  l -> translate(ls);
-  r -> translate(rs);
+  add -> translate(ls);
+  mul -> translate(rs);
   switch(type){
     // case 0:
     // mul->translate(pyout);
     // break;
 
     case 1:
-    pyout = ls + "+" + rs+'/n';
+    pyout = ls + "+" + rs+"/n";
     break;
 
     case 2:
-    pyout = ls + "_" + rs+'/n';
+    pyout = ls + "_" + rs+"/n";
     break;
   }
 }
@@ -104,7 +105,7 @@ class shift_expression : public expression{
     //shift_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
     shift_expression(int _type, treeptr _shift, treeptr _add):type(_type),l(_shift),r(_add){};
     void translate(string& pyout);
-    ~additive_expression(){
+    ~shift_expression(){
       delete l;
       delete r;
     };
@@ -125,11 +126,11 @@ void shift_expression:: translate(string& pyout)
     // break;
 
     case 1:
-    pyout = ls + "<<" + rs+'/n';
+    pyout = ls + "<<" + rs+"/n";
     break;
 
     case 2:
-    pyout = ls + ">>" + rs+'/n';
+    pyout = ls + ">>" + rs+"/n";
     break;
   }
 }
