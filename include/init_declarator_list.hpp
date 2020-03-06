@@ -10,6 +10,7 @@
 class init_declarator_list : public declaration{
 public:
   init_declarator_list(treeptr _one, treeptr _two):one(_one),two(_two){};
+  void translate(string& pyout);
   ~init_declarator_list(){
     delete one;
     delete two;

@@ -1,7 +1,7 @@
 #ifndef storage_class_specifier_h
 #define storage_class_specifier_h
 
-include "ast.hpp"
+#include "ast.hpp"
 
 // storage_class_specifier
 // 	: TYPEDEF  {$$ = new storage_class_specifier("TYPEDEF");}

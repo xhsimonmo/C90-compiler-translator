@@ -1756,37 +1756,37 @@ yyreduce:
 
   case 22:
 #line 66 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "&";}
+    {(yyval) = 4;}
 #line 1761 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 67 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "*";}
+    {(yyval) = 5;}
 #line 1767 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 68 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "+";}
+    {(yyval) = 6;}
 #line 1773 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 69 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "-";}
+    {(yyval) = 7;}
 #line 1779 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
 #line 70 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "~";}
+    {(yyval) = 8;}
 #line 1785 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 71 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "!";}
+    {(yyval) = 9;}
 #line 1791 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
@@ -1996,67 +1996,67 @@ yyreduce:
 
   case 62:
 #line 148 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "ASSIGN";}
+    {(yyval) = 0;}
 #line 2001 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 149 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "MUL";}
+    {(yyval) = 1;}
 #line 2007 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 150 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "DIV";}
+    {(yyval) = 2;}
 #line 2013 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 65:
 #line 151 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "MOD";}
+    {(yyval) = 3;}
 #line 2019 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 152 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "ADD";}
+    {(yyval) = 4;}
 #line 2025 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 153 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "SUB";}
+    {(yyval) = 5;}
 #line 2031 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 68:
 #line 154 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "LEFT";}
+    {(yyval) = 6;}
 #line 2037 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 69:
 #line 155 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "RIGHT";}
+    {(yyval) = 7;}
 #line 2043 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 70:
 #line 156 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "AND";}
+    {(yyval) = 8;}
 #line 2049 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 71:
 #line 157 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "XOR";}
+    {(yyval) = 9;}
 #line 2055 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 72:
 #line 158 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = "OR";}
+    {(yyval) = 10;}
 #line 2061 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
@@ -2140,73 +2140,73 @@ yyreduce:
 
   case 86:
 #line 195 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new storage_class_specifier("TYPEDEF");}
+    {(yyval) = new storage_class_specifier(0);}
 #line 2145 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
 #line 196 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new storage_class_specifier("EXTERN");}
+    {(yyval) = new storage_class_specifier(1);}
 #line 2151 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
 #line 203 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("VOID");}
+    {(yyval) = new type_specifier(0);}
 #line 2157 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
 #line 204 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("CHAR");}
+    {(yyval) = new type_specifier(1);}
 #line 2163 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
 #line 205 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("SHORT");}
+    {(yyval) = new type_specifier(2);}
 #line 2169 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
 #line 206 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("INT");}
+    {(yyval) = new type_specifier(3);}
 #line 2175 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
 #line 207 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("LONG");}
+    {(yyval) = new type_specifier(4);}
 #line 2181 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
 #line 208 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("FLOAT");}
+    {(yyval) = new type_specifier(5);}
 #line 2187 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
 #line 209 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("DOUBLE");}
+    {(yyval) = new type_specifier(6);}
 #line 2193 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
 #line 210 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("SIGNED");}
+    {(yyval) = new type_specifier(7);}
 #line 2199 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
 #line 211 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("UNSIGNED");}
+    {(yyval) = new type_specifier(8);}
 #line 2205 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
 #line 214 "src/parser.y" /* yacc.c:1646  */
-    {(yyval) = new type_specifier("TYPE_NAME");}
+    {(yyval) = new type_specifier(9);}
 #line 2211 "src/parser.tab.cpp" /* yacc.c:1646  */
     break;
 

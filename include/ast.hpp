@@ -42,11 +42,11 @@ public:
   virtual ~definition(){};
 };
 
-class declaration : public astnode{
-public:
-  declaration();
-  virtual ~declaration(){};
-};
+// class declaration : public astnode{
+// public:
+//   declaration();
+//   virtual ~declaration(){};
+// };
 
 class statement : public astnode{
 public:

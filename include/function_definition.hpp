@@ -13,7 +13,7 @@
 class function_defintion : public definition{
 public:
   function_defintion(treeptr o, treeptr t, treeptr f){p_o = o; p_t = t; p_f = f;}
-  ~function_defintion(){delete p_one; delete p_three; delete p_five;}
+  ~function_defintion(){delete p_o; delete p_t; delete p_f;}
   void translate(string& pyout);
 private:
   treeptr p_o;
@@ -27,8 +27,8 @@ void function_defintion::translate(string& pyout){
   string statement;
   string global;
 
-  p_t->py(declarator);
-  p_f->py(statement;
+  p_t->tranlate(declarator);
+  p_f->translate(statement);
   for (int i = 0; i < global_variable.size(); i++)
   {
     global = global + "global " + global_variable[i] + "\n";
