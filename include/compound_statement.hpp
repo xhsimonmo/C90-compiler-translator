@@ -29,6 +29,7 @@ private:
 
 
 void compound_statement::translate(string& pyout){
+  string ds, ss;
   switch (type) {
     case 0:
     break;//do nothing?
@@ -41,11 +42,10 @@ void compound_statement::translate(string& pyout){
     // indentation++; //encounter "{"
     left->translate(pyout);
     // indentation--; //exit with "}"
-    break
+    break;
     case 3:
-    string ds, ss;
     // indentation++;
-    left->translate(ds) ;
+    left->translate(ds);
     right->translate(ss);
     // indentation--;
     pyout = ds + '\n' + ss;

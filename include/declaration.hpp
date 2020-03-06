@@ -11,27 +11,27 @@
 class declaration : public astnode{
 public:
   declaration(treeptr _spec):spec(_spec){};
-  declaration(treeptr _spec, treeptr _list):spec(_spec),list(_list){};
-  virtual translate(string& pyout);
+  declaration(treeptr _spec, treeptr _list):spec(_spec),lt(_list){};
+  virtual void translate(string& pyout);
   ~declaration(){
     delete spec;
-    delete list;
+    delete lt;
   }
 private:
   treeptr spec = NULL;
-  treeptr list = NULL;
+  treeptr lt = NULL;
 };
 
 
 void declaration::translate(string& pyout)
 {
-  if(list == NULL)
+  if(lt == NULL)
   {
     spec-> translate(pyout);
   }// actually we dont need to care about this for python?
   else{
     //omit declaration specifier(int, double) for python translation
-    list->translate(pyout);
+    lt->translate(pyout);
   }
   global_variable.push_back(pyout);
 }
