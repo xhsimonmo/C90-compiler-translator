@@ -8,7 +8,7 @@
 // 	| parameter_list ',' parameter_declaration     {$$ = new parameter_list($1, $3);}
 // 	;
 
-class parameter_list : public declaration{
+class parameter_list : public astnode{
 public:
   parameter_list(treeptr o, treeptr t){left = o; right = t;}
   ~parameter_list(){delete left; delete right;}

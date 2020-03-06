@@ -8,7 +8,7 @@
 // 	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, $3);}
 // 	;
 
-class identifier_list : public declaration{
+class identifier_list : public astnode{
 public:
   identifier_list(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   ~identifier_list(){delete left; delete right;}

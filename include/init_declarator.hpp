@@ -7,7 +7,7 @@
 // 	| declarator '=' initializer   {$$ = new init_declarator($1,$2);}
 // 	;
 
-class init_declarator : public declaration{
+class init_declarator : public astnode{
 public:
   init_declarator(treeptr _one, treeptr _two):one(_one),two(_two){};
   ~init_declarator(){
