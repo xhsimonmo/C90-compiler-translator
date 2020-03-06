@@ -51,6 +51,7 @@ public:
 class statement : public astnode{
 public:
   statement(){};
+  virtual void translate(string& pyout);
   virtual ~statement(){};
 };
 

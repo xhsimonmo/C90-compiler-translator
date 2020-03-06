@@ -1,6 +1,6 @@
 #ifndef declaration_specifiers_h
 #define declaration_specifiers_h
-include"ast.hpp"
+#include"ast.hpp"
 
 // declaration_specifiers
 // 	: storage_class_specifier    {$$ = $1}
@@ -11,6 +11,7 @@ include"ast.hpp"
 class declaration_specifiers : public astnode{
 public:
   declaration_specifiers(treeptr _one, treeptr _two):one(_one),two(_two){};
+  void translate(string& pyout);
   ~declaration_specifiers(){
     delete one;
     delete two;

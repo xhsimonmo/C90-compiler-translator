@@ -22,6 +22,6 @@ private:
 void initializer::translate(string& pyout){
     NotImplemented();
   }
-}
+
 
 #endif

@@ -18,7 +18,7 @@ public:
   primary_expression(int type, string _element):element(_element){};
   primary_expression(int type, treeptr _ptr):expre_ptr(_ptr){};
 
-  void translate();//translate to Python
+  void translate(string& pyout);//translate to Python
 private:
   int type;
   string element;//either IDENTIFIER, CONSTANT, OR STRING_LITERAL

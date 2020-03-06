@@ -11,7 +11,7 @@ class storage_class_specifier : public astnode{
 public:
   storage_class_specifier(int _type):type(_type){};
   ~storage_class_specifier(){}
-  translate(string& pysource);
+  void translate(string& pysource);
 private:
   int type;
 };

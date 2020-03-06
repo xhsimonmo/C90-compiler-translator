@@ -9,17 +9,18 @@
 
 class expression_statement : public statement{
  public:
-  expression_statement(int _type):type(_type);
+  expression_statement(int _type):type(_type){};
   expression_statement(treeptr _ptr_expr):ptr_expr(_ptr_expr){};
+  void translate(string& pyout);
   ~expression_statement(){
     delete ptr_expr;
   }
  private:
-   int type;
+  int type;
   treeptr ptr_expr = NULL;
 };
 
-void express_statement::translate(string& pyout){
+void expression_statement::translate(string& pyout){
   //string tmp;
   if(ptr_expr != NULL)
   {

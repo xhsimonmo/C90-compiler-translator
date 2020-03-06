@@ -20,7 +20,7 @@ private:
   treeptr two = NULL;
 };
 
-void init_declarator::translate(string& pyout){
+void init_declarator_list::translate(string& pyout){
   string s1, s2;
   one-> translate(s1);
   two -> translate(s2);

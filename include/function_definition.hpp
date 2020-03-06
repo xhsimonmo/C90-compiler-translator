@@ -27,7 +27,7 @@ void function_defintion::translate(string& pyout){
   string statement;
   string global;
 
-  p_t->tranlate(declarator);
+  p_t->translate(declarator);
   p_f->translate(statement);
   for (int i = 0; i < global_variable.size(); i++)
   {

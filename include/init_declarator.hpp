@@ -10,6 +10,7 @@
 class init_declarator : public astnode{
 public:
   init_declarator(treeptr _one, treeptr _two):one(_one),two(_two){};
+  void translate(string& pyout);
   ~init_declarator(){
     delete one;
     delete two;

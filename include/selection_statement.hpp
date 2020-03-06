@@ -15,6 +15,7 @@ public:
   };
   selection_statement(int _type, treeptr a, treeptr b, treeptr c ):type(_type),expre_ptr(a),ifsta(b),elsesta(c){
   };
+  void translate(string& pyout);
   ~selection_statement(){
     delete expre_ptr;
     delete ifsta;
@@ -40,7 +41,7 @@ void selection_statement::translate(string& pyout)
     pyout = "if (" + expres + "):" + '\n' + indent(ifs) ;
     break;
     case 1:
-    elsesta->(elses);
+    elsesta->translate(elses);
     pyout = "if (" + expres + "):" + '\n' + indent(ifs) + "else:" + '\n'+ indent(elses) + '\n';
     break;
     case 2: //no required to translate switch
