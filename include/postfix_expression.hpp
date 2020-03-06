@@ -49,7 +49,8 @@ switch (type)
 
   case 3:
   ptr->translate(pyout);
-  pyout = pyout + "." + element;
+  opt->translate(op);
+  pyout = pyout + "." + op;
   break;
 
   // case 4:
