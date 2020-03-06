@@ -104,7 +104,7 @@ class shift_expression : public expression{
     //shift_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
     shift_expression(int _type, treeptr _shift, treeptr _add):type(_type),l(_shift),r(_add){};
     void translate(string& pyout);
-    ~additive_expression(){
+    ~shift_expression(){
       delete l;
       delete r;
     };

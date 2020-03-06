@@ -22,6 +22,7 @@ public:
   type_specifier(int _type){
     type = _type;
   }
+  void translate(string& pyout);
 
 private:
   int type;

@@ -17,6 +17,7 @@ public:
   direct_declarator(int _type,string _id):type(_type),id(_id){};
   direct_declarator(int _type, treeptr _one):type(_type),one(_one){};
   direct_declarator(int _type, treeptr _one, treeptr _two):type(_type),one(_one),two(_two){};
+  void translate(string& pyout);
   ~direct_declarator(){
     delete one;
     delete two;
@@ -29,7 +30,8 @@ private:
 };
 
 void direct_declarator::translate(string& pyout){
-  switch (case) {
+  string ls, rs;
+  switch (type) {
     case 0:
     pyout = id; // directly output IDENTIFIER, as python doesn't have type
     break;
@@ -43,19 +45,16 @@ void direct_declarator::translate(string& pyout){
     NotImplemented();
     break;
     case 4:
-    string ls, rs;
     one -> translate(ls);
     two -> translate(rs);
     pyout = ls + "(" + rs + ")" + '\n';
     break;
     case 5:
-    string ls, rs;
     one -> translate(ls);
     two -> translate(rs);
     pyout = ls + "(" + rs + ")" + '\n';
     break;
     case 6:
-    string ls, rs;
     one -> translate(ls);
     pyout = ls + "("  + ")" + '\n';
     break;

@@ -86,12 +86,12 @@ void unary_expression::compile(string& dst){
   {
     case 0:
     ptr->compile(dst);
-    mips.addi(dst, dst, "1");
+    //mips.addi(dst, dst, "1");
     break;
 
     case 1:
     ptr->compile(dst);
-    mips.addi(dst, dst, "-1");
+    //mips.addi(dst, dst, "-1");
     break;
 
   }
