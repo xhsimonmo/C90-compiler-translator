@@ -2,7 +2,6 @@
 #define iteration_statement_h
 #include "ast.hpp"
 
-
 // iteration_statement
 // 	: WHILE '(' expression ')' statement
 // 	| DO statement WHILE '(' expression ')' ';'

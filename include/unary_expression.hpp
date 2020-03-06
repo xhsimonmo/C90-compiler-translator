@@ -14,24 +14,24 @@
 
 class unary_expression : public expression{
 public:
-  unary_expression(string type_in, treeptr p){type = type_in; ptr = p;}
+  unary_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~unary_expression(){delete ptr;}
   void translate(string& pyout);
   void compile(string& mpout);
 private:
-  string type;
+  int type;
   treeptr ptr;
 };
 
 void unary_expression::translate(string& pyout){
   switch (type)
   {
-    case "0":
+    case 0:
     ptr->translate(pyout);
     pyout = pyout + "+=1";
     break;
 
-    case "1":
+    case 1:
     ptr->translate(pyout);
     pyout = pyout + "-=1";
     break;
@@ -41,17 +41,17 @@ void unary_expression::translate(string& pyout){
     // pyout = "&" + pyout;
     // break;
 
-    case "*":
+    case 5:
     ptr->translate(pyout);
     pyout = "*" + pyout;
     break;
 
-    case "+":
+    case 6:
     ptr->translate(pyout);
     pyout = "+" + pyout;
     break;
 
-    case "-":
+    case 7:
     ptr->translate(pyout);
     pyout = "-" + pyout;
     break;
@@ -66,12 +66,12 @@ void unary_expression::translate(string& pyout){
     // pyout = "!" + pyout;
     // break;
 
-    case "2":
+    case 2:
     ptr->translate(pyout);
     pyout = "sys.getsizeof(" + pyout + ")";
     break;
 
-    case "3":
+    case 3:
     ptr->translate(pyout);
     pyout = "sys.getsizeof(" + pyout + ")";
     break;
@@ -84,19 +84,15 @@ void unary_expression::translate(string& pyout){
 void unary_expression::compile(string& dst){
   switch(type)
   {
-    case "0":
+    case 0:
     ptr->compile(dst);
     mips.addi(dst, dst, "1");
     break;
 
-    case "1":
+    case 1:
     ptr->compile(dst);
     mips.addi(dst, dst, "-1");
     break;
-
-    case "*":
-
-
 
   }
 

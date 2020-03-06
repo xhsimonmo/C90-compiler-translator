@@ -63,12 +63,12 @@ unary_expression
 	;
 
 unary_operator
-	: '&'      {$$ = "&";}
-	| '*'      {$$ = "*";}
-	| '+'      {$$ = "+";}
-	| '-'      {$$ = "-";}
-	| '~'      {$$ = "~";}
-	| '!'      {$$ = "!";}
+	: '&'      {$$ = 4;}
+	| '*'      {$$ = 5;}
+	| '+'      {$$ = 6;}
+	| '-'      {$$ = 7;}
+	| '~'      {$$ = 8;}
+	| '!'      {$$ = 9;}
 	;
 
 cast_expression
@@ -145,17 +145,17 @@ assignment_expression
 	;
 
 assignment_operator
-	: '='                {$$ = "ASSIGN";}
-	| MUL_ASSIGN         {$$ = "MUL";}
-	| DIV_ASSIGN         {$$ = "DIV";}
-	| MOD_ASSIGN         {$$ = "MOD";}
-	| ADD_ASSIGN         {$$ = "ADD";}
-	| SUB_ASSIGN         {$$ = "SUB";}
-	| LEFT_ASSIGN        {$$ = "LEFT";}
-	| RIGHT_ASSIGN       {$$ = "RIGHT";}
-	| AND_ASSIGN         {$$ = "AND";}
-	| XOR_ASSIGN         {$$ = "XOR";}
-	| OR_ASSIGN          {$$ = "OR";}
+	: '='                {$$ = 0;}
+	| MUL_ASSIGN         {$$ = 1;}
+	| DIV_ASSIGN         {$$ = 2;}
+	| MOD_ASSIGN         {$$ = 3;}
+	| ADD_ASSIGN         {$$ = 4;}
+	| SUB_ASSIGN         {$$ = 5;}
+	| LEFT_ASSIGN        {$$ = 6;}
+	| RIGHT_ASSIGN       {$$ = 7;}
+	| AND_ASSIGN         {$$ = 8;}
+	| XOR_ASSIGN         {$$ = 9;}
+	| OR_ASSIGN          {$$ = 10;}
 	;
 
 expression
@@ -192,26 +192,26 @@ init_declarator
 	;
 
 storage_class_specifier
-	: TYPEDEF  {$$ = new storage_class_specifier("TYPEDEF");}
-	| EXTERN   {$$ = new storage_class_specifier("EXTERN");}
+	: TYPEDEF  {$$ = new storage_class_specifier(0);}
+	| EXTERN   {$$ = new storage_class_specifier(1);}
 //	| STATIC
 //	| AUTO
 //	| REGISTER
 	;
 
 type_specifier
-	: VOID   {$$ = new type_specifier("VOID");}
-	| CHAR   {$$ = new type_specifier("CHAR");}
-	| SHORT   {$$ = new type_specifier("SHORT");}
-	| INT   {$$ = new type_specifier("INT");}
-	| LONG   {$$ = new type_specifier("LONG");}
-	| FLOAT   {$$ = new type_specifier("FLOAT");}
-	| DOUBLE   {$$ = new type_specifier("DOUBLE");}
-	| SIGNED   {$$ = new type_specifier("SIGNED");}
-	| UNSIGNED   {$$ = new type_specifier("UNSIGNED");}
+	: VOID   {$$ = new type_specifier(0);}
+	| CHAR   {$$ = new type_specifier(1);}
+	| SHORT   {$$ = new type_specifier(2);}
+	| INT   {$$ = new type_specifier(3);}
+	| LONG   {$$ = new type_specifier(4);}
+	| FLOAT   {$$ = new type_specifier(5);}
+	| DOUBLE   {$$ = new type_specifier(6);}
+	| SIGNED   {$$ = new type_specifier(7);}
+	| UNSIGNED   {$$ = new type_specifier(8);}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
 //	| enum_specifier   {$$ = new type_specifier("ENUM");}
-	| TYPE_NAME   {$$ = new type_specifier("TYPE_NAME");}
+	| TYPE_NAME   {$$ = new type_specifier(9);}
 	;
 /////////////////////////////////struct ////////////////////////////////////////////////
 /* struct_or_union_specifier

@@ -19,12 +19,12 @@
 
 class type_specifier : public astnode{
 public:
-  type_specifier(string _type){
+  type_specifier(int _type){
     type = _type;
   }
 
 private:
-  string type;
+  int type;
 };
 
 void type_specifier::translate(string& pyout)

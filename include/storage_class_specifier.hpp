@@ -9,11 +9,11 @@ include "ast.hpp"
 
 class storage_class_specifier : public declaration{
 public:
-  storage_class_specifier(string _type):type(_type){};
+  storage_class_specifier(int _type):type(_type){};
   ~storage_class_specifier(){}
   translate(string& pysource);
 private:
-  string type;
+  int type;
 };
 
 void storage_class_specifier::translate(string& pyout){
