@@ -19,12 +19,12 @@ class astnode;
 extern treeptr parseAST(string& filename);
 class astnode{
 public:
-  astnode(){};
-  virtual void translate(string& pyout);
+  //astnode(){};
+  virtual void translate(string& pyout){};
   //virtual compile();
-  virtual void translate() = 0;//translator
-  virtual void compile(string& mpout) = 0;//compiler
-  virtual ~astnode();
+  //virtual void translate() = 0;//translator
+  virtual void compile(string& mpout){};//compiler
+  //~astnode();
 private:
   //vector<treeptr> branches;
 
@@ -34,12 +34,15 @@ class expression : public astnode{
 public:
   expression(){};
   virtual ~expression(){};
+private:
 };
 
 class definition : public astnode{
 public:
   definition(){};
   virtual ~definition(){};
+private:
+
 };
 
 // class declaration : public astnode{
@@ -53,6 +56,7 @@ public:
   statement(){};
   virtual void translate(string& pyout);
   virtual ~statement(){};
+private:
 };
 
 // class declaration : public astnode{
