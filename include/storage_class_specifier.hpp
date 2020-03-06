@@ -7,7 +7,7 @@ include "ast.hpp"
 // 	: TYPEDEF  {$$ = new storage_class_specifier("TYPEDEF");}
 // 	| EXTERN   {$$ = new storage_class_specifier("EXTERN");}
 
-class storage_class_specifier : public declaration{
+class storage_class_specifier : public astnode{
 public:
   storage_class_specifier(int _type):type(_type){};
   ~storage_class_specifier(){}

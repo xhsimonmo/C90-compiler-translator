@@ -8,7 +8,7 @@
 // 	| initializer_list ',' initializer       {$$ = new initializer_list(1, $1, $3);}
 // 	;
 
-class initializer_list : public declaration{
+class initializer_list : public astnode{
 public:
   initializer_list(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   initializer_list(int type_in, treeptr o){type = type_in; left = o;}

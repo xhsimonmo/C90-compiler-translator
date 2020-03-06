@@ -8,7 +8,7 @@ include"ast.hpp"
 // 	| type_specifier   {$$ = $1}
 // 	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);}
 
-class declaration_specifiers : public declaration{
+class declaration_specifiers : public astnode{
 public:
   declaration_specifiers(treeptr _one, treeptr _two):one(_one),two(_two){};
   ~declaration_specifiers(){
@@ -21,7 +21,7 @@ private:
 };
 
 void declaration_specifiers::translate(string& pyout){
-  
+
   //for struct, skip for translation
   //translation would not be requied here
 }

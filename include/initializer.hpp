@@ -9,7 +9,7 @@
 // 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
 // 	;
 
-class initializer : public declaration{
+class initializer : public astnode{
 public:
   initializer(int type_in, treeptr o){type_in = type; p = o;}
   ~initializer(){delete p;}

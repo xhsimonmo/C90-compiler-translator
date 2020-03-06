@@ -15,7 +15,7 @@
 // 	| direct_abstract_declarator '(' parameter_type_list ')'     {$$ = new direct_abstract_declarator(7, $1, $3);}
 // 	;
 
-class direct_abstract_declarator : public declaration{
+class direct_abstract_declarator : public astnode{
 public:
   direct_abstract_declarator(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   ~direct_abstract_declarator(){delete left; delete right;}

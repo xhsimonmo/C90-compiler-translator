@@ -8,7 +8,7 @@
 // 	| specifier_qualifier_list abstract_declarator   {$$ = new type_name();}
 // 	;
 
-class type_name : public declaration{
+class type_name : public astnode{
 public:
   type_name(treeptr o, treeptr t){left = o; right = t;}
   ~type_name(){delete left; delete right;}
