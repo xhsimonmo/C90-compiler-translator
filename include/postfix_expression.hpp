@@ -9,7 +9,7 @@
 // 	| postfix_expression '(' ')'                           {$$ = new unary_expression(1, $1);}
 // 	| postfix_expression '(' argument_expression_list ')'  {$$ = new unary_expression(2, $1, $3);}
 // 	| postfix_expression '.' IDENTIFIER                    {$$ = new unary_expression(3, $1, $3);}
-// 	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new unary_expression(4, $1, $3);}
+// 	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new unary_expression(4, $1, *$3);}
 // 	| postfix_expression INC_OP                            {$$ = new unary_expression(5, $1);}
 // 	| postfix_expression DEC_OP                            {$$ = new unary_expression(6, $1);}
 // 	;
@@ -19,10 +19,12 @@ class postfix_expression : public expression{
 public:
   postfix_expression(int type_in, treeptr p, treeptr o){type = type_in; ptr = p; opt = o;}
   postfix_expression(int type_in, treeptr p){type = type_in; ptr = p;}
+  postfix_expression(int type_in, treeptr p, string _id){type = type_in; ptr = p; id = _id;}
   ~postfix_expression(){delete ptr; delete opt;}
   void translate(string& pyout);
 private:
   int type;
+  string id;
   treeptr ptr;
   treeptr opt;
 };
