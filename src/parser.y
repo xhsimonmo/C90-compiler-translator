@@ -46,6 +46,9 @@
 
 
 %start translation_unit
+
+
+
 %%
 
 primary_expression
