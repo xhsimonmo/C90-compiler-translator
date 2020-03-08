@@ -53,18 +53,18 @@ int check_type();
 "volatile"        { /*count();*/ return(VOLATILE); }
 "while"            { /*count();*/ return(WHILE); }
 
-{L}({L}|{D})*        { yyval.str = new std::string(yytext); return(check_type()); } /*identifier(name)*/
+{L}({L}|{D})*        { yylval.str = new std::string(yytext); return(check_type()); } /*identifier(name)*/
 
-0[xX]{H}+{IS}?        { yyval.str = new std::string(yytext); return(CONSTANT); }    /*hex character constants*/
-0{D}+{IS}?        { yyval.str = new std::string(yytext); return(CONSTANT); }
-{D}+{IS}?        { yyval.str = new std::string(yytext); return(CONSTANT); }
-L?'(\\.|[^\\'])+'    { yyval.str = new std::string(yytext); return(CONSTANT); }
+0[xX]{H}+{IS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }    /*hex character constants*/
+0{D}+{IS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }
+{D}+{IS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }
+L?'(\\.|[^\\'])+'    { yylval.str = new std::string(yytext); return(CONSTANT); }
 
-{D}+{E}{FS}?        { yyval.str = new std::string(yytext); return(CONSTANT); }
-{D}*"."{D}+({E})?{FS}?    { yyval.str = new std::string(yytext); return(CONSTANT); }
-{D}+"."{D}*({E})?{FS}?    { yyval.str = new std::string(yytext); return(CONSTANT); }
+{D}+{E}{FS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }
+{D}*"."{D}+({E})?{FS}?    { yylval.str = new std::string(yytext); return(CONSTANT); }
+{D}+"."{D}*({E})?{FS}?    { yylval.str = new std::string(yytext); return(CONSTANT); }
 
-L?\"(\\.|[^\\"])*\"    { yyval.str = new std::string(yytext); return(STRING_LITERAL); }
+L?\"(\\.|[^\\"])*\"    { yylval.str = new std::string(yytext); return(STRING_LITERAL); }
 
 "..."            { /*count();*/ return(ELLIPSIS); }
 ">>="            { /*count();*/ return(RIGHT_ASSIGN); }
@@ -118,21 +118,21 @@ L?\"(\\.|[^\\"])*\"    { yyval.str = new std::string(yytext); return(STRING_LITE
 
 %%
 
-yywrap()
+/* yywrap()
 {
     return(1);
-}
+} */
 
 
-comment()
+void comment()
 {
     char c, c1;
 
 loop:
-    while ((c = input()) != '*' && c != 0)
+    while ((c = yyinput()) != '*' && c != 0)
         putchar(c);
 
-    if ((c1 = input()) != '/' && c != 0)
+    if ((c1 = yyinput()) != '/' && c != 0)
     {
         unput(c1);
         goto loop;
