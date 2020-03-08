@@ -1,16 +1,16 @@
+#include "menu.hpp"
+
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <string>
-#include "menu.hpp"
-using namespace std;
-extern treeptr parseAST(string& filename);
-//extern int indentation;//specify number of tab/"/t"
-//typedef std::shared_ptr<astnode> treeptr;
-//invoke by :
-//bin/c_compiler -S [source-file.c] -o [dest-file.s]
+//using namespace std;
 
+
+//bin/c_compiler -S [source-file.c] -o [dest-file.s]
 //bin/c_compiler --translate [source-file.c] -o [dest-file.py]
+
+// extern const astnode * parseAST(char* filename);
 extern FILE *yyin; // pointer to input stream
 
 int main(int argc, char *argv[]){
@@ -19,9 +19,9 @@ int main(int argc, char *argv[]){
   }
   //ifstream csource;//input ...c
   //csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
-  string filename = argv[2];
-  //yyin = fopen(argv[2], "r");
-  astnode* root = parseAST(filename);
+  //string filename = argv[2];
+  yyin = fopen(argv[2], "r");
+  const astnode* root = parseAST();
 
   if(argv[1] == "--translate"){
     std::cerr << "translator begin" << '\n';
@@ -31,15 +31,15 @@ int main(int argc, char *argv[]){
     string addmain;
     addmain = "\nif __name__ == \"__main__\":\nimport sys\nret=main()\nsys.exit(ret)"; // include in every python file to invoke main
     pyout = pyout + addmain;
-    ofstream pyfile;//output ...py
-    pyfile.open(argv[1]);
+    std::ofstream pyfile;//output ...py
+    pyfile.open(argv[2]);
     pyfile << pyout;
 
   }
   else if(argv[1] == "-S"){
 
   }
-
+  //fclose(yyin);
   return 0;
 
 }

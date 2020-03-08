@@ -1,22 +1,27 @@
 %code requires{
-  #include "ast.hpp"
+  #include "menu.hpp"
 
   #include <cassert>
   #include <string>
 
-  extern  astnode *g_root; // A way of getting the AST out
+  extern const astnode * g_root; // A way of getting the AST out
 
-  extern FILE *yyin; // pointer to input stream
+  //extern FILE *yyin; // pointer to input stream
 
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
-  int yylex(void);
-  void yyerror(const char *);
+   int yylex(void);
+   void yyerror(const char *);
 
 }
-
-
+ // Represents the value associated with any kind of
+ // AST node.
+%union{
+  const astnode * expr;
+  int number;
+  std::string * str;;
+}
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
@@ -29,6 +34,17 @@
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
+%type<expr> primary_expression postfix_expression argument_expression_list unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression equality_expression and_expression
+%type<expr> exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
+%type<expr> init_declarator_list init_declarator storage_class_specifier type_specifier specifier_qualifier_list declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration identifier_list
+%type<expr> type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement compound_statement declaration_list statement_list expression_statement selection_statement
+%type<expr> iteration_statement jump_statement translation_unit external_declaration function_definition
+
+%type<number> unary_operator assignment_operator
+%type<str> IDENTIFIER CONSTANT STRING_LITERAL
+
+
+
 %start translation_unit
 %%
 
@@ -36,7 +52,7 @@ primary_expression
 	: IDENTIFIER    {$$ = new primary_expression(0,*$1);}
 	| CONSTANT      {$$ = new primary_expression(1,*$1);}
 	| STRING_LITERAL {$$ = new primary_expression(2,*$1);}
-	| '(' expression ')' {$$ = new primary_expression(3,$1);}
+	| '(' expression ')' {$$ = new primary_expression(3,$2);}
 	;
 
 postfix_expression
@@ -61,7 +77,7 @@ unary_expression
 	| DEC_OP unary_expression          {$$ = new unary_expression(1, $2);}
 	| unary_operator cast_expression   {$$ = new unary_expression($1, $2);}
 	| SIZEOF unary_expression          {$$ = new unary_expression(2, $2);}
-	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $2);}
+	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $3);}
 	;
 
 unary_operator
@@ -185,12 +201,12 @@ declaration_specifiers
 
 init_declarator_list
 	: init_declarator   {$$ = $1}
-	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$2);}
+	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$3);}
 	;
 
 init_declarator
 	: declarator   {$$ = $1}
-	| declarator '=' initializer   {$$ = new init_declarator($1,$2);}
+	| declarator '=' initializer   {$$ = new init_declarator($1,$3);}
 	;
 
 storage_class_specifier
@@ -340,11 +356,11 @@ abstract_declarator
 /*喵喵喵*/
 direct_abstract_declarator
 	: '(' abstract_declarator ')'                                {$$ = $2;}
-	| '[' ']'                                                    {$$ = new direct_abstract_declarator(0, $2);}
+	| '[' ']'                                                    {$$ = new direct_abstract_declarator(0);}
 	| '[' constant_expression ']'                                {$$ = new direct_abstract_declarator(1, $2);}
 	| direct_abstract_declarator '[' ']'                         {$$ = new direct_abstract_declarator(2, $1);}
 	| direct_abstract_declarator '[' constant_expression ']'     {$$ = new direct_abstract_declarator(3, $1, $3);}
-	| '(' ')'                                                    {$$ = new direct_abstract_declarator(4, $2);}
+	| '(' ')'                                                    {$$ = new direct_abstract_declarator(4);}
 	| '(' parameter_type_list ')'                                {$$ = new direct_abstract_declarator(5, $2);}
 	| direct_abstract_declarator '(' ')'                         {$$ = new direct_abstract_declarator(6, $1);}
 	| direct_abstract_declarator '(' parameter_type_list ')'     {$$ = new direct_abstract_declarator(7, $1, $3);}
@@ -438,7 +454,8 @@ function_definition
 	;
 
 %%
-#include <stdio.h>
+/* #include <stdio.h>
+#include <string>
 
 extern char yytext[];
 extern int column;
@@ -448,19 +465,20 @@ char *s;
 {
 	fflush(stdout);
 	printf("\n%*s\n%*s\n", column, "^", column, s);
-}
+} */
 
- g_root parseAST(char[] abc)
+ const astnode * g_root;
+ /* const astnode* parseAST(char* filename)
 {
-    yyin = fopen(abc, "r");
+    yyin = fopen(filename, "r");
     g_root= NULL;
     yyparse();
    return g_root;
-}
+} */
 
-/* const ast_abs * g_root;
-const astnode* parseAST(void){
+
+ const astnode* parseAST(void){
   g_root= NULL;
   yyparse();
   return g_root;
-} */
+}
