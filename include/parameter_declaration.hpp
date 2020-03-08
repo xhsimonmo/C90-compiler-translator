@@ -1,25 +1,27 @@
-#ifndef ast_identifier_list
-#define ast_identifier_list
+#ifndef parameter_declaration_h
+#define parameter_declaration_h
 
 #include "ast.hpp"
 
-// identifier_list
-// 	: IDENTIFIER                                     {$$ = $1;}
-// 	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, $3);}
+// parameter_declaration
+// 	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2)}
+// 	| declaration_specifiers abstract_declarator    {$$ = new parameter_declaration(1, $1, $2)}
+// 	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declaration(2, $1)}
 // 	;
 
-class identifier_list : public astnode{
+class parameter_declaration : public astnode{
 public:
-  identifier_list(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
-  ~identifier_list(){delete left; delete right;}
+  parameter_declaration(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
+  parameter_declaration(int type_in, treeptr o){type = type_in; left = o;}
+  ~parameter_declaration(){delete left; delete right;}
   void translate(string& pyout);
 private:
   int type;
-  treeptr left;
-  treeptr right;
+  treeptr left = NULL;
+  treeptr right = NULL;
 };
 
-void identifier_list::translate(string& pyout){
+void parameter_declaration::translate(string& pyout){
   string yi;
   string er;
   left -> translate(yi);

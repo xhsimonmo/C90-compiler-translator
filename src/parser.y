@@ -18,7 +18,7 @@
  // Represents the value associated with any kind of
  // AST node.
 %union{
-  const astnode * expr;
+  astnode * expr;
   int number;
   std::string * str;;
 }
@@ -57,13 +57,13 @@ primary_expression
 
 postfix_expression
 	: primary_expression                                   {$$ = $1;}
-	| postfix_expression '[' expression ']'                {$$ = new unary_expression(0, $1, $3);}
-	| postfix_expression '(' ')'                           {$$ = new unary_expression(1, $1);}
-	| postfix_expression '(' argument_expression_list ')'  {$$ = new unary_expression(2, $1, $3);}
-	| postfix_expression '.' IDENTIFIER                    {$$ = new unary_expression(3, $1, $3);}
-	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new unary_expression(4, $1, $3);}
-	| postfix_expression INC_OP                            {$$ = new unary_expression(5, $1);}
-	| postfix_expression DEC_OP                            {$$ = new unary_expression(6, $1);}
+	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);}
+	| postfix_expression '(' ')'                           {$$ = new postfix_expression(1, $1);}
+	| postfix_expression '(' argument_expression_list ')'  {$$ = new postfix_expression(2, $1, $3);}
+	| postfix_expression '.' IDENTIFIER                    {$$ = new postfix_expression(3, $1, *$3);}
+	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new postfix_expression(4, $1, *$3);}
+	| postfix_expression INC_OP                            {$$ = new postfix_expression(5, $1);}
+	| postfix_expression DEC_OP                            {$$ = new postfix_expression(6, $1);}
 	;
 
 argument_expression_list
@@ -95,22 +95,22 @@ cast_expression
 	;
 
 multiplicative_expression
-	: cast_expression {$$ = $1}
+	: cast_expression {$$ = $1;}
 	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3);}
 	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3);}
 	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3);}
 	;
 
 additive_expression
-	: multiplicative_expression  {$$ = $1}
+	: multiplicative_expression  {$$ = $1;}
 	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3);}
 	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3);}
 	;
 
 shift_expression
-	: additive_expression  {$$ = $1}
-	| shift_expression LEFT_OP additive_expression {$$ = new shift_expression(1,$1,$3)}
-	| shift_expression RIGHT_OP additive_expression {$$ = new shift_expression(2,$1,$3)}
+	: additive_expression  {$$ = $1;}
+	| shift_expression LEFT_OP additive_expression {$$ = new shift_expression(1,$1,$3);}
+	| shift_expression RIGHT_OP additive_expression {$$ = new shift_expression(2,$1,$3);}
 	;
 
 relational_expression
@@ -182,7 +182,7 @@ expression
 	;
 
 constant_expression
-	: conditional_expression   {$$ = $1} // what is this for?
+	: conditional_expression   {$$ = $1;} // what is this for?
 	;
 
 declaration
@@ -191,21 +191,21 @@ declaration
 	;
 
 declaration_specifiers
-	: storage_class_specifier    {$$ = $1}
+	: storage_class_specifier    {$$ = $1;}
 	| storage_class_specifier declaration_specifiers   {$$ = new declaration_specifiers($1,$2);}
-	| type_specifier   {$$ = $1}
+	| type_specifier   {$$ = $1;}
 	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);}
 	//| type_qualifier
 	//| type_qualifier declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator   {$$ = $1}
+	: init_declarator   {$$ = $1;}
 	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$3);}
 	;
 
 init_declarator
-	: declarator   {$$ = $1}
+	: declarator   {$$ = $1;}
 	| declarator '=' initializer   {$$ = new init_declarator($1,$3);}
 	;
 
@@ -255,7 +255,7 @@ struct_declaration
 
 specifier_qualifier_list
 	: type_specifier specifier_qualifier_list {$$ = new specifier_qualifier_list($1,$2);}
-	| type_specifier  {$$ = $1}
+	| type_specifier  {$$ = $1;}
 	//| type_qualifier specifier_qualifier_list
 	//| type_qualifier
 	;
@@ -296,11 +296,11 @@ enumerator
 
 declarator
 	: pointer direct_declarator  {$$ = new declarator($1, $2);}
-	| direct_declarator    {$$ = $1}
+	| direct_declarator    {$$ = $1;}
 	;
 
 direct_declarator
-	: IDENTIFIER   {$$ = new direct_declarator(0,$1);}
+	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);}
 	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
 	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
 	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
@@ -332,14 +332,14 @@ parameter_list
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2)}
-	| declaration_specifiers abstract_declarator    {$$ = new parameter_declarator(1, $1, $2)}
-	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declarator(2, $1)}
+	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2);}
+	| declaration_specifiers abstract_declarator    {$$ = new parameter_declaration(1, $1, $2);}
+	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declaration(2, $1);} /*TODO what does this do */
 	;
 
 identifier_list
-	: IDENTIFIER                                     {$$ = $1;}
-	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, $3);}
+	: IDENTIFIER                                     {$$ = new identifier_list(*$1);}
+	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3);}
 	;
 
 type_name
@@ -378,12 +378,12 @@ initializer_list
 	;
 
 statement
-	: labeled_statement   {$$ = $1}
-	| compound_statement {$$ = $1}
-	| expression_statement {$$ = $1}
-	| selection_statement  {$$ = $1}
-	| iteration_statement  {$$ = $1}
-	| jump_statement {$$ = $1}
+	: labeled_statement   {$$ = $1;}
+	| compound_statement {$$ = $1;}
+	| expression_statement {$$ = $1;}
+	| selection_statement  {$$ = $1;}
+	| iteration_statement  {$$ = $1;}
+	| jump_statement {$$ = $1;}
 	;
 
 labeled_statement
@@ -405,13 +405,13 @@ declaration_list
 	;
 
 statement_list
-	: statement    {$$ = $1}
+	: statement    {$$ = $1;}
 	| statement_list statement   {$$ = new statement_list($1,$2);}
 	;
 
 expression_statement
-	: ';'    {$$ = new expression_statement(0)}
-	| expression ';'   {$$ = new expression_statement($1)}
+	: ';'    {$$ = new expression_statement(0);}
+	| expression ';'   {$$ = new expression_statement($1);}
 	;
 
 selection_statement
@@ -449,8 +449,8 @@ external_declaration
 function_definition
 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
 	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
+  | declarator compound_statement                                          {$$ = new function_definition($1, $2);}
 	/*| declarator declaration_list compound_statement                      喵喵喵*/
-	| declarator compound_statement                                          {$$ = new function_definition($1, $1, $2);}
 	;
 
 %%

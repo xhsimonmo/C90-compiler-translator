@@ -4,23 +4,24 @@
 #include "ast.hpp"
 
 // identifier_list
-// 	: IDENTIFIER                                     {$$ = $1;}
-// 	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, $3);}
+// 	: IDENTIFIER                                     {$$ = new identifier_list(*$1);}
+// 	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3);}
 // 	;
 
 class identifier_list : public astnode{
 public:
-  identifier_list(treeptr o, treeptr t){left = o; right = t;}
-  ~identifier_list(){delete left; delete right;}
+  identifier_list(treeptr o, string _id){ptr = o; id = _id;}
+  identifier_list(string _id){id = _id;}
+  ~identifier_list(){delete ptr; }
   void translate(string& pyout);
 private:
-  treeptr left;
-  treeptr right;
+  treeptr ptr;
+  string id;
 };
 
 void identifier_list::translate(string& pyout){
     NotImplemented();
   }
-}
+
 
 #endif
