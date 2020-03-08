@@ -1,3 +1,5 @@
+%option noyywrap
+
 D            [0-9]
 L            [a-zA-Z_]
 H            [a-fA-F0-9]
@@ -8,8 +10,10 @@ IS            (u|U|l|L)*
 %{
 #include <stdio.h>
 #include "parser.tab.hpp"
+//extern FILE *yyin; // pointer to input stream
 
 void count();
+void comment();
 int check_type();
 %}
 

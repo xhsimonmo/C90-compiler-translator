@@ -1,5 +1,5 @@
-#ifndef ast_hpp
-#define ast_hpp
+#ifndef ast_hpp_h
+#define ast_hpp_h
 
 //#include "menu.hpp" // include all the other header files
 #include <iostream>
@@ -16,13 +16,13 @@ vector<string> global_variables;
 class astnode;
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
-//extern treeptr parseAST(string& filename);
+
 
 class astnode{
 public:
   astnode(){};
-  virtual void translate(string& pyout){};
-  virtual void translate(string& pyout, vector<string> global_variables){};
+  virtual void translate(string& pyout)const{};
+  virtual void translate(string& pyout, vector<string> global_variables)const {};
   //virtual compile();
   //virtual void translate() = 0;//translator
   virtual void compile(string& mpout){};//compiler
@@ -89,9 +89,6 @@ extern void NotImplemented(){
 
 
 ////////////////////////////MIPS////////////////////////////////
-
-
-
 
 
 
