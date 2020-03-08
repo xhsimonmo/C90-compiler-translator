@@ -30,6 +30,9 @@
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
 %start translation_unit
+
+
+
 %%
 
 primary_expression
