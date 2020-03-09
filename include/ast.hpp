@@ -9,11 +9,14 @@
 using std::string;
 using std::vector;
 
-extern int indentation = 0;//specify number of tab/"/t"
+extern int indentation;//specify number of tab/"/t"
+//indentation = 0;
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
-vector<string> global_variables;
+extern vector<string> global_variables;
 class astnode;
+extern void NotImplemented();
+extern string indent(string& source);
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
 
@@ -63,12 +66,8 @@ public:
 private:
 };
 
-// class declaration : public astnode{
-//   virtual declaration();
-//   virtual ~declaration(){};
-// };
 
-string indent(string& source) //PLEASE WORK PLEASE
+extern string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
   char delimiter = '/t';
   for (auto it = source.begin(); it != source.end(); it++)
