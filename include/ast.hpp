@@ -9,11 +9,21 @@
 using std::string;
 using std::vector;
 
+<<<<<<< HEAD
 extern int indentation = 0;//specify number of tab/"/t"
+=======
+int indentation;//specify number of tab/"/t"
+
+>>>>>>> 6c2c45763cda1344fb813d7770ab1dc79492c8ad
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
 vector<string> global_variables;
 class astnode;
+<<<<<<< HEAD
+=======
+inline void NotImplemented();
+inline string indent(string& source);
+>>>>>>> 6c2c45763cda1344fb813d7770ab1dc79492c8ad
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
 
@@ -25,7 +35,15 @@ public:
   virtual void translate(string& pyout, vector<string> global_variables)const {};
   //virtual compile();
   //virtual void translate() = 0;//translator
+<<<<<<< HEAD
   virtual void compile(string& mpout){};//compiler
+=======
+<<<<<<< HEAD
+  virtual void compile(string& mpout)const{};//compiler
+=======
+  virtual void compile(string& mpout) const{};//compiler
+>>>>>>> 593c429621acf69a4aa4047d6d0b3bfd2a082195
+>>>>>>> 6c2c45763cda1344fb813d7770ab1dc79492c8ad
   //~astnode();
 private:
   //vector<treeptr> branches;
