@@ -25,7 +25,7 @@ public:
   virtual void translate(string& pyout, vector<string> global_variables)const {};
   //virtual compile();
   //virtual void translate() = 0;//translator
-  virtual void compile(string& mpout){};//compiler
+  virtual void compile(string& mpout) const{};//compiler
   //~astnode();
 private:
   //vector<treeptr> branches;
