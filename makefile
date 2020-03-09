@@ -1,8 +1,7 @@
-CPPFLAGS += -std=c++11 -g #-W -Wall -g #-Wno-unused-parameter
+CPPFLAGS += -std=c++11 -g #-W -Wall #-g -Wno-unused-parameter
 CPPFLAGS += -I include
 #CPPFLAGS = -W -Wall
 
-#CPPFLAGS += -o2
 
 all : clean bin/c_compiler
 
