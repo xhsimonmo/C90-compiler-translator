@@ -15,7 +15,7 @@ public:
   };
   selection_statement(int _type, treeptr a, treeptr b, treeptr c ):type(_type),expre_ptr(a),ifsta(b),elsesta(c){
   };
-  void translate(string& pyout);
+  inline void translate(string& pyout);
   ~selection_statement(){
     delete expre_ptr;
     delete ifsta;

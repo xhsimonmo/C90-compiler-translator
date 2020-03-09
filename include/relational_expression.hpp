@@ -15,7 +15,7 @@ class relational_expression : public expression{
 public:
   relational_expression(int type_in, treeptr p, treeptr o){type = type_in; ptr = p; opt = o;}
   ~relational_expression(){delete ptr; delete opt;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   int type;
   treeptr ptr;

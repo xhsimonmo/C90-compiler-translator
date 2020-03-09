@@ -21,7 +21,7 @@ public:
   postfix_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   postfix_expression(int type_in, treeptr p, string _id){type = type_in; ptr = p; id = _id;}
   ~postfix_expression(){delete ptr; delete opt;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   int type;
   string id;

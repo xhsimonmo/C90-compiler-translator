@@ -13,7 +13,7 @@ class initializer : public astnode{
 public:
   initializer(int type_in, treeptr o){type_in = type; p = o;}
   ~initializer(){delete p;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   int type;
   treeptr p;

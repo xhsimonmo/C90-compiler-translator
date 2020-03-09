@@ -14,7 +14,7 @@ public:
   parameter_declaration(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   parameter_declaration(int type_in, treeptr o){type = type_in; left = o;}
   ~parameter_declaration(){delete left; delete right;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   int type;
   treeptr left = NULL;

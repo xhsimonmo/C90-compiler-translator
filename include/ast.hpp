@@ -9,11 +9,11 @@
 using std::string;
 using std::vector;
 
-int indentation;//specify number of tab/"/t"
+inline int indentation;//specify number of tab/"/t"
 
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
-extern vector<string> global_variables;
+inline vector<string> global_variables;
 class astnode;
 inline void NotImplemented();
 inline string indent(string& source);
@@ -40,6 +40,7 @@ public:
   expression(){};
   virtual void translate(string& pyout){};
   virtual ~expression(){};
+  virtual void compile(string& mpout)const{};//compiler
 private:
 };
 
@@ -66,8 +67,12 @@ public:
 private:
 };
 
+// class declaration : public astnode{
+//   virtual declaration();
+//   virtual ~declaration(){};
+// };
 
-extern string indent(string& source) //PLEASE WORK PLEASE
+string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
   char delimiter = '/t';
   for (auto it = source.begin(); it != source.end(); it++)

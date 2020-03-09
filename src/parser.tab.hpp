@@ -1,17 +1,9 @@
-<<<<<<< HEAD
 /* A Bison parser, made by GNU Bison 3.5.1.  */
 
 /* Bison interface for Yacc-like parsers in C
 
    Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
    Inc.
-=======
-/* A Bison parser, made by GNU Bison 3.0.4.  */
-
-/* Bison interface for Yacc-like parsers in C
-
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
->>>>>>> 6509c87447d6cdcbe71bb3800f640ac0571f0c61
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -39,12 +31,9 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-<<<<<<< HEAD
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-=======
->>>>>>> 6509c87447d6cdcbe71bb3800f640ac0571f0c61
 #ifndef YY_YY_SRC_PARSER_TAB_HPP_INCLUDED
 # define YY_YY_SRC_PARSER_TAB_HPP_INCLUDED
 /* Debug traces.  */
@@ -55,11 +44,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-<<<<<<< HEAD
 #line 1 "src/parser.y"
-=======
-#line 1 "src/parser.y" /* yacc.c:1909  */
->>>>>>> 6509c87447d6cdcbe71bb3800f640ac0571f0c61
 
   #include "menu.hpp"
 
@@ -77,11 +62,7 @@ extern int yydebug;
    void yyerror(const char *);
 
 
-<<<<<<< HEAD
 #line 66 "src/parser.tab.hpp"
-=======
-#line 62 "src/parser.tab.hpp" /* yacc.c:1909  */
->>>>>>> 6509c87447d6cdcbe71bb3800f640ac0571f0c61
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -151,30 +132,17 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-<<<<<<< HEAD
 union YYSTYPE
 {
 #line 20 "src/parser.y"
-=======
-
-union YYSTYPE
-{
-#line 20 "src/parser.y" /* yacc.c:1909  */
->>>>>>> 6509c87447d6cdcbe71bb3800f640ac0571f0c61
 
   astnode * expr;
   int number;
   std::string * str;;
 
-<<<<<<< HEAD
 #line 144 "src/parser.tab.hpp"
 
 };
-=======
-#line 141 "src/parser.tab.hpp" /* yacc.c:1909  */
-};
-
->>>>>>> 6509c87447d6cdcbe71bb3800f640ac0571f0c61
 typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

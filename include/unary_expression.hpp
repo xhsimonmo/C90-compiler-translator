@@ -16,14 +16,14 @@ class unary_expression : public expression{
 public:
   unary_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~unary_expression(){delete ptr;}
-  void translate(string& pyout);
-  void compile(string& mpout) const;
+  inline void translate(string& pyout);
+  inline void compile(string& mpout);
 private:
   int type;
   treeptr ptr;
 };
 
-void unary_expression::translate(string& pyout){
+inline void unary_expression::translate(string& pyout){
   switch (type)
   {
     case 0:
@@ -81,7 +81,7 @@ void unary_expression::translate(string& pyout){
   }
 }
 
-void unary_expression::compile (string& dst) const{
+inline void unary_expression::compile(string& dst){
   switch(type)
   {
     case 0:

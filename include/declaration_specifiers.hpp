@@ -11,7 +11,7 @@
 class declaration_specifiers : public astnode{
 public:
   declaration_specifiers(treeptr _one, treeptr _two):one(_one),two(_two){};
-  void translate(string& pyout);
+  inline void translate(string& pyout);
   ~declaration_specifiers(){
     delete one;
     delete two;

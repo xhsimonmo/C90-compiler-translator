@@ -13,7 +13,7 @@ class labeled_statement : public statement{
 public:
   labeled_statement(int _type, treeptr _one):type(_type),one(_one){};
   labeled_statement(int _type, treeptr _one, treeptr _two):type(_type),one(_one),two(_two){};
-  void translate(string& pyout);
+  inline void translate(string& pyout);
   ~labeled_statement(){
     delete one;
     delete two;

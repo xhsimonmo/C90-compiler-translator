@@ -17,7 +17,7 @@ public:
   function_definition(treeptr o, treeptr t){p_o = o; p_t = t;}
   ~function_definition(){delete p_o; delete p_t; delete p_f;}
   //void translate(string& pyout);
- void translate(string& pyout, vector<string> global_variables);
+ inline void translate(string& pyout, vector<string> global_variables);
 private:
   treeptr p_o;
   treeptr p_t;

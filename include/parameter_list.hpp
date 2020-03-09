@@ -12,7 +12,7 @@ class parameter_list : public astnode{
 public:
   parameter_list(treeptr o, treeptr t){left = o; right = t;}
   ~parameter_list(){delete left; delete right;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   treeptr left;
   treeptr right;

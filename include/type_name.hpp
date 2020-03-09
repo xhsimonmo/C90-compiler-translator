@@ -12,7 +12,7 @@ class type_name : public astnode{
 public:
   type_name(treeptr o, treeptr t){left = o; right = t;}
   ~type_name(){delete left; delete right;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   treeptr left;
   treeptr right;
