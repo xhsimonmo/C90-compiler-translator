@@ -13,7 +13,7 @@ public:
   cast_expression(int type_in, treeptr p, treeptr o){type = type_in; ptr = p; opt = o;}
   cast_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~cast_expression(){delete ptr; delete opt;}
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   int type;
   treeptr ptr;

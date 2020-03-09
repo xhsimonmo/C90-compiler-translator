@@ -11,7 +11,7 @@
 class statement_list : public statement{
 public:
   statement_list(treeptr list, treeptr _statement):l(list),r(_statement){};
-  void translate(string& pyout);
+  inline void translate(string& pyout);
   ~statement_list(){
     delete l;
     delete r;

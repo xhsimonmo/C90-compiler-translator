@@ -14,7 +14,7 @@ class multiplicative_expression : public expression{
   public:
     //multiplicative_expression(int _type, treeptr _cast):type(_type),cast(_cast){};
     multiplicative_expression(int _type, treeptr _mul, treeptr _cast):type(_type),mul(_mul),cast(_cast){};
-    void translate(string& pyout);
+    inline void translate(string& pyout);
     ~multiplicative_expression(){
       delete mul;
       delete cast;
@@ -62,7 +62,7 @@ class additive_expression : public expression{
   public:
     //additive_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
     additive_expression(int _type, treeptr _add, treeptr _mul):type(_type),add(_add),mul(_mul){};
-    void translate(string& pyout);
+    inline void translate(string& pyout);
     ~additive_expression(){
       delete mul;
       delete add;
@@ -104,7 +104,7 @@ class shift_expression : public expression{
   public:
     //shift_expression(int _type, treeptr _cast):type(_type),mul(_cast){};
     shift_expression(int _type, treeptr _shift, treeptr _add):type(_type),l(_shift),r(_add){};
-    void translate(string& pyout);
+    inline void translate(string& pyout);
     ~shift_expression(){
       delete l;
       delete r;

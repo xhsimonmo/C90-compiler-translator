@@ -10,7 +10,7 @@
 class declarator : public astnode{
 public:
   declarator(treeptr _ptr, treeptr _direct_decla):ptr(_ptr), direct_decla(_direct_decla){};
-  void translate(string& pyout);
+  inline void translate(string& pyout);
   ~declarator(){
     delete ptr;
     delete direct_decla;

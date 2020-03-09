@@ -20,7 +20,7 @@ public:
 		delete san;
 		delete si;
 	}
-	void translate(string& pyout);
+	inline void translate(string& pyout);
 private:
 	int type;
 	treeptr yi = NULL;

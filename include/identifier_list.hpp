@@ -13,7 +13,7 @@ public:
   identifier_list(treeptr o, string _id){ptr = o; id = _id;}
   identifier_list(string _id){id = _id;}
   ~identifier_list(){delete ptr; }
-  void translate(string& pyout);
+  inline void translate(string& pyout);
 private:
   treeptr ptr;
   string id;

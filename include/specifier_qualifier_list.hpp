@@ -9,7 +9,7 @@
 class specifier_qualifier_list : public astnode{
 public:
   specifier_qualifier_list(treeptr _spec, treeptr _list):spec(_spec),list(_list){};
-  void translate(string& pyout);
+  inline void translate(string& pyout);
   ~specifier_qualifier_list(){
     delete spec;
     delete list;
