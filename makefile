@@ -16,11 +16,11 @@ bin/c_compiler : src/c_compiler.o src/parser.tab.o src/lexer.yy.o src/parser.tab
 	g++ $(CPPFLAGS) -o bin/c_compiler $^
 
 
-# src/c_compiler.o : src/c_compiler.cpp
-# 	g++ $(CPPFLAGS) -c -o src/c_compiler.o $^
+#src/c_compiler.o : src/c_compiler.cpp
+	g++ $(CPPFLAGS) -c -o src/c_compiler.o $^
 
-# include/%.o : include/%.cpp
-# 	$(CC) $(CPPFLAGS) -c $< -o $@
+#include/%.o : include/%.cpp
+	$(CC) $(CPPFLAGS) -c $< -o $@
 
 clean :
 	rm -f src/*.tab.cpp

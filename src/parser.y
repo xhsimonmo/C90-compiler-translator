@@ -448,7 +448,7 @@ external_declaration
 	: function_definition        {$$ = $1;}
 	| declaration                {$$ = $1;}/*global variable???*/
 	;
-  
+
 function_definition
 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
 	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
