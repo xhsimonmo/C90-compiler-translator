@@ -1077,17 +1077,17 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 59 "src/lexer.flex"
-{ yylval.str = new std::string(yytext); return(CONSTANT); }    /*hex character constants*/
+{ yylval.str = new std::string(yytext); printf("get a type?! 1");return(CONSTANT); }    /*hex character constants*/
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 60 "src/lexer.flex"
-{ yylval.str = new std::string(yytext); return(CONSTANT); }
+{ yylval.str = new std::string(yytext); printf("get a type?! 2"); return(CONSTANT); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 61 "src/lexer.flex"
-{ yylval.str = new std::string(yytext); return(CONSTANT); }
+{ yylval.str = new std::string(yytext); printf("get a type?! 3");return(CONSTANT); }
 	YY_BREAK
 case 38:
 /* rule 38 can match eol */
