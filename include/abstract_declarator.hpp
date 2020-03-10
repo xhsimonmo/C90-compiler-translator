@@ -21,7 +21,9 @@ private:
 };
 
 void abstract_declarator::translate(string& pyout){
+    debug(cname);
     NotImplemented();
 }
+
 
 #endif

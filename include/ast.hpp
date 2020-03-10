@@ -17,6 +17,7 @@ extern int indentation ;//specify number of tab/"/t"
 extern vector<string> global_variables;
 class astnode;
 inline void NotImplemented();
+inline void debug(string classname);
 inline string indent(string& source);
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
@@ -84,12 +85,12 @@ extern string indent(string& source) //PLEASE WORK PLEASE
   return source;
 }
 
-extern void NotImplemented(){
+void NotImplemented(){
   std::cerr << "Not Implemented." << '\n';//for function not needed to Implement
 }
 
-extern void debug(string typename){
-  std::cerr << "the name of the current class is: " << typename <<  '\n';
+ void debug(string classname){
+  std::cerr << "the name of the current class is: " << classname <<  '\n';
 }
 
 ////////////////////////////MIPS////////////////////////////////
