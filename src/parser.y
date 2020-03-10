@@ -185,36 +185,36 @@ expression
 	;
 
 constant_expression
-	: conditional_expression   {$$ = $1;} // what is this for?
+	: conditional_expression   {$$ = $1; std::cout << "constant_expression 0" << std::endl;} // what is this for?
 	;
 
 declaration
-	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << " at the third top, declaration 1 " << std::endl;}
-	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << " at the third top, declaration 2 " << std::endl;}
+	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << "declaration 0 " << std::endl;}
+	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << "declaration 1 " << std::endl;}
 	;
 
 declaration_specifiers
-	: storage_class_specifier    {$$ = $1;std::cout << "declaration spe 1" << std::endl;}
-	| storage_class_specifier declaration_specifiers   {$$ = new declaration_specifiers($1,$2);std::cout << "declaration spe 2" << std::endl;}
-	| type_specifier   {$$ = $1;std::cout << "declaration spe 3" << std::endl;}
-	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);std::cout << "declaration spe 4" << std::endl;}
+	: storage_class_specifier    {$$ = $1;std::cout << "declaration_specifiers 0" << std::endl;}
+	| storage_class_specifier declaration_specifiers   {$$ = new declaration_specifiers($1,$2);std::cout << "declaration_specifiers 1" << std::endl;}
+	| type_specifier   {$$ = $1;std::cout << "declaration_specifiers 2" << std::endl;}
+	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);std::cout << "declaration_specifiers 3" << std::endl;}
 	//| type_qualifier
 	//| type_qualifier declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator   {$$ = $1;}
-	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$3);}
+	: init_declarator   {$$ = $1; std::cout << "init_declarator_list 0 " << std::endl;}
+	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$3); std::cout << "init_declarator_list 1" << std::endl;}
 	;
 
 init_declarator
-	: declarator   {$$ = $1;}
-	| declarator '=' initializer   {$$ = new init_declarator($1,$3);}
+	: declarator   {$$ = $1; std::cout << "init_declarator 0 " << std::endl;}
+	| declarator '=' initializer   {$$ = new init_declarator($1,$3);  std::cout << "init_declarator 1" << std::endl;}
 	;
 
 storage_class_specifier
-	: TYPEDEF  {$$ = new storage_class_specifier(0);}
-	| EXTERN   {$$ = new storage_class_specifier(1);}
+	: TYPEDEF  {$$ = new storage_class_specifier(0); std::cout << "storage_class_specifier typedef 0 " << std::endl;}
+	| EXTERN   {$$ = new storage_class_specifier(1);  std::cout << "storage_class_specifier typedef 1 " << std::endl;}
 //	| STATIC
 //	| AUTO
 //	| REGISTER
@@ -225,11 +225,11 @@ type_specifier
 	| CHAR   {$$ = new type_specifier(1); std::cout << "type_specifier char" << std::endl;}
 	| SHORT   {$$ = new type_specifier(2); std::cout << "type_specifier short" << std::endl;}
 	| INT   {$$ = new type_specifier(3); std::cout << "type_specifier int" << std::endl;}
-	| LONG   {$$ = new type_specifier(4); std::cout << "type_specifier 5" << std::endl;}
-	| FLOAT   {$$ = new type_specifier(5); std::cout << "type_specifier 6" << std::endl;}
-	| DOUBLE   {$$ = new type_specifier(6); std::cout << "type_specifier 7" << std::endl;}
-	| SIGNED   {$$ = new type_specifier(7); std::cout << "type_specifier 8" << std::endl;}
-	| UNSIGNED   {$$ = new type_specifier(8);}
+	| LONG   {$$ = new type_specifier(4); std::cout << "type_specifier long 5" << std::endl;}
+	| FLOAT   {$$ = new type_specifier(5); std::cout << "type_specifier float 6" << std::endl;}
+	| DOUBLE   {$$ = new type_specifier(6); std::cout << "type_specifier double 7" << std::endl;}
+	| SIGNED   {$$ = new type_specifier(7); std::cout << "type_specifier signed 8" << std::endl;}
+	| UNSIGNED   {$$ = new type_specifier(8); std::cout << "type_specifier signed unsigned 9" << std::endl;}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
 //	| enum_specifier   {$$ = new type_specifier("ENUM");}
 	| TYPE_NAME   {$$ = new type_specifier(9);}
@@ -257,8 +257,8 @@ struct_declaration
 /////////////////////////////////struct ////////////////////////////////////////////////
 
 specifier_qualifier_list
-	: type_specifier specifier_qualifier_list {$$ = new specifier_qualifier_list($1,$2);}
-	| type_specifier  {$$ = $1;}
+	: type_specifier specifier_qualifier_list {$$ = new specifier_qualifier_list($1,$2); std::cout << "specifier_qualifier_list 0" << std::endl;}
+	| type_specifier  {$$ = $1;  std::cout << "specifier_qualifier_list 1" << std::endl;}
 	//| type_qualifier specifier_qualifier_list
 	//| type_qualifier
 	;
@@ -298,23 +298,23 @@ enumerator
  /////////////////////////////////struct && enum////////////////////////////////////////////////
 
 declarator
-	: pointer direct_declarator  {$$ = new declarator($1, $2);}
-	| direct_declarator    {$$ = $1;}
+	: pointer direct_declarator  {$$ = new declarator($1, $2);  std::cout << "declarator 0" << std::endl;}
+	| direct_declarator    {$$ = $1;  std::cout << "declarator 1" << std::endl;}
 	;
 
 direct_declarator
-	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);std::cout << "IDENTIFIER in direct_declarator: " << *$1 <<std::endl; }
-	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
-	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
-	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
-	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);}
-	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);}
-	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);}
+	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);std::cout << "direct_declarator 0,IDENTIFIER : " << *$1 <<std::endl; }
+	| '(' declarator ')'  {$$ = new direct_declarator(1,$2); std::cout << "direct_declarator 1" << std::endl;}
+	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);  std::cout << "direct_declarator 2" << std::endl;}
+	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);  std::cout << "direct_declarator 3" << std::endl;}
+	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);  std::cout << "direct_declarator 4" << std::endl;}
+	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);  std::cout << "direct_declarator 5" << std::endl;}
+	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);  std::cout << "direct_declarator 6" << std::endl;}
 
 pointer
-	: '*' {$$ = new pointer(0);}
+	: '*' {$$ = new pointer(0); std::cout << "pointer 0" << std::endl;}
 	//| '*' type_qualifier_list
-	| '*' pointer   {$$ = new pointer(1, $2);}
+	| '*' pointer   {$$ = new pointer(1, $2); std::cout << "pointer 1" << std::endl;}
 	//| '*' type_qualifier_list pointer
 	;
 
@@ -325,24 +325,24 @@ pointer
 
 
 parameter_type_list
-	: parameter_list                   {$$ = $1;}
+	: parameter_list                   {$$ = $1; std::cout << "parameter_type_list 0" << std::endl;}
 /*	| parameter_list ',' ELLIPSIS */
 	;
 
 parameter_list
-	: parameter_declaration                        {$$ = $1;}
-	| parameter_list ',' parameter_declaration     {$$ = new parameter_list($1, $3);}
+	: parameter_declaration                        {$$ = $1; std::cout << "parameter_list 0" << std::endl; }
+	| parameter_list ',' parameter_declaration     {$$ = new parameter_list($1, $3); std::cout << "parameter_list 1" << std::endl;}
 	;
 
 parameter_declaration
-	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2);}
-	| declaration_specifiers abstract_declarator    {$$ = new parameter_declaration(1, $1, $2);}
-	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declaration(2, $1);} /*TODO what does this do */
+	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2); std::cout << "parameter_declaration 0" << std::endl; }
+	| declaration_specifiers abstract_declarator    {$$ = new parameter_declaration(1, $1, $2); std::cout << "parameter_declaration 1" << std::endl; }
+	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declaration(2, $1); std::cout << "parameter_declaration 2" << std::endl;  } /*TODO what does this do */
 	;
 
 identifier_list
-	: IDENTIFIER                                     {$$ = new identifier_list(*$1);std::cout << "identifier is here !" << std::endl;}
-	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3);}
+	: IDENTIFIER                                     {$$ = new identifier_list(*$1);std::cout << "identifier_list 0; an IDENTIFIER: " << *$1 <<  std::endl;}
+	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3); std::cout << "identifier_list 1; an IDENTIFIER: " << *$1 <<  std::endl;}
 	;
 
 type_name
