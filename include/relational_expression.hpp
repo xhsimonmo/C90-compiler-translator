@@ -20,9 +20,11 @@ private:
   int type;
   treeptr ptr;
   treeptr opt;
+  string cname = "relational_expression";
 };
 
 void relational_expression::translate(string& pyout){
+debug(cname);
 std::string op;
 ptr->translate(pyout);
 opt->translate(op);

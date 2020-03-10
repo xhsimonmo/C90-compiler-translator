@@ -23,10 +23,12 @@ class multiplicative_expression : public expression{
     int type;
     treeptr mul;
     treeptr cast;
+    string cname = "multiplicative_expression";
 };
 
 void multiplicative_expression::translate(string& pyout)
 {
+  debug(cname);
   string ls, rs;
   mul -> translate(ls);
   cast -> translate(rs);
@@ -70,10 +72,12 @@ class additive_expression : public expression{
   private:
     int type;
     treeptr add, mul;
+    string cname = "additive_expression";
 };
 
 void additive_expression:: translate(string& pyout)
 {
+  debug(cname);
   string ls, rs;
   add -> translate(ls);
   mul -> translate(rs);
@@ -113,10 +117,12 @@ class shift_expression : public expression{
     int type;
     treeptr l = NULL;
     treeptr r = NULL;
+    string cname = "shift_expression";
 };
 
 void shift_expression:: translate(string& pyout)
 {
+  debug(cname);
   string ls, rs;
   l -> translate(ls);
   r -> translate(rs);

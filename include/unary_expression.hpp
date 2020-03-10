@@ -21,9 +21,11 @@ public:
 private:
   int type;
   treeptr ptr;
+  string cname = "unary_expression";
 };
 
 inline void unary_expression::translate(string& pyout){
+  debug(cname);
   switch (type)
   {
     case 0:

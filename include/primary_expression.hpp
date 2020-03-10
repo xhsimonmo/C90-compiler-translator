@@ -23,10 +23,12 @@ private:
   int type;
   string element;//either IDENTIFIER, CONSTANT, OR STRING_LITERAL
   treeptr expre_ptr;//the case (expression)
+  string cname = "primary_expression";
 };
 
 void primary_expression::translate(string& pyout)
 {
+  debug(cname);
   switch(type){
     case 0:
       pyout = element;

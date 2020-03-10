@@ -16,9 +16,11 @@ public:
 private:
   treeptr left;
   treeptr right;
+  string cname = "type_name";
 };
 
 void type_name::translate(string& pyout){
+    debug(cname);
     NotImplemented();
   }
 

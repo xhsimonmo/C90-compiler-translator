@@ -19,9 +19,11 @@ private:
   int type;
   treeptr left = NULL;
   treeptr right = NULL;
+  string cname = "parameter_declaration";
 };
 
 void parameter_declaration::translate(string& pyout){
+  debug(cname);
   string yi;
   string er;
   left -> translate(yi);

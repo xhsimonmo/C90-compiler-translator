@@ -18,10 +18,12 @@ public:
   }
 private:
   treeptr l, r;
+  string cname = "statement_list";
 };
 
 void statement_list::translate(string& pyout)
 {
+  debug(cname);
   string ls, rs;
   l -> translate(ls);
   r -> translate(rs);

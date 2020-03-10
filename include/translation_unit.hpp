@@ -11,9 +11,11 @@ public:
 private:
   treeptr p_yi;
   treeptr p_er;
+  string cname = "translation_unit";
 };
 
 void translation_unit::translate(string& pyout){
+  debug(cname);
   std::cout << "In translation unit->translate " << std::endl;
   string unit;
   string declaration;

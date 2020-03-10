@@ -16,9 +16,11 @@ public:
 private:
   treeptr left;
   treeptr right;
+  string cname = "parameter_list";
 };
 
 void parameter_list::translate(string& pyout){
+  debug(cname);
   string yi;
   string er;
   left -> translate(yi);
