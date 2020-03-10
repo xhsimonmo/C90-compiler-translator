@@ -9,7 +9,7 @@
 using std::string;
 using std::vector;
 
-inline int indentation = 0;//specify number of tab/"/t"
+extern int indentation ;//specify number of tab/"/t"
 
 
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add

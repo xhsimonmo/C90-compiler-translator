@@ -189,8 +189,8 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';'  {$$ = new declaration($1);}
-	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);}
+	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << " at the third top, declaration 1 " << std::endl;}
+	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << " at the third top, declaration 2 " << std::endl;}
 	;
 
 declaration_specifiers
@@ -445,14 +445,14 @@ translation_unit
 	;
 
 external_declaration
-	: function_definition        {$$ = $1;}
-	| declaration                {$$ = $1;}/*global variable???*/
+	: function_definition        {$$ = $1;std::cout << " at the second top" << std::endl;}
+	| declaration                {$$ = $1;;std::cout << " at the second top" << std::endl;}/*global variable???*/
 	;
 
 function_definition
 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
-	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);}
-  | declarator compound_statement                                          {$$ = new function_definition($1, $2);}
+	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);std::cout << " at the third top" << std::endl;}
+  | declarator compound_statement                                          {$$ = new function_definition($1, $2);std::cout << " at the third top" << std::endl;}
 	/*| declarator declaration_list compound_statement                      喵喵喵*/
 	;
 

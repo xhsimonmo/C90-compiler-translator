@@ -17,6 +17,7 @@ void translation_unit::translate(string& pyout){
   std::cout << "In translation unit->translate " << std::endl;
   string unit;
   string declaration;
+  std::cout << "inside translation unit" << '\n';
   p_yi->translate(unit);
   p_er->translate(declaration);
 
