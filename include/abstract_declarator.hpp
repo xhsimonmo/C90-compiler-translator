@@ -17,6 +17,7 @@ public:
 private:
   treeptr left;
   treeptr right;
+  string cname = "abstract_declarator";
 };
 
 void abstract_declarator::translate(string& pyout){
