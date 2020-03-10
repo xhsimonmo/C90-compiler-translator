@@ -161,8 +161,8 @@ conditional_expression
 	;
 
 assignment_expression
-	: conditional_expression                                             {$$ = $1;}
-	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3);}
+	: conditional_expression                                             {$$ = $1; std::cout << " assignment_expression 1 " << std::endl;}
+	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3); std::cout << " assignment_expression 2 " << std::endl;}
 	;
 
 assignment_operator
@@ -303,7 +303,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);}
+	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);std::cout << "IDENTIFIER in direct_declarator: " << *$1 <<std::endl; }
 	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
 	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
 	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
@@ -370,7 +370,7 @@ direct_abstract_declarator
 	;
 
 initializer
-	: assignment_expression                  {$$ = $1;}
+	: assignment_expression                  {$$ = $1; }
 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
 	;
