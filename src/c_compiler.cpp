@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <string.h>
 //using namespace std;
 
 //bin/c_compiler --translate a.c -o a.py
@@ -21,18 +22,20 @@ int main(int argc, char *argv[]){
   //csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
   //string filename = argv[2];
   yyin = fopen(argv[2], "r");
-  std::cout << "arg2 is " << argv[2] <<'\n';
   const astnode* root = parseAST();
   std::ofstream pyfile;//output ...py
   pyfile.open(argv[4]);
+  std::cout << "arg1 " <<argv[1] <<  '\n';
 
-  if(argv[1] == "--translate"){
+  if(strcmp(argv[1], "--translate") == 0 ){
     std::cerr << "translator begin" << '\n';
     int indentation = 0;
-    string pyout;
+    std::string pyout;
+    std::cout << "enter ast tree" << '\n';
     root -> translate(pyout);
-    string addmain;
-    addmain = "\nif __name__ == \"__main__\":\nimport sys\nret=main()\nsys.exit(ret)"; // include in every python file to invoke main
+    std::string addmain;
+    addmain = "\nif __name__ == \"__main__\":\n\timport sys\n\tret=main()\n\tsys.exit(ret)"; // include in every python file to invoke main
+    std::cout << addmain << '\n';
     //pyout = pyout + addmain;
     pyout.append(addmain);
     pyfile << pyout;
