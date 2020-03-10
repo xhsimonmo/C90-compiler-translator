@@ -9,7 +9,8 @@
 using std::string;
 using std::vector;
 
-extern int indentation;//specify number of tab/"/t"
+inline int indentation = 0;//specify number of tab/"/t"
+
 
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
 //it will change dynamically during parsing
@@ -19,7 +20,6 @@ inline void NotImplemented();
 inline string indent(string& source);
 // typedef std::shared_ptr<astnode> treeptr;
 typedef astnode* treeptr;
-
 
 class astnode{
 public:
@@ -89,12 +89,5 @@ extern void NotImplemented(){
 
 
 ////////////////////////////MIPS////////////////////////////////
-
-
-
-
-
-
-
 
 #endif

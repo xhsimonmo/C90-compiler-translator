@@ -341,12 +341,12 @@ parameter_declaration
 	;
 
 identifier_list
-	: IDENTIFIER                                     {$$ = new identifier_list(*$1);}
+	: IDENTIFIER                                     {$$ = new identifier_list(*$1);std::cout << "identifier is here !" << std::endl;}
 	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3);}
 	;
 
 type_name
-	: specifier_qualifier_list                       {$$ = $1;}
+	: specifier_qualifier_list                       {$$ = $1;std::cout << "type name" << std::endl;}
 	| specifier_qualifier_list abstract_declarator   {$$ = new type_name($1, $2);}
 	;
 
@@ -440,8 +440,8 @@ jump_statement
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {$$ = $1;}
-	| translation_unit external_declaration    {$$ = new translation_unit($1, $2);}
+	: external_declaration                     {$$ = $1;std::cout << " at the top" << std::endl;}
+	| translation_unit external_declaration    {$$ = new translation_unit($1, $2);std::cout << "at the top" << std::endl;}
 	;
 
 external_declaration

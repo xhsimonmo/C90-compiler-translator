@@ -15,6 +15,7 @@ IS            (u|U|l|L)*
 void count();
 void comment();
 int check_type();
+void output();
 %}
 
 %%
@@ -36,7 +37,7 @@ int check_type();
 "for"            { /*count();*/ return(FOR); }
 "goto"            { /*count();*/ return(GOTO); }
 "if"            { /*count();*/ return(IF); }
-"int"            { /*count();*/ return(INT); }
+"int"            { /*count();*/ output(); return(INT); }
 "long"            { /*count();*/ return(LONG); }
 "register"        { /*count();*/ return(REGISTER); }
 "return"        { /*count();*/ return(RETURN); }
@@ -53,7 +54,7 @@ int check_type();
 "volatile"        { /*count();*/ return(VOLATILE); }
 "while"            { /*count();*/ return(WHILE); }
 
-{L}({L}|{D})*        { yylval.str = new std::string(yytext); return(check_type()); } /*identifier(name)*/
+{L}({L}|{D})*        { yylval.str = new std::string(yytext); printf("get a type?!"); return(check_type()); } /*identifier(name)*/
 
 0[xX]{H}+{IS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }    /*hex character constants*/
 0{D}+{IS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }
@@ -123,6 +124,10 @@ L?\"(\\.|[^\\"])*\"    { yylval.str = new std::string(yytext); return(STRING_LIT
     return(1);
 } */
 
+void output()
+{
+  printf("received an int!");
+}
 
 void comment()
 {
