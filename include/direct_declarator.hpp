@@ -27,9 +27,11 @@ private:
   int type;
   treeptr one = NULL;
   treeptr two = NULL;
+  string cname = "direct_declarator";
 };
 
 void direct_declarator::translate(string& pyout){
+  debug(cname);
   string ls, rs;
   switch (type) {
     case 0:

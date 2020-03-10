@@ -17,9 +17,11 @@ public:
 private:
   treeptr ptr;
   string id;
+  string cname = "identifier_list";
 };
 
 void identifier_list::translate(string& pyout){
+  debug(cname);
     NotImplemented();
   }
 

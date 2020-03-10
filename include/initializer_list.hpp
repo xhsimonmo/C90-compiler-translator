@@ -18,9 +18,11 @@ private:
   int type;
   treeptr left;
   treeptr right;
+  string cname = "initializer_list";
 };
 
 void initializer_list::translate(string& pyout){
+  debug(cname);
   string l;
   string r;
   left->translate(l);

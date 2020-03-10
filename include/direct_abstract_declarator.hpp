@@ -26,9 +26,11 @@ private:
   int type;
   treeptr left = NULL;
   treeptr right = NULL;
+  string cname = "direct_abstract_declarator";
 };
 
 void direct_abstract_declarator::translate(string& pyout){
+  debug(cname);
   NotImplemented();
 }
 

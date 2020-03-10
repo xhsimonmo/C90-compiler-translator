@@ -20,11 +20,13 @@ public:
 private:
   treeptr spec = NULL;
   treeptr lt = NULL;
+  string cname = "declaration";
 };
 
 
 void declaration::translate(string& pyout, vector<string> global_variables)
 {
+  debug(cname);
   if(lt == NULL)
   {
     spec-> translate(pyout);

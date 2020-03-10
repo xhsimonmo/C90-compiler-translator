@@ -18,10 +18,12 @@ private:
   int type;
   treeptr ptr;
   treeptr opt;
+  string cname = "cast_expression";
 };
 
 void cast_expression::translate(string& pyout){
-std::string op;
+      debug(cname);
+  std::string op;
   switch (type)
   {
     case 0:

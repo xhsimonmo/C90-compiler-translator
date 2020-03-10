@@ -17,9 +17,11 @@ private:
   treeptr p_one;
   treeptr p_three;
   treeptr p_five;
+  string cname = "conditional_expression";
 };
 
 void conditional_expression::translate(string& pyout){
+  debug(cname);
   NotImplemented();
 }
 

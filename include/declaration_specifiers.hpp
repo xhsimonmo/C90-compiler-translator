@@ -19,9 +19,11 @@ public:
 private:
   treeptr one = NULL;
   treeptr two = NULL;
+  string cname = "declaration_specifiers";
 };
 
 void declaration_specifiers::translate(string& pyout){
+  debug(cname);
 
   //for struct, skip for translation
   //translation would not be requied here

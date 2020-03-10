@@ -25,10 +25,12 @@ private:
   int type;
   treeptr left = NULL;//either statement_list or declaration_list
   treeptr right = NULL;//statement_list in type 3
+  string cname = "compound_statement";
 };
 
 
 void compound_statement::translate(string& pyout){
+  debug(cname);
   string ds, ss;
   switch (type) {
     case 0:

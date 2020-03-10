@@ -18,9 +18,11 @@ public:
 private:
   treeptr one = NULL;
   treeptr two = NULL;
+  string cname = "init_declarator_list";
 };
 
 void init_declarator_list::translate(string& pyout){
+  debug(cname);
   string s1, s2;
   one-> translate(s1);
   two -> translate(s2);

@@ -31,9 +31,11 @@ private:
   int type;
   treeptr p_one;
   treeptr p_five;
+  string cname = "assignment_expression";
 };
 
 void assignment_expression::translate(string& pyout){
+  debug(cname);
   string one;
   string five;
   p_one->translate(one);

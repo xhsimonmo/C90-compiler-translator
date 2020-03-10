@@ -22,10 +22,11 @@ private:
   treeptr p_o;
   treeptr p_t;
   treeptr p_f;
+  string cname = "function_definition";
 };
 
  void function_definition::translate(string& pyout, vector<string> global_variables){
-
+  debug(cname);
   string specify;
   string declarator;
   string statement;

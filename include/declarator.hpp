@@ -18,10 +18,12 @@ public:
 private:
   treeptr ptr = NULL;
   treeptr direct_decla = NULL;
+  string cname = "declarator";
 };
 
 void declarator :: translate(string& pyout){
-  std::cout << "declarator translate" << '\n';
+  debug(cname);
+  //std::cout << "declarator translate" << '\n';
   //skip for translation
 }
 

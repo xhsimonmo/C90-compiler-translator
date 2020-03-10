@@ -17,9 +17,11 @@ public:
 private:
   int type;
   treeptr p;
+  string cname = "initializer";
 };
 
 void initializer::translate(string& pyout){
+    debug(cname);
     NotImplemented();
   }
 

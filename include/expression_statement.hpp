@@ -18,9 +18,11 @@ class expression_statement : public statement{
  private:
   int type;
   treeptr ptr_expr = NULL;
+  string cname = "express_statement";
 };
 
 void expression_statement::translate(string& pyout){
+  debug(cname);
   //string tmp;
   if(ptr_expr != NULL)
   {

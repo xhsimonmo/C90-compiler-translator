@@ -69,7 +69,7 @@ private:
 };
 
 
-extern string indent(string& source) //PLEASE WORK PLEASE
+inline string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
   int indentation;
   char delimiter = '/t';

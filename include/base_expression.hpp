@@ -12,9 +12,11 @@ private:
   int type;
   treeptr p_one;
   treeptr p_five;
+  string cname = "base_expression";
 };
 
 void base_expression::translate(string& pyout){
+  debug(cname);
   string one;
   string five;
   p_one->translate(one);
