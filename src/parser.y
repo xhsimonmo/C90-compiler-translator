@@ -346,8 +346,8 @@ identifier_list
 	;
 
 type_name
-	: specifier_qualifier_list                       {$$ = $1;std::cout << "type name" << std::endl;}
-	| specifier_qualifier_list abstract_declarator   {$$ = new type_name($1, $2);}
+	: specifier_qualifier_list                       {$$ = $1;std::cout << "type name 1" << std::endl;}
+	| specifier_qualifier_list abstract_declarator   {$$ = new type_name($1, $2);std::cout << "type name 2" << std::endl;}
 	;
 
 abstract_declarator
@@ -482,7 +482,7 @@ char *s;
 
  const astnode* parseAST(void){
   //std::cout << "parseast" << std::endl;
-  g_root= NULL;
+  g_root= 0;
   yyparse();
   return g_root;
 }
