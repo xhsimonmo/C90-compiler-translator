@@ -14,6 +14,7 @@ private:
 };
 
 void translation_unit::translate(string& pyout){
+  std::cout << "In translation unit->translate " << std::endl;
   string unit;
   string declaration;
   p_yi->translate(unit);
