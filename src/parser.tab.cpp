@@ -2187,37 +2187,37 @@ yyreduce:
 
   case 76:
 #line 192 "src/parser.y"
-                                      {(yyval.expr) = new declaration((yyvsp[-1].expr));}
+                                      {(yyval.expr) = new declaration((yyvsp[-1].expr));std::cout << "declaration 1" << std::endl;}
 #line 2192 "src/parser.tab.cpp"
     break;
 
   case 77:
 #line 193 "src/parser.y"
-                                                           {(yyval.expr) = new declaration((yyvsp[-2].expr), (yyvsp[-1].expr));}
+                                                           {(yyval.expr) = new declaration((yyvsp[-2].expr), (yyvsp[-1].expr));std::cout << "declaration 2" << std::endl;}
 #line 2198 "src/parser.tab.cpp"
     break;
 
   case 78:
 #line 197 "src/parser.y"
-                                     {(yyval.expr) = (yyvsp[0].expr);}
+                                     {(yyval.expr) = (yyvsp[0].expr);std::cout << "declaration spe 1" << std::endl;}
 #line 2204 "src/parser.tab.cpp"
     break;
 
   case 79:
 #line 198 "src/parser.y"
-                                                           {(yyval.expr) = new declaration_specifiers((yyvsp[-1].expr),(yyvsp[0].expr));}
+                                                           {(yyval.expr) = new declaration_specifiers((yyvsp[-1].expr),(yyvsp[0].expr));std::cout << "declaration spe 2" << std::endl;}
 #line 2210 "src/parser.tab.cpp"
     break;
 
   case 80:
 #line 199 "src/parser.y"
-                           {(yyval.expr) = (yyvsp[0].expr);}
+                           {(yyval.expr) = (yyvsp[0].expr);std::cout << "declaration spe 3" << std::endl;}
 #line 2216 "src/parser.tab.cpp"
     break;
 
   case 81:
 #line 200 "src/parser.y"
-                                                   {(yyval.expr) = new declaration_specifiers((yyvsp[-1].expr),(yyvsp[0].expr));}
+                                                   {(yyval.expr) = new declaration_specifiers((yyvsp[-1].expr),(yyvsp[0].expr));std::cout << "declaration spe 4" << std::endl;}
 #line 2222 "src/parser.tab.cpp"
     break;
 
@@ -2259,49 +2259,49 @@ yyreduce:
 
   case 88:
 #line 224 "src/parser.y"
-                 {(yyval.expr) = new type_specifier(0);}
+                 {(yyval.expr) = new type_specifier(0); std::cout << "type_specifier void" << std::endl;}
 #line 2264 "src/parser.tab.cpp"
     break;
 
   case 89:
 #line 225 "src/parser.y"
-                 {(yyval.expr) = new type_specifier(1);}
+                 {(yyval.expr) = new type_specifier(1); std::cout << "type_specifier char" << std::endl;}
 #line 2270 "src/parser.tab.cpp"
     break;
 
   case 90:
 #line 226 "src/parser.y"
-                  {(yyval.expr) = new type_specifier(2);}
+                  {(yyval.expr) = new type_specifier(2); std::cout << "type_specifier short" << std::endl;}
 #line 2276 "src/parser.tab.cpp"
     break;
 
   case 91:
 #line 227 "src/parser.y"
-                {(yyval.expr) = new type_specifier(3);}
+                {(yyval.expr) = new type_specifier(3); std::cout << "type_specifier int" << std::endl;}
 #line 2282 "src/parser.tab.cpp"
     break;
 
   case 92:
 #line 228 "src/parser.y"
-                 {(yyval.expr) = new type_specifier(4);}
+                 {(yyval.expr) = new type_specifier(4); std::cout << "type_specifier 5" << std::endl;}
 #line 2288 "src/parser.tab.cpp"
     break;
 
   case 93:
 #line 229 "src/parser.y"
-                  {(yyval.expr) = new type_specifier(5);}
+                  {(yyval.expr) = new type_specifier(5); std::cout << "type_specifier 6" << std::endl;}
 #line 2294 "src/parser.tab.cpp"
     break;
 
   case 94:
 #line 230 "src/parser.y"
-                   {(yyval.expr) = new type_specifier(6);}
+                   {(yyval.expr) = new type_specifier(6); std::cout << "type_specifier 7" << std::endl;}
 #line 2300 "src/parser.tab.cpp"
     break;
 
   case 95:
 #line 231 "src/parser.y"
-                   {(yyval.expr) = new type_specifier(7);}
+                   {(yyval.expr) = new type_specifier(7); std::cout << "type_specifier 8" << std::endl;}
 #line 2306 "src/parser.tab.cpp"
     break;
 
@@ -2733,31 +2733,31 @@ yyreduce:
 
   case 169:
 #line 444 "src/parser.y"
-                                                   {(yyval.expr) = new translation_unit((yyvsp[-1].expr), (yyvsp[0].expr));std::cout << "at the top" << std::endl;}
+                                                   {std::cout << "at the top" << std::endl;(yyval.expr) = new translation_unit((yyvsp[-1].expr), (yyvsp[0].expr));}
 #line 2738 "src/parser.tab.cpp"
     break;
 
   case 170:
 #line 448 "src/parser.y"
-                                     {(yyval.expr) = (yyvsp[0].expr);}
+                                     {(yyval.expr) = (yyvsp[0].expr);std::cout << "external decl 1" << std::endl;}
 #line 2744 "src/parser.tab.cpp"
     break;
 
   case 171:
 #line 449 "src/parser.y"
-                                     {(yyval.expr) = (yyvsp[0].expr);}
+                                     {(yyval.expr) = (yyvsp[0].expr);std::cout << "external decl 2" << std::endl;}
 #line 2750 "src/parser.tab.cpp"
     break;
 
   case 172:
 #line 454 "src/parser.y"
-                                                                                 {(yyval.expr) = new function_definition((yyvsp[-2].expr), (yyvsp[-1].expr), (yyvsp[0].expr));}
+                                                                                 {std::cout << "function def 1" << std::endl;(yyval.expr) = new function_definition((yyvsp[-2].expr), (yyvsp[-1].expr), (yyvsp[0].expr));}
 #line 2756 "src/parser.tab.cpp"
     break;
 
   case 173:
 #line 455 "src/parser.y"
-                                                                           {(yyval.expr) = new function_definition((yyvsp[-1].expr), (yyvsp[0].expr));}
+                                                                           {std::cout << "function def 2" << std::endl;(yyval.expr) = new function_definition((yyvsp[-1].expr), (yyvsp[0].expr));}
 #line 2762 "src/parser.tab.cpp"
     break;
 
@@ -3020,6 +3020,7 @@ char *s;
 
 
  const astnode* parseAST(void){
+  std::cout << "!!!!!!!in parse AST!!!!!!!1" << std::endl;
   g_root= NULL;
   yyparse();
   return g_root;
