@@ -31,7 +31,7 @@ public:
   //virtual void translate() = 0;//translator
   virtual void compile(string& mpout)const{};//compiler
   //~astnode();
-  const int testpoint()const{return 2;};
+  const int testpoint()const{return 2;}
 private:
   //vector<treeptr> branches;
 
