@@ -40,6 +40,7 @@
 #include "type_specifier.hpp"
 #include "initializer.hpp"
 #include "unary_expression.hpp"
+#include "declaration_list.hpp"
 
 extern  astnode * parseAST();
 // extern FILE *yyin; // pointer to input stream
