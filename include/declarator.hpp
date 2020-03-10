@@ -21,6 +21,7 @@ private:
 };
 
 void declarator :: translate(string& pyout){
+  std::cout << "declarator translate" << '\n';
   //skip for translation
 }
 

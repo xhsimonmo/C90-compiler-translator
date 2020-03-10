@@ -189,8 +189,8 @@ constant_expression
 	;
 
 declaration
-	: declaration_specifiers ';'  {$$ = new declaration($1);std::cout << "declaration 1" << std::endl;}
-	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << "declaration 2" << std::endl;}
+	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << " at the third top, declaration 1 " << std::endl;}
+	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << " at the third top, declaration 2 " << std::endl;}
 	;
 
 declaration_specifiers
