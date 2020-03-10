@@ -14,9 +14,11 @@ public:
   inline void translate(string& pysource);
 private:
   int type;
+  string cname = "storage_class_specifier";
 };
 
 void storage_class_specifier::translate(string& pyout){
+  debug(cname);
   NotImplemented(); // e.g typedef, so on... not in python
 }
 #endif

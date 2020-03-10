@@ -24,10 +24,12 @@ private:
   int type;
   string identifier;
   treeptr expre_ptr;
+  string cname = "jump_statement";
 };
 
 void jump_statement::translate(string& pyout)
 {
+  debug(cname);
   string return_expression;
   switch (type) {
     case 4 ://return

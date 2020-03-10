@@ -27,9 +27,11 @@ private:
   string id;
   treeptr ptr;
   treeptr opt;
+  string cname = "postfix_expression";
 };
 
 void postfix_expression::translate(string& pyout){
+  debug(cname);
 std::string op;
 switch (type)
 {

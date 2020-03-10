@@ -22,9 +22,11 @@ private:
   int type;
   treeptr one = NULL;
   treeptr two = NULL;
+  string cname = "labeled_statement";
 };
 
 void labeled_statement::translate(string& pyout){
+  debug(cname);
   NotImplemented();
 }
 

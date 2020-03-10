@@ -27,9 +27,11 @@ private:
 	treeptr er = NULL;
 	treeptr san = NULL;
 	treeptr si = NULL;
+	string cname = "iteration_statement";
 };
 
 void iteration_statement::translate(string& pyout){
+	debug(cname);
 	string ones, twos, threes, fours;
 	switch (type) {
 		case 0:

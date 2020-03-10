@@ -27,11 +27,13 @@ private:
   treeptr expre_ptr = NULL;
   treeptr ifsta = NULL;
   treeptr elsesta = NULL;
+  string cname = "selection_statement";
 };
 
 
 void selection_statement::translate(string& pyout)
 {
+  debug(cname);
   string expres, ifs,elses;
   expre_ptr -> translate(expres);
   ifsta -> translate(ifs);

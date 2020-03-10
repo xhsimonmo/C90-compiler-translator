@@ -17,9 +17,11 @@ public:
 private:
   int type;
   treeptr ptr = NULL;
+  string cname = "pointer";
 };
 
 void pointer::translate(string& pyout){
+  debug(cname);
   NotImplemented();
 }
 
