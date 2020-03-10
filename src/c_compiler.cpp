@@ -6,7 +6,7 @@
 #include <string>
 //using namespace std;
 
-
+//bin/c_compiler --translate a.c -o a.py
 //bin/c_compiler -S [source-file.c] -o [dest-file.s]
 //bin/c_compiler --translate [source-file.c] -o [dest-file.py]
 
@@ -22,17 +22,17 @@ int main(int argc, char *argv[]){
   //string filename = argv[2];
   yyin = fopen(argv[2], "r");
   const astnode* root = parseAST();
-
+  std::ofstream pyfile;//output ...py
+  pyfile.open(argv[4]);
   if(argv[1] == "--translate"){
     std::cerr << "translator begin" << '\n';
-
+    int indentation = 0;
     string pyout;
     root -> translate(pyout);
     string addmain;
     addmain = "\nif __name__ == \"__main__\":\nimport sys\nret=main()\nsys.exit(ret)"; // include in every python file to invoke main
-    pyout = pyout + addmain;
-    std::ofstream pyfile;//output ...py
-    pyfile.open(argv[2]);
+    //pyout = pyout + addmain;
+    pyout.append(addmain); 
     pyfile << pyout;
 
   }
@@ -40,6 +40,7 @@ int main(int argc, char *argv[]){
 
   }
   //fclose(yyin);
+  pyfile.close();
   return 0;
 
 }

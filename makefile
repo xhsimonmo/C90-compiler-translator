@@ -1,4 +1,4 @@
-CPPFLAGS += -std=c++11 -g #-W -Wall #-g -Wno-unused-parameter
+CPPFLAGS += -std=c++17 -g #-W -Wall #-g -Wno-unused-parameter
 CPPFLAGS += -I include
 #CPPFLAGS = -W -Wall
 
@@ -17,10 +17,10 @@ bin/c_compiler : src/c_compiler.o src/parser.tab.o src/lexer.yy.o src/parser.tab
 
 
 #src/c_compiler.o : src/c_compiler.cpp
-	g++ $(CPPFLAGS) -c -o src/c_compiler.o $^
+	#g++ $(CPPFLAGS) -c -o src/c_compiler.o $^
 
 #include/%.o : include/%.cpp
-	$(CC) $(CPPFLAGS) -c $< -o $@
+	#$(CC) $(CPPFLAGS) -c $< -o $@
 
 clean :
 	rm -f src/*.tab.cpp
