@@ -42,7 +42,7 @@
 #include "unary_expression.hpp"
 #include "declaration_list.hpp"
 
-extern  astnode * parseAST();
+extern const astnode * parseAST();
 // extern FILE *yyin; // pointer to input stream
 
 #endif

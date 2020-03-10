@@ -10,7 +10,7 @@
 class declarator : public astnode{
 public:
   declarator(treeptr _ptr, treeptr _direct_decla):ptr(_ptr), direct_decla(_direct_decla){};
-  inline void translate(string& pyout);
+  inline void translate(string& pyout)const;
   ~declarator(){
     delete ptr;
     delete direct_decla;
@@ -21,7 +21,7 @@ private:
   string cname = "declarator";
 };
 
-void declarator :: translate(string& pyout){
+void declarator :: translate(string& pyout) const{
   debug(cname);
   //std::cout << "declarator translate" << '\n';
   //skip for translation

@@ -56,9 +56,9 @@ void output();
 
 {L}({L}|{D})*        { yylval.str = new std::string(yytext); printf("get a type?!"); return(check_type()); } /*identifier(name)*/
 
-0[xX]{H}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type?! 1");return(CONSTANT); }    /*hex character constants*/
-0{D}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type?! 2"); return(CONSTANT); }
-{D}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type?! 3");return(CONSTANT); }
+0[xX]{H}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type?! 1 ");return(CONSTANT); }    /*hex character constants*/
+0{D}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type?! 2 "); return(CONSTANT); }
+{D}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type?! 3 ");return(CONSTANT); }
 L?'(\\.|[^\\'])+'    { yylval.str = new std::string(yytext); return(CONSTANT); }
 
 {D}+{E}{FS}?        { yylval.str = new std::string(yytext); return(CONSTANT); }

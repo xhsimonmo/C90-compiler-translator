@@ -20,13 +20,13 @@ inline void NotImplemented();
 inline void debug(string classname);
 inline string indent(string& source);
 // typedef std::shared_ptr<astnode> treeptr;
-typedef astnode* treeptr;
+typedef const astnode* treeptr;
 
 class astnode{
 public:
   astnode(){};
   virtual void translate(string& pyout)const{};
-  virtual void translate(string& pyout, vector<string> global_variables) {};
+  virtual void translate(string& pyout, vector<string> global_variables)const {};
   //virtual compile();
   //virtual void translate() = 0;//translator
   virtual void compile(string& mpout)const{};//compiler
