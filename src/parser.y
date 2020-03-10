@@ -440,8 +440,8 @@ jump_statement
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {$$ = $1;std::cout << " at the top" << std::endl;}
-	| translation_unit external_declaration    {std::cout << "at the top" << std::endl;$$ = new translation_unit($1, $2);}
+	: external_declaration                     {$$ = $1;std::cout << " at the top 1" << std::endl;}
+	| translation_unit external_declaration    {std::cout << "at the top 2" << std::endl;$$ = new translation_unit($1, $2);}
 	;
 
 external_declaration
