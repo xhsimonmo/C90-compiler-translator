@@ -52,9 +52,9 @@
 %%
 
 primary_expression
-	: IDENTIFIER    {$$ = new primary_expression(0,*$1); std::cout << "primary expression 1" << std::endl;}
-	| CONSTANT      {$$ = new primary_expression(1,*$1); std::cout << "primary expression 2" << std::endl;}
-	| STRING_LITERAL {$$ = new primary_expression(2,*$1); std::cout << "primary expression 3" << std::endl;}
+	: IDENTIFIER    {$$ = new primary_expression(0,*$1); std::cout << "primary expression 1, which is IDENTIFIER : " <<  *$1 << std::endl;}
+	| CONSTANT      {$$ = new primary_expression(1,*$1); std::cout << "primary expression 2, which is const with value: " << *$1 <<std::endl;}
+	| STRING_LITERAL {$$ = new primary_expression(2,*$1); std::cout << "primary expression 3,  which is string literal "<< std::endl;}
 	| '(' expression ')' {$$ = new primary_expression(3,$2); std::cout << "primary expression 4" << std::endl;}
 	;
 
