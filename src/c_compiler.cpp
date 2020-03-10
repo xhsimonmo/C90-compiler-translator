@@ -21,9 +21,11 @@ int main(int argc, char *argv[]){
   //csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
   //string filename = argv[2];
   yyin = fopen(argv[2], "r");
+  std::cout << "arg2 is " << argv[2] <<'\n';
   const astnode* root = parseAST();
   std::ofstream pyfile;//output ...py
   pyfile.open(argv[4]);
+
   if(argv[1] == "--translate"){
     std::cerr << "translator begin" << '\n';
     int indentation = 0;
@@ -32,7 +34,7 @@ int main(int argc, char *argv[]){
     string addmain;
     addmain = "\nif __name__ == \"__main__\":\nimport sys\nret=main()\nsys.exit(ret)"; // include in every python file to invoke main
     //pyout = pyout + addmain;
-    pyout.append(addmain); 
+    pyout.append(addmain);
     pyfile << pyout;
 
   }

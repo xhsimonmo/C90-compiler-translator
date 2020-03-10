@@ -5,6 +5,12 @@ CPPFLAGS += -I include
 
 all : clean bin/c_compiler
 
+test : all t
+
+t:
+	bin/c_compiler --translate a.c -o a.py
+
+
 src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
 	bison -v -d src/parser.y -o src/parser.tab.cpp
 
