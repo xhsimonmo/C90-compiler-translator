@@ -52,62 +52,62 @@
 %%
 
 primary_expression
-	: IDENTIFIER    {$$ = new primary_expression(0,*$1);}
-	| CONSTANT      {$$ = new primary_expression(1,*$1);}
-	| STRING_LITERAL {$$ = new primary_expression(2,*$1);}
-	| '(' expression ')' {$$ = new primary_expression(3,$2);}
+	: IDENTIFIER    {$$ = new primary_expression(0,*$1); std::cout << "primary expression 1" << std::endl;}
+	| CONSTANT      {$$ = new primary_expression(1,*$1); std::cout << "primary expression 2" << std::endl;}
+	| STRING_LITERAL {$$ = new primary_expression(2,*$1); std::cout << "primary expression 3" << std::endl;}
+	| '(' expression ')' {$$ = new primary_expression(3,$2); std::cout << "primary expression 4" << std::endl;}
 	;
 
 postfix_expression
-	: primary_expression                                   {$$ = $1;}
-	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);}
-	| postfix_expression '(' ')'                           {$$ = new postfix_expression(1, $1);}
-	| postfix_expression '(' argument_expression_list ')'  {$$ = new postfix_expression(2, $1, $3);}
-	| postfix_expression '.' IDENTIFIER                    {$$ = new postfix_expression(3, $1, *$3);}
-	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new postfix_expression(4, $1, *$3);}
-	| postfix_expression INC_OP                            {$$ = new postfix_expression(5, $1);}
-	| postfix_expression DEC_OP                            {$$ = new postfix_expression(6, $1);}
+	: primary_expression                                   {$$ = $1; std::cout << "postfix expression 1" << std::endl;}
+	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);std::cout << "postfix expression 2" << std::endl;}
+	| postfix_expression '(' ')'                           {$$ = new postfix_expression(1, $1);std::cout << "postfix expression 3" << std::endl;}
+	| postfix_expression '(' argument_expression_list ')'  {$$ = new postfix_expression(2, $1, $3);std::cout << "postfix expression 4" << std::endl;}
+	| postfix_expression '.' IDENTIFIER                    {$$ = new postfix_expression(3, $1, *$3);std::cout << "postfix expression 5" << std::endl;}
+	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new postfix_expression(4, $1, *$3);std::cout << "postfix expression 6" << std::endl;}
+	| postfix_expression INC_OP                            {$$ = new postfix_expression(5, $1);std::cout << "postfix expression 7" << std::endl;}
+	| postfix_expression DEC_OP                            {$$ = new postfix_expression(6, $1);std::cout << "postfix expression 8" << std::endl;}
 	;
 
 argument_expression_list
-	: assignment_expression                                  {$$ = $1;}
-	| argument_expression_list ',' assignment_expression     {$$ = new argument_expression_list($1, $3);}
+	: assignment_expression                                  {$$ = $1; std::cout << "argument expression 1" << std::endl;}
+	| argument_expression_list ',' assignment_expression     {$$ = new argument_expression_list($1, $3); std::cout << "argument expression 2" << std::endl;}
 	;
 
 unary_expression
-	: postfix_expression               {$$ = $1;}
-	| INC_OP unary_expression          {$$ = new unary_expression(0, $2);}
-	| DEC_OP unary_expression          {$$ = new unary_expression(1, $2);}
-	| unary_operator cast_expression   {$$ = new unary_expression($1, $2);}
-	| SIZEOF unary_expression          {$$ = new unary_expression(2, $2);}
-	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $3);}
+	: postfix_expression               {$$ = $1; std::cout << "unary expression 1" << std::endl;}
+	| INC_OP unary_expression          {$$ = new unary_expression(0, $2); std::cout << "unary expression 2" << std::endl;}
+	| DEC_OP unary_expression          {$$ = new unary_expression(1, $2); std::cout << "unary expression 3" << std::endl;}
+	| unary_operator cast_expression   {$$ = new unary_expression($1, $2); std::cout << "unary expression 4" << std::endl;}
+	| SIZEOF unary_expression          {$$ = new unary_expression(2, $2); std::cout << "unary expression 5" << std::endl;}
+	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $3); std::cout << "unary expression 6" << std::endl;}
 	;
 
 unary_operator
-	: '&'      {$$ = 4;}
-	| '*'      {$$ = 5;}
-	| '+'      {$$ = 6;}
-	| '-'      {$$ = 7;}
-	| '~'      {$$ = 8;}
-	| '!'      {$$ = 9;}
+	: '&'      {$$ = 4; std::cout << "unary operator 1" << std::endl;}
+	| '*'      {$$ = 5; std::cout << "unary operator 2" << std::endl;}
+	| '+'      {$$ = 6; std::cout << "unary operator 3" << std::endl;}
+	| '-'      {$$ = 7; std::cout << "unary operator 4" << std::endl;}
+	| '~'      {$$ = 8; std::cout << "unary operator 5" << std::endl;}
+	| '!'      {$$ = 9; std::cout << "unary operator 6" << std::endl;}
 	;
 
 cast_expression
-	: unary_expression                       {$$ = $1;}
-	| '(' type_name ')' cast_expression      {$$ = new cast_expression(0, $2, $4);}
+	: unary_expression                       {$$ = $1; std::cout << "cast expression 1" << std::endl;}
+	| '(' type_name ')' cast_expression      {$$ = new cast_expression(0, $2, $4); std::cout << "cast expression 2" << std::endl;}
 	;
 
 multiplicative_expression
-	: cast_expression {$$ = $1;}
-	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3);}
-	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3);}
-	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3);}
+	: cast_expression {$$ = $1; std::cout << "mulitiplicative expression 1" << std::endl;}
+	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3); std::cout << "mulitiplicative expression 2" << std::endl;}
+	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3); std::cout << "mulitiplicative expression 3" << std::endl;}
+	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3); std::cout << "mulitiplicative expression 4" << std::endl;}
 	;
 
 additive_expression
-	: multiplicative_expression  {$$ = $1;}
-	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3);}
-	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3);}
+	: multiplicative_expression  {$$ = $1; std::cout << "additive_expression 1" << std::endl;}
+	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3); std::cout << "additive_expression 2" << std::endl;}
+	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3); std::cout << "additive_expression 3" << std::endl;}
 	;
 
 shift_expression
@@ -161,8 +161,8 @@ conditional_expression
 	;
 
 assignment_expression
-	: conditional_expression                                             {$$ = $1; std::cout << " assignment_expression 1 " << std::endl;}
-	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3); std::cout << " assignment_expression 2 " << std::endl;}
+	: conditional_expression                                             {$$ = $1;}
+	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3);}
 	;
 
 assignment_operator
@@ -203,8 +203,8 @@ declaration_specifiers
 	;
 
 init_declarator_list
-	: init_declarator   {$$ = $1;}
-	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$3);}
+	: init_declarator   {$$ = $1;std::cout << "init declarator list 1" << std::endl;}
+	| init_declarator_list ',' init_declarator   {$$ = new init_declarator_list($1,$3); std::cout << "init declarator list 2" << std::endl;}
 	;
 
 init_declarator
@@ -303,7 +303,7 @@ declarator
 	;
 
 direct_declarator
-	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);std::cout << "IDENTIFIER in direct_declarator: " << *$1 <<std::endl; }
+	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);}
 	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
 	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}
 	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}
@@ -370,7 +370,7 @@ direct_abstract_declarator
 	;
 
 initializer
-	: assignment_expression                  {$$ = $1; }
+	: assignment_expression                  {$$ = $1;}
 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
 	;
@@ -403,8 +403,8 @@ compound_statement
 	;
 
 declaration_list
-	: declaration
-	| declaration_list declaration
+	: declaration                      {$$ = $1; std::cout << "declaration list 1" << std::endl;}
+	| declaration_list declaration     {$$ = new declaration_list($1, $2); std::cout << "declaration list 2" << std::endl;}
 	;
 
 statement_list
