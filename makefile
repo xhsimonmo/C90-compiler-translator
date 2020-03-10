@@ -1,4 +1,4 @@
-CPPFLAGS += -std=c++17 -g #-W -Wall #-g -Wno-unused-parameter
+CPPFLAGS += -std=c++11 -g #-W -Wall #-g -Wno-unused-parameter
 CPPFLAGS += -I include
 #CPPFLAGS = -W -Wall
 

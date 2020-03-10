@@ -481,6 +481,7 @@ char *s;
 
 
  const astnode* parseAST(void){
+  //std::cout << "parseast" << std::endl;
   g_root= NULL;
   yyparse();
   return g_root;
