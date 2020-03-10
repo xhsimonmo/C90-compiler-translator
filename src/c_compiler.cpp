@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
     int indentation = 0;
     std::string pyout;
     std::cout << "enter ast tree" << '\n';
-    std::cout << "first root : " << root -> testpoint() <<  '\n';
+    std::cerr << "first root : "  << root -> testpoint() << '\n';
     root -> translate(pyout);
     std::cout << "miaomioamiao" << std::endl;
     std::string addmain;
