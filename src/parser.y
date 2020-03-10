@@ -189,13 +189,8 @@ constant_expression
 	;
 
 declaration
-<<<<<<< HEAD
 	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << " at the third top, declaration 1 " << std::endl;}
 	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << " at the third top, declaration 2 " << std::endl;}
-=======
-	: declaration_specifiers ';'  {$$ = new declaration($1);std::cout << "declaration 1" << std::endl;}
-	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << "declaration 2" << std::endl;}
->>>>>>> 4614cd42084bf6ff9f8754c46b3dfcf227d534be
 	;
 
 declaration_specifiers
@@ -450,24 +445,14 @@ translation_unit
 	;
 
 external_declaration
-<<<<<<< HEAD
-	: function_definition        {$$ = $1;std::cout << " at the second top" << std::endl;}
-	| declaration                {$$ = $1;;std::cout << " at the second top" << std::endl;}/*global variable???*/
-=======
 	: function_definition        {$$ = $1;std::cout << "external decl 1" << std::endl;}
 	| declaration                {$$ = $1;std::cout << "external decl 2" << std::endl;}/*global variable???*/
->>>>>>> 4614cd42084bf6ff9f8754c46b3dfcf227d534be
 	;
 
 function_definition
 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
-<<<<<<< HEAD
-	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);std::cout << " at the third top" << std::endl;}
-  | declarator compound_statement                                          {$$ = new function_definition($1, $2);std::cout << " at the third top" << std::endl;}
-=======
 	: declaration_specifiers declarator compound_statement                   {std::cout << "function def 1" << std::endl;$$ = new function_definition($1, $2, $3);}
   | declarator compound_statement                                          {std::cout << "function def 2" << std::endl;$$ = new function_definition($1, $2);}
->>>>>>> 4614cd42084bf6ff9f8754c46b3dfcf227d534be
 	/*| declarator declaration_list compound_statement                      喵喵喵*/
 	;
 
@@ -497,7 +482,7 @@ char *s;
 
  const astnode* parseAST(void){
   //std::cout << "parseast" << std::endl;
-  g_root= NULL;
+  g_root= 0;
   yyparse();
   return g_root;
 }
