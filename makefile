@@ -5,6 +5,12 @@ CPPFLAGS += -I include
 
 all : clean bin/c_compiler
 
+test : all t
+
+t:
+	bin/c_compiler --translate a.c -o b.py
+
+
 src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
 	bison -v -d src/parser.y -o src/parser.tab.cpp
 
@@ -17,10 +23,10 @@ bin/c_compiler : src/c_compiler.o src/parser.tab.o src/lexer.yy.o src/parser.tab
 
 
 #src/c_compiler.o : src/c_compiler.cpp
-	g++ $(CPPFLAGS) -c -o src/c_compiler.o $^
+	#g++ $(CPPFLAGS) -c -o src/c_compiler.o $^
 
 #include/%.o : include/%.cpp
-	$(CC) $(CPPFLAGS) -c $< -o $@
+	#$(CC) $(CPPFLAGS) -c $< -o $@
 
 clean :
 	rm -f src/*.tab.cpp

@@ -4,9 +4,10 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <string.h>
 //using namespace std;
 
-
+//bin/c_compiler --translate a.c -o a.py
 //bin/c_compiler -S [source-file.c] -o [dest-file.s]
 //bin/c_compiler --translate [source-file.c] -o [dest-file.py]
 
@@ -22,17 +23,21 @@ int main(int argc, char *argv[]){
   //string filename = argv[2];
   yyin = fopen(argv[2], "r");
   const astnode* root = parseAST();
+  std::ofstream pyfile;//output ...py
+  pyfile.open(argv[4]);
+  std::cout << "arg1 " <<argv[1] <<  '\n';
 
-  if(argv[1] == "--translate"){
+  if(strcmp(argv[1], "--translate") == 0 ){
     std::cerr << "translator begin" << '\n';
-
-    string pyout;
+    int indentation = 0;
+    std::string pyout;
+    std::cout << "enter ast tree" << '\n';
     root -> translate(pyout);
-    string addmain;
-    addmain = "\nif __name__ == \"__main__\":\nimport sys\nret=main()\nsys.exit(ret)"; // include in every python file to invoke main
-    pyout = pyout + addmain;
-    std::ofstream pyfile;//output ...py
-    pyfile.open(argv[2]);
+    std::string addmain;
+    addmain = "\nif __name__ == \"__main__\":\n\timport sys\n\tret=main()\n\tsys.exit(ret)"; // include in every python file to invoke main
+    std::cout << addmain << '\n';
+    //pyout = pyout + addmain;
+    pyout.append(addmain);
     pyfile << pyout;
 
   }
@@ -40,6 +45,7 @@ int main(int argc, char *argv[]){
 
   }
   //fclose(yyin);
+  pyfile.close();
   return 0;
 
 }
