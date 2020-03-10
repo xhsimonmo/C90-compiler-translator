@@ -341,8 +341,8 @@ parameter_declaration
 	;
 
 identifier_list
-	: IDENTIFIER                                     {$$ = new identifier_list(*$1);std::cout << "identifier_list 0; an IDENTIFIER: " << *$1 <<  std::endl;}
-	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3); std::cout << "identifier_list 1; an IDENTIFIER: " << *$1 <<  std::endl;}
+	: IDENTIFIER                                     {$$ = new identifier_list(*$1);std::cout << "identifier_list 0; an IDENTIFIER: " << std::endl;}
+	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3); std::cout << "identifier_list 1; an IDENTIFIER: " <<   std::endl;}
 	;
 
 type_name
