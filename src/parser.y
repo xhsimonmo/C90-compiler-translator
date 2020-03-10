@@ -52,136 +52,136 @@
 %%
 
 primary_expression
-	: IDENTIFIER    {$$ = new primary_expression(0,*$1);}
-	| CONSTANT      {$$ = new primary_expression(1,*$1);}
-	| STRING_LITERAL {$$ = new primary_expression(2,*$1);}
-	| '(' expression ')' {$$ = new primary_expression(3,$2);}
+	: IDENTIFIER    {$$ = new primary_expression(0,*$1); std::cout << "primary expression 1" << std::endl;}
+	| CONSTANT      {$$ = new primary_expression(1,*$1); std::cout << "primary expression 2" << std::endl;}
+	| STRING_LITERAL {$$ = new primary_expression(2,*$1); std::cout << "primary expression 3" << std::endl;}
+	| '(' expression ')' {$$ = new primary_expression(3,$2); std::cout << "primary expression 4" << std::endl;}
 	;
 
 postfix_expression
-	: primary_expression                                   {$$ = $1;}
-	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);}
-	| postfix_expression '(' ')'                           {$$ = new postfix_expression(1, $1);}
-	| postfix_expression '(' argument_expression_list ')'  {$$ = new postfix_expression(2, $1, $3);}
-	| postfix_expression '.' IDENTIFIER                    {$$ = new postfix_expression(3, $1, *$3);}
-	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new postfix_expression(4, $1, *$3);}
-	| postfix_expression INC_OP                            {$$ = new postfix_expression(5, $1);}
-	| postfix_expression DEC_OP                            {$$ = new postfix_expression(6, $1);}
+	: primary_expression                                   {$$ = $1; std::cout << "postfix expression 1" << std::endl;}
+	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);std::cout << "postfix expression 2" << std::endl;}
+	| postfix_expression '(' ')'                           {$$ = new postfix_expression(1, $1);std::cout << "postfix expression 3" << std::endl;}
+	| postfix_expression '(' argument_expression_list ')'  {$$ = new postfix_expression(2, $1, $3);std::cout << "postfix expression 4" << std::endl;}
+	| postfix_expression '.' IDENTIFIER                    {$$ = new postfix_expression(3, $1, *$3);std::cout << "postfix expression 5" << std::endl;}
+	| postfix_expression PTR_OP IDENTIFIER                 {$$ = new postfix_expression(4, $1, *$3);std::cout << "postfix expression 6" << std::endl;}
+	| postfix_expression INC_OP                            {$$ = new postfix_expression(5, $1);std::cout << "postfix expression 7" << std::endl;}
+	| postfix_expression DEC_OP                            {$$ = new postfix_expression(6, $1);std::cout << "postfix expression 8" << std::endl;}
 	;
 
 argument_expression_list
-	: assignment_expression                                  {$$ = $1;}
-	| argument_expression_list ',' assignment_expression     {$$ = new argument_expression_list($1, $3);}
+	: assignment_expression                                  {$$ = $1; std::cout << "argument expression 1" << std::endl;}
+	| argument_expression_list ',' assignment_expression     {$$ = new argument_expression_list($1, $3); std::cout << "argument expression 2" << std::endl;}
 	;
 
 unary_expression
-	: postfix_expression               {$$ = $1;}
-	| INC_OP unary_expression          {$$ = new unary_expression(0, $2);}
-	| DEC_OP unary_expression          {$$ = new unary_expression(1, $2);}
-	| unary_operator cast_expression   {$$ = new unary_expression($1, $2);}
-	| SIZEOF unary_expression          {$$ = new unary_expression(2, $2);}
-	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $3);}
+	: postfix_expression               {$$ = $1; std::cout << "unary expression 1" << std::endl;}
+	| INC_OP unary_expression          {$$ = new unary_expression(0, $2); std::cout << "unary expression 2" << std::endl;}
+	| DEC_OP unary_expression          {$$ = new unary_expression(1, $2); std::cout << "unary expression 3" << std::endl;}
+	| unary_operator cast_expression   {$$ = new unary_expression($1, $2); std::cout << "unary expression 4" << std::endl;}
+	| SIZEOF unary_expression          {$$ = new unary_expression(2, $2); std::cout << "unary expression 5" << std::endl;}
+	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $3); std::cout << "unary expression 6" << std::endl;}
 	;
 
 unary_operator
-	: '&'      {$$ = 4;}
-	| '*'      {$$ = 5;}
-	| '+'      {$$ = 6;}
-	| '-'      {$$ = 7;}
-	| '~'      {$$ = 8;}
-	| '!'      {$$ = 9;}
+	: '&'      {$$ = 4; std::cout << "unary operator 1" << std::endl;}
+	| '*'      {$$ = 5; std::cout << "unary operator 2" << std::endl;}
+	| '+'      {$$ = 6; std::cout << "unary operator 3" << std::endl;}
+	| '-'      {$$ = 7; std::cout << "unary operator 4" << std::endl;}
+	| '~'      {$$ = 8; std::cout << "unary operator 5" << std::endl;}
+	| '!'      {$$ = 9; std::cout << "unary operator 6" << std::endl;}
 	;
 
 cast_expression
-	: unary_expression                       {$$ = $1;}
-	| '(' type_name ')' cast_expression      {$$ = new cast_expression(0, $2, $4);}
+	: unary_expression                       {$$ = $1; std::cout << "cast expression 1" << std::endl;}
+	| '(' type_name ')' cast_expression      {$$ = new cast_expression(0, $2, $4); std::cout << "cast expression 2" << std::endl;}
 	;
 
 multiplicative_expression
-	: cast_expression {$$ = $1;}
-	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3);}
-	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3);}
-	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3);}
+	: cast_expression {$$ = $1; std::cout << "mulitiplicative expression 1" << std::endl;}
+	| multiplicative_expression '*' cast_expression  {$$ = new multiplicative_expression(1,$1, $3); std::cout << "mulitiplicative expression 2" << std::endl;}
+	| multiplicative_expression '/' cast_expression  {$$ = new multiplicative_expression(2,$1, $3); std::cout << "mulitiplicative expression 3" << std::endl;}
+	| multiplicative_expression '%' cast_expression  {$$ = new multiplicative_expression(3,$1, $3); std::cout << "mulitiplicative expression 4" << std::endl;}
 	;
 
 additive_expression
-	: multiplicative_expression  {$$ = $1;}
-	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3);}
-	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3);}
+	: multiplicative_expression  {$$ = $1; std::cout << "additive_expression 1" << std::endl;}
+	| additive_expression '+' multiplicative_expression  {$$ = new additive_expression(1, $1, $3); std::cout << "additive_expression 2" << std::endl;}
+	| additive_expression '-' multiplicative_expression  {$$ = new additive_expression(2, $1, $3); std::cout << "additive_expression 3" << std::endl;}
 	;
 
 shift_expression
-	: additive_expression  {$$ = $1;}
-	| shift_expression LEFT_OP additive_expression {$$ = new shift_expression(1,$1,$3);}
-	| shift_expression RIGHT_OP additive_expression {$$ = new shift_expression(2,$1,$3);}
+	: additive_expression  {$$ = $1; std::cout << "shift_expression 1" << std::endl;}
+	| shift_expression LEFT_OP additive_expression {$$ = new shift_expression(1,$1,$3); std::cout << "shift_expression 2" << std::endl;}
+	| shift_expression RIGHT_OP additive_expression {$$ = new shift_expression(2,$1,$3); std::cout << "shift_expression 3" << std::endl;}
 	;
 
 relational_expression
-	: shift_expression                                 {$$ = $1;}
-	| relational_expression '<' shift_expression       {$$ = new relational_expression(0, $1, $3);}
-	| relational_expression '>' shift_expression       {$$ = new relational_expression(1, $1, $3);}
-	| relational_expression LE_OP shift_expression     {$$ = new relational_expression(2, $1, $3);}
-	| relational_expression GE_OP shift_expression     {$$ = new relational_expression(3, $1, $3);}
+	: shift_expression                                 {$$ = $1; std::cout << "relational_expression 1" << std::endl;}
+	| relational_expression '<' shift_expression       {$$ = new relational_expression(0, $1, $3); std::cout << "relational_expression 2" << std::endl;}
+	| relational_expression '>' shift_expression       {$$ = new relational_expression(1, $1, $3); std::cout << "relational_expression 3" << std::endl;}
+	| relational_expression LE_OP shift_expression     {$$ = new relational_expression(2, $1, $3); std::cout << "relational_expression 4" << std::endl;}
+	| relational_expression GE_OP shift_expression     {$$ = new relational_expression(3, $1, $3); std::cout << "relational_expression 5" << std::endl;}
 	;
 
 equality_expression
-	: relational_expression                              {$$ = $1;}
-	| equality_expression EQ_OP relational_expression    {$$ = new relational_expression(4, $1, $3);}
-	| equality_expression NE_OP relational_expression    {$$ = new relational_expression(5, $1, $3);}
+	: relational_expression                              {$$ = $1; std::cout << "equality_expression 1" << std::endl;}
+	| equality_expression EQ_OP relational_expression    {$$ = new relational_expression(4, $1, $3); std::cout << "equality_expression 2" << std::endl;}
+	| equality_expression NE_OP relational_expression    {$$ = new relational_expression(5, $1, $3); std::cout << "equality_expression 3" << std::endl;}
 	;
 
 and_expression
-	: equality_expression                                {$$ = $1;}
-	| and_expression '&' equality_expression             {$$ = new relational_expression(6, $1, $3);}
+	: equality_expression                                {$$ = $1; std::cout << "and_expression 1" << std::endl;}
+	| and_expression '&' equality_expression             {$$ = new relational_expression(6, $1, $3); std::cout << "and_expression 2" << std::endl;}
 	;
 
 exclusive_or_expression
-	: and_expression                                     {$$ = $1;}
-	| exclusive_or_expression '^' and_expression         {$$ = new relational_expression(7, $1, $3);}
+	: and_expression                                     {$$ = $1; std::cout << "exclusive_or_expression 1" << std::endl;}
+	| exclusive_or_expression '^' and_expression         {$$ = new relational_expression(7, $1, $3); std::cout << "exclusive_or_expression 2" << std::endl;}
 	;
 
 inclusive_or_expression
-	: exclusive_or_expression                                {$$ = $1;}
-	| inclusive_or_expression '|' exclusive_or_expression    {$$ = new relational_expression(8, $1, $3);}
+	: exclusive_or_expression                                {$$ = $1; std::cout << "inclusive_or_expression 1" << std::endl;}
+	| inclusive_or_expression '|' exclusive_or_expression    {$$ = new relational_expression(8, $1, $3); std::cout << "inclusive_or_expression 2" << std::endl;}
 	;
 
 logical_and_expression
-	: inclusive_or_expression                                {$$ = $1;}
-	| logical_and_expression AND_OP inclusive_or_expression  {$$ = new relational_expression(9, $1, $3);}
+	: inclusive_or_expression                                {$$ = $1; std::cout << "logical_and_expression 1" << std::endl;}
+	| logical_and_expression AND_OP inclusive_or_expression  {$$ = new relational_expression(9, $1, $3); std::cout << "logical_and_expression 2" << std::endl;}
 	;
 
 logical_or_expression
-	: logical_and_expression                                 {$$ = $1;}
-	| logical_or_expression OR_OP logical_and_expression     {$$ = new relational_expression(10, $1, $3);}
+	: logical_and_expression                                 {$$ = $1; std::cout << "logical_or_expression 1" << std::endl;}
+	| logical_or_expression OR_OP logical_and_expression     {$$ = new relational_expression(10, $1, $3); std::cout << "logical_or_expression 2" << std::endl;}
 	;
 
 conditional_expression
-	: logical_or_expression                                              {$$ = $1;}
-	| logical_or_expression '?' expression ':' conditional_expression    {$$ = new conditional_expression($1, $3, $5);}
+	: logical_or_expression                                              {$$ = $1; std::cout << "conditional expression 1" << std::endl;}
+	| logical_or_expression '?' expression ':' conditional_expression    {$$ = new conditional_expression($1, $3, $5); std::cout << "conditional expression 2" << std::endl;}
 	;
 
 assignment_expression
-	: conditional_expression                                             {$$ = $1; std::cout << " assignment_expression 1 " << std::endl;}
-	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3); std::cout << " assignment_expression 2 " << std::endl;}
+	: conditional_expression                                             {$$ = $1; std::cout << "assignment expression 1" << std::endl;}
+	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3); std::cout << "assignment expression 2" << std::endl;}
 	;
 
 assignment_operator
-	: '='                {$$ = 0;}
-	| MUL_ASSIGN         {$$ = 1;}
-	| DIV_ASSIGN         {$$ = 2;}
-	| MOD_ASSIGN         {$$ = 3;}
-	| ADD_ASSIGN         {$$ = 4;}
-	| SUB_ASSIGN         {$$ = 5;}
-	| LEFT_ASSIGN        {$$ = 6;}
-	| RIGHT_ASSIGN       {$$ = 7;}
-	| AND_ASSIGN         {$$ = 8;}
-	| XOR_ASSIGN         {$$ = 9;}
-	| OR_ASSIGN          {$$ = 10;}
+	: '='                {$$ = 0; std::cout << "assignment operator 1" << std::endl;}
+	| MUL_ASSIGN         {$$ = 1; std::cout << "assignment operator 2" << std::endl;}
+	| DIV_ASSIGN         {$$ = 2; std::cout << "assignment operator 3" << std::endl;}
+	| MOD_ASSIGN         {$$ = 3; std::cout << "assignment operator 4" << std::endl;}
+	| ADD_ASSIGN         {$$ = 4; std::cout << "assignment operator 5" << std::endl;}
+	| SUB_ASSIGN         {$$ = 5; std::cout << "assignment operator 6" << std::endl;}
+	| LEFT_ASSIGN        {$$ = 6; std::cout << "assignment operator 7" << std::endl;}
+	| RIGHT_ASSIGN       {$$ = 7; std::cout << "assignment operator 8" << std::endl;}
+	| AND_ASSIGN         {$$ = 8; std::cout << "assignment operator 9" << std::endl;}
+	| XOR_ASSIGN         {$$ = 9; std::cout << "assignment operator 10" << std::endl;}
+	| OR_ASSIGN          {$$ = 10; std::cout << "assignment operator 11" << std::endl;}
 	;
 
 expression
-	: assignment_expression                  {$$ = $1;}
-	| expression ',' assignment_expression   {$$ = new base_expression($1, $3);}
+	: assignment_expression                  {$$ = $1; std::cout << "expression 1" << std::endl;}
+	| expression ',' assignment_expression   {$$ = new base_expression($1, $3); std::cout << "expression 2" << std::endl;}
 	;
 
 constant_expression
@@ -232,7 +232,7 @@ type_specifier
 	| UNSIGNED   {$$ = new type_specifier(8); std::cout << "type_specifier signed unsigned 9" << std::endl;}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
 //	| enum_specifier   {$$ = new type_specifier("ENUM");}
-	| TYPE_NAME   {$$ = new type_specifier(9);}
+	| TYPE_NAME   {$$ = new type_specifier(9); std::cout << "type_name" << std::endl;}
 	;
 /////////////////////////////////struct ////////////////////////////////////////////////
 /* struct_or_union_specifier
@@ -403,8 +403,8 @@ compound_statement
 	;
 
 declaration_list
-	: declaration    {$$ = $1;}
-	| declaration_list declaration
+	: declaration                      {$$ = $1; std::cout << "declaration list 1" << std::endl;}
+	| declaration_list declaration     {$$ = new declaration_list($1, $2); std::cout << "declaration list 2" << std::endl;}
 	;
 
 statement_list
