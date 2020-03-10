@@ -4,7 +4,7 @@
   #include <cassert>
   #include <string>
 
-  extern const astnode * g_root; // A way of getting the AST out
+  extern astnode * g_root; // A way of getting the AST out
 
   //extern FILE *yyin; // pointer to input stream
 
@@ -470,7 +470,7 @@ char *s;
 	printf("\n%*s\n%*s\n", column, "^", column, s);
 } */
 
- const astnode * g_root;
+ astnode * g_root;
  /* const astnode* parseAST(char* filename)
 {
     yyin = fopen(filename, "r");
@@ -480,7 +480,7 @@ char *s;
 } */
 
 
- const astnode* parseAST(void){
+ astnode* parseAST(void){
   //std::cout << "parseast" << std::endl;
   g_root= 0;
   yyparse();

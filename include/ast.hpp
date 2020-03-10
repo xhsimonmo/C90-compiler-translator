@@ -25,7 +25,7 @@ class astnode{
 public:
   astnode(){};
   virtual void translate(string& pyout)const{};
-  virtual void translate(string& pyout, vector<string> global_variables)const {};
+  virtual void translate(string& pyout, vector<string> global_variables) {};
   //virtual compile();
   //virtual void translate() = 0;//translator
   virtual void compile(string& mpout)const{};//compiler
@@ -88,6 +88,9 @@ extern void NotImplemented(){
   std::cerr << "Not Implemented." << '\n';//for function not needed to Implement
 }
 
+extern void debug(string typename){
+  std::cerr << "the name of the current class is: " << typename <<  '\n';
+}
 
 ////////////////////////////MIPS////////////////////////////////
 

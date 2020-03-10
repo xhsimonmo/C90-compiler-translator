@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
   //csourse.open(argv[1]);//open input c, tokenise it, lex, and parse.
   //string filename = argv[2];
   yyin = fopen(argv[2], "r");
-  const astnode* root = parseAST();
+   astnode* root = parseAST();
   std::ofstream pyfile;//output ...py
   pyfile.open(argv[4]);
   std::cout << "arg1 " <<argv[1] <<  '\n';
