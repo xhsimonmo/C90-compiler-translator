@@ -346,113 +346,124 @@ identifier_list
 	;
 
 type_name
-	: specifier_qualifier_list                       {$$ = $1;std::cout << "type name 1" << std::endl;}
+	: specifier_qualifier_list                       {$$ = $1;std::cout << "type name 1" << std::endl; }
 	| specifier_qualifier_list abstract_declarator   {$$ = new type_name($1, $2);std::cout << "type name 2" << std::endl;}
 	;
 
 abstract_declarator
-	: pointer                                        {$$ = $1;}
-	| direct_abstract_declarator                     {$$ = $1;}
-	| pointer direct_abstract_declarator             {$$ = new abstract_declarator($1, $2);}
+	: pointer                                        {$$ = $1;  std::cout << "abstract_declarator 0" << std::endl;}
+	| direct_abstract_declarator                     {$$ = $1; std::cout << "abstract_declarator 1" << std::endl;}
+	| pointer direct_abstract_declarator             {$$ = new abstract_declarator($1, $2); std::cout << "abstract_declarator 2" << std::endl;}
 	;
 
 /*喵喵喵*/
 direct_abstract_declarator
-	: '(' abstract_declarator ')'                                {$$ = $2;}
-	| '[' ']'                                                    {$$ = new direct_abstract_declarator(0);}
-	| '[' constant_expression ']'                                {$$ = new direct_abstract_declarator(1, $2);}
-	| direct_abstract_declarator '[' ']'                         {$$ = new direct_abstract_declarator(2, $1);}
-	| direct_abstract_declarator '[' constant_expression ']'     {$$ = new direct_abstract_declarator(3, $1, $3);}
-	| '(' ')'                                                    {$$ = new direct_abstract_declarator(4);}
-	| '(' parameter_type_list ')'                                {$$ = new direct_abstract_declarator(5, $2);}
-	| direct_abstract_declarator '(' ')'                         {$$ = new direct_abstract_declarator(6, $1);}
-	| direct_abstract_declarator '(' parameter_type_list ')'     {$$ = new direct_abstract_declarator(7, $1, $3);}
+	: '(' abstract_declarator ')'                                {$$ = $2;  std::cout << "direct_abstract_declarator 0" << std::endl;}
+	| '[' ']'                                                    {$$ = new direct_abstract_declarator(0);  std::cout << "direct_abstract_declarator 1" << std::endl;}
+	| '[' constant_expression ']'                                {$$ = new direct_abstract_declarator(1, $2);  std::cout << "direct_abstract_declarator 2" << std::endl;}
+	| direct_abstract_declarator '[' ']'                         {$$ = new direct_abstract_declarator(2, $1);  std::cout << "direct_abstract_declarator 3" << std::endl;}
+	| direct_abstract_declarator '[' constant_expression ']'     {$$ = new direct_abstract_declarator(3, $1, $3);  std::cout << "direct_abstract_declarator 4" << std::endl;}
+	| '(' ')'                                                    {$$ = new direct_abstract_declarator(4);  std::cout << "direct_abstract_declarator 5" << std::endl;}
+	| '(' parameter_type_list ')'                                {$$ = new direct_abstract_declarator(5, $2);  std::cout << "direct_abstract_declarator 6" << std::endl;}
+	| direct_abstract_declarator '(' ')'                         {$$ = new direct_abstract_declarator(6, $1);  std::cout << "direct_abstract_declarator 7" << std::endl;}
+	| direct_abstract_declarator '(' parameter_type_list ')'     {$$ = new direct_abstract_declarator(7, $1, $3);  std::cout << "direct_abstract_declarator 8" << std::endl;}
 	;
 
 initializer
+<<<<<<< HEAD
 	: assignment_expression                  {$$ = $1;}
 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
+=======
+	: assignment_expression                  {$$ = $1; std::cout << "initializer 0" << std::endl;}
+	| '{' initializer_list '}'               {$$ = new initializer(0, $2); std::cout << "initializer 1" << std::endl;}
+	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2); std::cout << "initializer 2" << std::endl;}
+>>>>>>> c532e46d1f95351f3b76200ff612d3e879790cdd
 	;
 
 initializer_list
-	: initializer                            {$$ = new initializer_list(0, $1);}
-	| initializer_list ',' initializer       {$$ = new initializer_list(1, $1, $3);}
+	: initializer                            {$$ = new initializer_list(0, $1); std::cout << "initializer_list 0" << std::endl;}
+	| initializer_list ',' initializer       {$$ = new initializer_list(1, $1, $3); std::cout << "initializer_list 1" << std::endl;}
 	;
 
 statement
-	: labeled_statement   {$$ = $1;}
-	| compound_statement {$$ = $1;}
-	| expression_statement {$$ = $1;}
-	| selection_statement  {$$ = $1;}
-	| iteration_statement  {$$ = $1;}
-	| jump_statement {$$ = $1;}
+	: labeled_statement   {$$ = $1; std::cout << "statement 0" << std::endl;}
+	| compound_statement {$$ = $1; std::cout << "statement 1" << std::endl; }
+	| expression_statement {$$ = $1; std::cout << "statement 2" << std::endl;}
+	| selection_statement  {$$ = $1; std::cout << "statement 3" << std::endl;}
+	| iteration_statement  {$$ = $1; std::cout << "statement 4" << std::endl;}
+	| jump_statement {$$ = $1; std::cout << "statement 5" << std::endl;}
 	;
 
 labeled_statement
-	: IDENTIFIER ':' statement   {$$ = new labeled_statement(0, $3);}
-	| CASE constant_expression ':' statement   {$$ = new labeled_statement(1, $2, $4);}
-	| DEFAULT ':' statement    {$$ = new labeled_statement(2, $3);}
+	: IDENTIFIER ':' statement   {$$ = new labeled_statement(0, $3); std::cout << "labeled_statement 0" << std::endl;}
+	| CASE constant_expression ':' statement   {$$ = new labeled_statement(1, $2, $4);std::cout << "labeled_statement 1" << std::endl;}
+	| DEFAULT ':' statement    {$$ = new labeled_statement(2, $3); std::cout << "labeled_statement 2" << std::endl;}
 	;
 
 compound_statement
-	: '{' '}'    {$$ = new compound_statement(0);}
-	| '{' statement_list '}'   {$$ = new compound_statement(1, $2);}
-	| '{' declaration_list '}'   {$$ = new compound_statement(1, $2);}
-	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(1, $2, $3);}
+	: '{' '}'    {$$ = new compound_statement(0); std::cout << "compound_statement 0" << std::endl;}
+	| '{' statement_list '}'   {$$ = new compound_statement(1, $2); std::cout << "compound_statement 1" << std::endl;}
+	| '{' declaration_list '}'   {$$ = new compound_statement(1, $2); std::cout << "compound_statement 2" << std::endl;}
+	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(1, $2, $3); std::cout << "compound_statement 3" << std::endl;}
 	;
 
 declaration_list
+<<<<<<< HEAD
 	: declaration                      {$$ = $1; std::cout << "declaration list 1" << std::endl;}
 	| declaration_list declaration     {$$ = new declaration_list($1, $2); std::cout << "declaration list 2" << std::endl;}
+=======
+	: declaration    {$$ = $1;}
+	| declaration_list declaration
+>>>>>>> c532e46d1f95351f3b76200ff612d3e879790cdd
 	;
 
 statement_list
-	: statement    {$$ = $1;}
-	| statement_list statement   {$$ = new statement_list($1,$2);}
+	: statement    {$$ = $1; std::cout << "statement_list 0" << std::endl;}
+	| statement_list statement   {$$ = new statement_list($1,$2); std::cout << "statement_list 1" << std::endl;}
 	;
 
 expression_statement
-	: ';'    {$$ = new expression_statement(0);}
-	| expression ';'   {$$ = new expression_statement($1);}
+	: ';'    {$$ = new expression_statement(0);std::cout << "expression_statement 0" << std::endl;}
+	| expression ';'   {$$ = new expression_statement($1);std::cout << "expression_statement 1" << std::endl;}
 	;
 
 selection_statement
-	: IF '(' expression ')' statement    {$$ = new selection_statement(0, $3, $5);}
-	| IF '(' expression ')' statement ELSE statement   {$$ = new selection_statement(1, $3, $5, $7);}
-	| SWITCH '(' expression ')' statement    {$$ = new selection_statement(2, $3, $5);}
+	: IF '(' expression ')' statement    {$$ = new selection_statement(0, $3, $5);std::cout << "selection_statement 0" << std::endl;}
+	| IF '(' expression ')' statement ELSE statement   {$$ = new selection_statement(1, $3, $5, $7);std::cout << "selection_statement 1" << std::endl;}
+	| SWITCH '(' expression ')' statement    {$$ = new selection_statement(2, $3, $5);std::cout << "selection_statement 2" << std::endl;}
 	;
 
 iteration_statement
-	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5);}
-	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);}
-	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);}
-	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);}
+	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5); std::cout << "iteration_statement 0 " << std::endl;}
+	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);std::cout << "iteration_statement 1 " << std::endl;}
+	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);std::cout << "iteration_statement 2 " << std::endl;}
+	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);std::cout << "iteration_statement 3 " << std::endl;}
 	;
 
 jump_statement
 	 //GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}  // no need to Implement this
-	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");}
-	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");}
-	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");}
-	| RETURN expression ';'    {$$ = new jump_statement(4, $2);}
+	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");std::cout << "jump_statement 0 " << std::endl;}
+	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");std::cout << "jump_statement 1 " << std::endl;}
+	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");std::cout << "jump_statement 2 " << std::endl;}
+	| RETURN expression ';'    {$$ = new jump_statement(4, $2);std::cout << "jump_statement 3 " << std::endl;}
 	;
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {$$ = $1;std::cout << " at the top 1" << std::endl;}
-	| translation_unit external_declaration    {std::cout << "at the top 2" << std::endl;$$ = new translation_unit($1, $2);}
+	: external_declaration                     {$$ = $1;std::cout << " translation_unit 1" << std::endl;}
+	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;$$ = new translation_unit($1, $2);}
 	;
 
 external_declaration
-	: function_definition        {$$ = $1;std::cout << "external decl 1" << std::endl;}
-	| declaration                {$$ = $1;std::cout << "external decl 2" << std::endl;}/*global variable???*/
+	: function_definition        {$$ = $1;std::cout << "external declaration 1" << std::endl;}
+	| declaration                {$$ = $1;std::cout << "external declaration 2" << std::endl;}/*global variable???*/
 	;
 
 function_definition
 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
-	: declaration_specifiers declarator compound_statement                   {std::cout << "function def 1" << std::endl;$$ = new function_definition($1, $2, $3);}
-  | declarator compound_statement                                          {std::cout << "function def 2" << std::endl;$$ = new function_definition($1, $2);}
+	: declaration_specifiers declarator compound_statement                   {std::cout << "function definition 1" << std::endl;$$ = new function_definition($1, $2, $3);}
+  | declarator compound_statement                                          {std::cout << "function definition 2" << std::endl;$$ = new function_definition($1, $2);}
 	/*| declarator declaration_list compound_statement                      喵喵喵*/
 	;
 
