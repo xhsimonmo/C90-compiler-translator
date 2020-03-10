@@ -189,15 +189,20 @@ constant_expression
 	;
 
 declaration
+<<<<<<< HEAD
 	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << " at the third top, declaration 1 " << std::endl;}
 	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << " at the third top, declaration 2 " << std::endl;}
+=======
+	: declaration_specifiers ';'  {$$ = new declaration($1);std::cout << "declaration 1" << std::endl;}
+	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << "declaration 2" << std::endl;}
+>>>>>>> 4614cd42084bf6ff9f8754c46b3dfcf227d534be
 	;
 
 declaration_specifiers
-	: storage_class_specifier    {$$ = $1;}
-	| storage_class_specifier declaration_specifiers   {$$ = new declaration_specifiers($1,$2);}
-	| type_specifier   {$$ = $1;}
-	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);}
+	: storage_class_specifier    {$$ = $1;std::cout << "declaration spe 1" << std::endl;}
+	| storage_class_specifier declaration_specifiers   {$$ = new declaration_specifiers($1,$2);std::cout << "declaration spe 2" << std::endl;}
+	| type_specifier   {$$ = $1;std::cout << "declaration spe 3" << std::endl;}
+	| type_specifier declaration_specifiers    {$$ = new declaration_specifiers($1,$2);std::cout << "declaration spe 4" << std::endl;}
 	//| type_qualifier
 	//| type_qualifier declaration_specifiers
 	;
@@ -221,14 +226,14 @@ storage_class_specifier
 	;
 
 type_specifier
-	: VOID   {$$ = new type_specifier(0);}
-	| CHAR   {$$ = new type_specifier(1);}
-	| SHORT   {$$ = new type_specifier(2);}
-	| INT   {$$ = new type_specifier(3);}
-	| LONG   {$$ = new type_specifier(4);}
-	| FLOAT   {$$ = new type_specifier(5);}
-	| DOUBLE   {$$ = new type_specifier(6);}
-	| SIGNED   {$$ = new type_specifier(7);}
+	: VOID   {$$ = new type_specifier(0); std::cout << "type_specifier void" << std::endl;}
+	| CHAR   {$$ = new type_specifier(1); std::cout << "type_specifier char" << std::endl;}
+	| SHORT   {$$ = new type_specifier(2); std::cout << "type_specifier short" << std::endl;}
+	| INT   {$$ = new type_specifier(3); std::cout << "type_specifier int" << std::endl;}
+	| LONG   {$$ = new type_specifier(4); std::cout << "type_specifier 5" << std::endl;}
+	| FLOAT   {$$ = new type_specifier(5); std::cout << "type_specifier 6" << std::endl;}
+	| DOUBLE   {$$ = new type_specifier(6); std::cout << "type_specifier 7" << std::endl;}
+	| SIGNED   {$$ = new type_specifier(7); std::cout << "type_specifier 8" << std::endl;}
 	| UNSIGNED   {$$ = new type_specifier(8);}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
 //	| enum_specifier   {$$ = new type_specifier("ENUM");}
@@ -440,19 +445,29 @@ jump_statement
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {$$ = $1;std::cout << " at the top" << std::endl;}
-	| translation_unit external_declaration    {$$ = new translation_unit($1, $2);std::cout << "at the top" << std::endl;}
+	: external_declaration                     {$$ = $1;std::cout << " at the top 1" << std::endl;}
+	| translation_unit external_declaration    {std::cout << "at the top 2" << std::endl;$$ = new translation_unit($1, $2);}
 	;
 
 external_declaration
+<<<<<<< HEAD
 	: function_definition        {$$ = $1;std::cout << " at the second top" << std::endl;}
 	| declaration                {$$ = $1;;std::cout << " at the second top" << std::endl;}/*global variable???*/
+=======
+	: function_definition        {$$ = $1;std::cout << "external decl 1" << std::endl;}
+	| declaration                {$$ = $1;std::cout << "external decl 2" << std::endl;}/*global variable???*/
+>>>>>>> 4614cd42084bf6ff9f8754c46b3dfcf227d534be
 	;
 
 function_definition
 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
+<<<<<<< HEAD
 	: declaration_specifiers declarator compound_statement                   {$$ = new function_definition($1, $2, $3);std::cout << " at the third top" << std::endl;}
   | declarator compound_statement                                          {$$ = new function_definition($1, $2);std::cout << " at the third top" << std::endl;}
+=======
+	: declaration_specifiers declarator compound_statement                   {std::cout << "function def 1" << std::endl;$$ = new function_definition($1, $2, $3);}
+  | declarator compound_statement                                          {std::cout << "function def 2" << std::endl;$$ = new function_definition($1, $2);}
+>>>>>>> 4614cd42084bf6ff9f8754c46b3dfcf227d534be
 	/*| declarator declaration_list compound_statement                      喵喵喵*/
 	;
 

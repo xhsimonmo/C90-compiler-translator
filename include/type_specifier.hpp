@@ -30,6 +30,7 @@ private:
 
 void type_specifier::translate(string& pyout)
 {
+  std::cout << "here is the type specifier. pyout is : "  << pyout << std::endl;
   //skip, no type for python
 }
 
