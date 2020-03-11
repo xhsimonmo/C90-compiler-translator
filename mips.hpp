@@ -1,14 +1,14 @@
 class mips{
 private:
   vector <string> mpcode;
-  vector<int>reg;
   vector<string>stack;
+  bool registers[32] = {0};
 
-  //variable format
+  //remember the locations of each variable (offset relative to the frame pointer, which is a register)
   struct stack_content
   {
-    string name;
-    int value;
+    string name;//i
+    int address;//add 0, 4(0/4+fp)
   };
 
   //stack frame for function calls

@@ -13,17 +13,17 @@ class abstract_declarator : public astnode {
 public:
   abstract_declarator(treeptr o, treeptr t){left = o; right = t;}
   ~abstract_declarator(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const;
 private:
   treeptr left;
   treeptr right;
   string cname = "abstract_declarator";
 };
 
-void abstract_declarator::translate(string& pyout){
-    debug(cname);
-    NotImplemented();
-}
+// void abstract_declarator::translate(string& pyout){
+//     debug(cname);
+//     NotImplemented();
+// }
 
 
 #endif

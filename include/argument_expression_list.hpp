@@ -12,7 +12,7 @@ class argument_expression_list : public expression{
 public:
   argument_expression_list(treeptr o, treeptr t){ left = o; right = t;}
   ~argument_expression_list(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const;
 private:
   //int type;
   treeptr left;
@@ -20,9 +20,9 @@ private:
   string cname = "argument_expression_list";
 };
 
-void argument_expression_list::translate(string& pyout){
-    debug(cname);
-    NotImplemented();
-}
+// void argument_expression_list::translate(string& pyout){
+//     debug(cname);
+//     NotImplemented();
+// }
 
 #endif

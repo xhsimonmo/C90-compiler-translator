@@ -52,9 +52,9 @@
 %%
 
 primary_expression
-	: IDENTIFIER    {$$ = new primary_expression(0,*$1); std::cout << "primary expression 1" << std::endl;}
-	| CONSTANT      {$$ = new primary_expression(1,*$1); std::cout << "primary expression 2" << std::endl;}
-	| STRING_LITERAL {$$ = new primary_expression(2,*$1); std::cout << "primary expression 3" << std::endl;}
+	: IDENTIFIER    {$$ = new primary_expression(0,*$1); std::cout << "primary expression 1, which is IDENTIFIER : " <<  *$1 << std::endl;}
+	| CONSTANT      {$$ = new primary_expression(1,*$1); std::cout << "primary expression 2, which is const with value: " << *$1 <<std::endl;}
+	| STRING_LITERAL {$$ = new primary_expression(2,*$1); std::cout << "primary expression 3,  which is string literal "<< std::endl;}
 	| '(' expression ')' {$$ = new primary_expression(3,$2); std::cout << "primary expression 4" << std::endl;}
 	;
 
@@ -398,8 +398,8 @@ labeled_statement
 compound_statement
 	: '{' '}'    {$$ = new compound_statement(0); std::cout << "compound_statement 0" << std::endl;}
 	| '{' statement_list '}'   {$$ = new compound_statement(1, $2); std::cout << "compound_statement 1" << std::endl;}
-	| '{' declaration_list '}'   {$$ = new compound_statement(1, $2); std::cout << "compound_statement 2" << std::endl;}
-	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(1, $2, $3); std::cout << "compound_statement 3" << std::endl;}
+	| '{' declaration_list '}'   {$$ = new compound_statement(2, $2); std::cout << "compound_statement 2" << std::endl;}
+	| '{' declaration_list statement_list /*declaration list need to be in front of statement in c language"*/ '}'    {$$ = new compound_statement(3, $2, $3); std::cout << "compound_statement 3" << std::endl;}
 	;
 
 declaration_list
@@ -440,8 +440,8 @@ jump_statement
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {$$ = $1;std::cout << " translation_unit 1" << std::endl;}
-	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;$$ = new translation_unit($1, $2);}
+	: external_declaration                     {g_root = $1;std::cout << " translation_unit 1" << std::endl;}
+	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;g_root = new translation_unit($1, $2);}
 	;
 
 external_declaration

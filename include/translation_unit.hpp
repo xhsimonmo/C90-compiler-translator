@@ -7,23 +7,33 @@ class translation_unit : public definition{
 public:
   translation_unit(treeptr o, treeptr t){p_yi = o; p_er = t;}
   ~translation_unit(){delete p_yi; delete p_er;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const {
+    debug(cname);
+    std::cout << "In translation unit->translate " << std::endl;
+    string unit;
+    string declaration;
+    std::cout << "inside translation unit" << '\n';
+    p_yi->translate(unit);
+    p_er->translate(declaration);
+
+    pyout = unit + "/n" + declaration;
+  };
 private:
   treeptr p_yi;
   treeptr p_er;
   string cname = "translation_unit";
 };
 
-void translation_unit::translate(string& pyout){
-  debug(cname);
-  std::cout << "In translation unit->translate " << std::endl;
-  string unit;
-  string declaration;
-  std::cout << "inside translation unit" << '\n';
-  p_yi->translate(unit);
-  p_er->translate(declaration);
-
-  pyout = unit + "/n" + declaration;
-}
+// void translation_unit::translate(string& pyout){
+//   debug(cname);
+//   std::cout << "In translation unit->translate " << std::endl;
+//   string unit;
+//   string declaration;
+//   std::cout << "inside translation unit" << '\n';
+//   p_yi->translate(unit);
+//   p_er->translate(declaration);
+//
+//   pyout = unit + "/n" + declaration;
+// }
 
 #endif

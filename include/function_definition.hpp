@@ -18,6 +18,8 @@ public:
   ~function_definition(){delete p_o; delete p_t; delete p_f;}
   //void translate(string& pyout);
  inline void translate(string& pyout, vector<string> global_variables);
+ // inline void function_definition::compile(mips& mp);
+
 private:
   treeptr p_o;
   treeptr p_t;
@@ -40,5 +42,20 @@ private:
   }
   pyout = "def" + declarator + ":/n" + global + statement + "/n";//喵喵喵
 }
+
+// void function_definition::compile(mips& mp)
+// {
+//   // string specify;
+//   string declarator;
+//   string statement;
+//   string code;
+//   // p_t->compile(declarator);
+//   p_f->compile(mp);
+//
+//
+//   code =
+//   mp.mpcode.push_back(code);
+//
+// }
 
 #endif
