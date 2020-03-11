@@ -16,7 +16,7 @@ public:
   compound_statement(int _type):type(_type){};
   compound_statement(int _type, treeptr _list):type(_type), left(_list){};
   compound_statement(int _type, treeptr dec_list, treeptr sta_list):type(_type), left(dec_list),right(sta_list){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~compound_statement(){
     delete left;
     delete right;
@@ -29,31 +29,31 @@ private:
 };
 
 
-void compound_statement::translate(string& pyout){
-  debug(cname);
-  string ds, ss;
-  switch (type) {
-    case 0:
-    break;//do nothing?
-    case 1:
-    // indentation++; //encounter "{"
-    left->translate(pyout);
-    // indentation--; //exit with "}"
-    break;
-    case 2:
-    // indentation++; //encounter "{"
-    left->translate(pyout);
-    // indentation--; //exit with "}"
-    break;
-    case 3:
-    // indentation++;
-    left->translate(ds);
-    right->translate(ss);
-    // indentation--;
-    pyout = ds + '\n' + ss;
-    break;
-
-  }
-}
+// void compound_statement::translate(string& pyout) const{
+//   debug(cname);
+//   string ds, ss;
+//   switch (type) {
+//     case 0:
+//     break;//do nothing?
+//     case 1:
+//     // indentation++; //encounter "{"
+//     left->translate(pyout);
+//     // indentation--; //exit with "}"
+//     break;
+//     case 2:
+//     // indentation++; //encounter "{"
+//     left->translate(pyout);
+//     // indentation--; //exit with "}"
+//     break;
+//     case 3:
+//     // indentation++;
+//     left->translate(ds);
+//     right->translate(ss);
+//     // indentation--;
+//     pyout = ds + '\n' + ss;
+//     break;
+//
+//   }
+// }
 
 #endif

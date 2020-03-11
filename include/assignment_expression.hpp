@@ -26,7 +26,7 @@ class assignment_expression : public expression{
 public:
   assignment_expression(treeptr o, int type_in, treeptr f){p_one = o; type = type_in; p_five = f;}
   ~assignment_expression(){delete p_one; delete p_five;};
-  virtual void translate(string& pyout)const;
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   treeptr p_one;

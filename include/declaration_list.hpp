@@ -16,21 +16,21 @@ public:
   declaration_list(treeptr o, treeptr t){p_o = o; p_t = t;}
   ~declaration_list(){delete p_o; delete p_t;}
   //void translate(string& pyout);
- inline void translate(string& pyout, vector<string> global_variables);
+ virtual void translate(string& pyout, vector<string> global_variables)const override;
 private:
   treeptr p_o;
   treeptr p_t;
   string cname = "declaration_list";
 };
 
- void declaration_list::translate(string& pyout, vector<string> global_variables){
-  debug(cname);
-  string l;
-  string r;
-
-  p_o->translate(l);
-  p_t->translate(r);
-  pyout = l + "\n" + r;
-}
+//  void declaration_list::translate(string& pyout, vector<string> global_variables)const{
+//   debug(cname);
+//   string l;
+//   string r;
+//
+//   p_o->translate(l);
+//   p_t->translate(r);
+//   pyout = l + "\n" + r;
+// }
 
 #endif
