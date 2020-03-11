@@ -13,7 +13,7 @@ public:
   cast_expression(int type_in, treeptr p, treeptr o){type = type_in; ptr = p; opt = o;}
   cast_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~cast_expression(){delete ptr; delete opt;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   treeptr ptr;
@@ -21,20 +21,20 @@ private:
   string cname = "cast_expression";
 };
 
-void cast_expression::translate(string& pyout){
-      debug(cname);
-  std::string op;
-  switch (type)
-  {
-    case 0:
-    ptr->translate(pyout);
-    opt->translate(op);
-    pyout = pyout + "(" + op + ")";
-    break;
-
-    default:
-    NotImplemented();
-  }
-}
+// void cast_expression::translate(string& pyout) const{
+//       debug(cname);
+//   std::string op;
+//   switch (type)
+//   {
+//     case 0:
+//     ptr->translate(pyout);
+//     opt->translate(op);
+//     pyout = pyout + "(" + op + ")";
+//     break;
+//
+//     default:
+//     NotImplemented();
+//   }
+// }
 
 #endif

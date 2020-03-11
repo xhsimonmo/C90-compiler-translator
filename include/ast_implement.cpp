@@ -73,3 +73,61 @@ void base_expression::translate(string& pyout)const{
   p_five->translate(five);
   pyout = one + "," + five;
 }
+
+void cast_expression::translate(string& pyout) const{
+      debug(cname);
+  std::string op;
+  switch (type)
+  {
+    case 0:
+    ptr->translate(pyout);
+    opt->translate(op);
+    pyout = pyout + "(" + op + ")";
+    break;
+
+    default:
+    NotImplemented();
+  }
+}
+
+void compound_statement::translate(string& pyout) const{
+  debug(cname);
+  string ds, ss;
+  switch (type) {
+    case 0:
+    break;//do nothing?
+    case 1:
+    // indentation++; //encounter "{"
+    left->translate(pyout);
+    // indentation--; //exit with "}"
+    break;
+    case 2:
+    // indentation++; //encounter "{"
+    left->translate(pyout);
+    // indentation--; //exit with "}"
+    break;
+    case 3:
+    // indentation++;
+    left->translate(ds);
+    right->translate(ss);
+    // indentation--;
+    pyout = ds + '\n' + ss;
+    break;
+
+  }
+}
+
+void conditional_expression::translate(string& pyout) const{
+  debug(cname);
+  NotImplemented();
+}
+
+void declaration_list::translate(string& pyout, vector<string> global_variables)const{
+ debug(cname);
+ string l;
+ string r;
+
+ p_o->translate(l);
+ p_t->translate(r);
+ pyout = l + "\n" + r;
+}
