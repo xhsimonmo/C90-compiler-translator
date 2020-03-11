@@ -33,8 +33,8 @@ int main(int argc, char *argv[]){
     std::string pyout;
     std::cout << "enter ast tree" << '\n';
     std::cerr << "first root : "  << root -> testpoint() << '\n';
-    root -> translate(pyout);
-    std::cout << "miaomioamiao" << std::endl;
+    root->translate(pyout, {});
+    
     std::string addmain;
     addmain = "\nif __name__ == \"__main__\":\n\timport sys\n\tret=main()\n\tsys.exit(ret)"; // include in every python file to invoke main
     std::cout << addmain << '\n';

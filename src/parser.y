@@ -440,8 +440,8 @@ jump_statement
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {$$ = $1;std::cout << " translation_unit 1" << std::endl;}
-	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;$$ = new translation_unit($1, $2);}
+	: external_declaration                     {g_root = $1;std::cout << " translation_unit 1" << std::endl;}
+	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;g_root = new translation_unit($1, $2);}
 	;
 
 external_declaration
