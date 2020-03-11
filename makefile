@@ -36,3 +36,4 @@ clean :
 	rm -f src/*.output
 	rm -f bin/*
 	rm -f src/*.o
+	rm -f include/*.o

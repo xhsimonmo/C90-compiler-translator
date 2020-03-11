@@ -12,7 +12,7 @@ class argument_expression_list : public expression{
 public:
   argument_expression_list(treeptr o, treeptr t){ left = o; right = t;}
   ~argument_expression_list(){delete left; delete right;}
-  virtual void translate(string& pyout)const;
+  virtual void translate(string& pyout)const override;
 private:
   //int type;
   treeptr left;
