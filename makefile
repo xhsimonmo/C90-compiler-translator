@@ -9,7 +9,7 @@ all : clean bin/c_compiler
 test : all t
 
 t:
-	bin/c_compiler --translate a.c -o b.py
+	bin/c_compiler --translate b.c -o b.py
 
 
 src/parser.tab.cpp src/parser.tab.hpp : src/parser.y

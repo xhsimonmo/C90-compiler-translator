@@ -98,18 +98,18 @@ void compound_statement::translate(string& pyout) const{
     break;//do nothing?
     case 1:
     // indentation++; //encounter "{"
-    std::cerr << "compound_statement type 1 " << '\n';
-    std::cerr << "current pyout: " <<pyout << '\n';
+    //std::cerr << "compound_statement type 1 " << '\n';
+    //std::cerr << "current pyout: " <<pyout << '\n';
     left->translate(pyout);
-    std::cerr << "catch pyout in compound_statement 1:" <<pyout <<'\n';
+    //std::cerr << "catch pyout in compound_statement 1:" <<pyout <<'\n';
     // indentation--; //exit with "}"
     break;
     case 2:
     // indentation++; //encounter "{"
-    std::cerr << "compound_statement type 2 " << '\n';
+    //std::cerr << "compound_statement type 2 " << '\n';
     left->translate(pyout);
     // indentation--; //exit with "}"
-    std::cerr << "catch pyout in compound_statement 2:" <<pyout <<'\n';
+    //std::cerr << "catch pyout in compound_statement 2:" <<pyout <<'\n';
     break;
     case 3:
     // indentation++;
@@ -174,13 +174,13 @@ void direct_abstract_declarator::translate(string& pyout) const{
 }
 
 void direct_declarator::translate(string& pyout) const{
-  std::cerr << "direct_declarator, type : " << type <<'\n';
+  //std::cerr << "direct_declarator, type : " << type <<'\n';
   debug(cname);
   string ls, rs;
   switch (type) {
     case 0:
     pyout = id; // directly output IDENTIFIER, as python doesn't have type
-    std::cerr << "type 0 ends, with pyout:" <<pyout <<'\n';
+    //std::cerr << "type 0 ends, with pyout:" <<pyout <<'\n';
     break;
     case 1:
     one->translate(pyout); // parenthsis does not matter in IDENTIFIER
@@ -204,7 +204,7 @@ void direct_declarator::translate(string& pyout) const{
     case 6:
     one -> translate(ls);
     pyout = ls + "("  + ")";// + '\n';
-    std::cerr << "type 6 ends, with pyout: " <<pyout <<'\n';
+    //std::cerr << "type 6 ends, with pyout: " <<pyout <<'\n';
     break;
   }
 }
@@ -224,7 +224,9 @@ void external_declaration :: translate(string& pyout)const{
   debug(cname);
   switch (type) {
     case 0:
+    //std::cerr << "external_declaration seen as function definition" << '\n';
     ptr -> translate(pyout);
+    //std::cerr << "end of external_declaration 0:" << pyout<<'\n';
     break;
     case 1 :
     ptr -> translate(pyout);
@@ -255,22 +257,13 @@ void function_definition::translate(string& pyout) const{
    //std::cerr << "function_definition 2" << '\n';
    //indentation++;
    p_o->translate(specify);
-   //std::cerr << "function_definition a" << '\n';
    p_t->translate(declarator);
-   //std::cerr << "function_definition b" << '\n';
    p_f->translate(statement);
-  //  std::cerr << "function_definition c" << '\n';
    for (int i = 0; i < global_variables.size(); i++)
    {
      global = global + "global " + global_variables[i] + "\n";
    }
-   std::cerr << "configure pyout." << '\n';
    pyout = "def " + declarator + ":\n";
-   std::cerr << "first part of pyout in translation_unit" << '\n';
-   std::cerr << "specifier: " << specify <<'\n';
-   std::cerr << "declarator: " << declarator <<'\n';
-   std::cerr << "global: \n" <<global<< '\n';
-   std::cerr << "statement:\n" <<statement <<'\n';
   pyout += indent(global) + indent(statement) + "\n";
    //indentation--;
  }
@@ -295,11 +288,11 @@ void identifier_list::translate(string& pyout) const{
     debug(cname);
     string s1, s2;
     one-> translate(s1);
-    std::cerr << "s1 " <<s1 <<'\n';
+    //std::cerr << "s1 " <<s1 <<'\n';
     two -> translate(s2);
-    std::cerr << "s2 " <<s2 <<'\n';
-    pyout = s1 + '=' + s2 + '\n';
-    std::cerr << "current pyout in init_declarator is " << pyout <<'\n';
+    //std::cerr << "s2 " <<s2 <<'\n';
+    pyout = s1 + '=' + s2 ;//+ '\n';
+    //std::cerr << "current pyout in init_declarator is " << pyout <<'\n';
   }
 
   void initializer_list::translate(string& pyout) const{
@@ -645,11 +638,14 @@ void identifier_list::translate(string& pyout) const{
       string unit;
       string declaration;
       if(p_er != NULL){
-        std::cerr << "enter translation_unit left" << '\n';
+        //std::cerr << "enter translation_unit left" << '\n';
         p_yi->translate(unit);
-        std::cerr << "finish left of translation_unit" << '\n';
+        //std::cerr << "finish left of translation_unit" << '\n';
         p_er->translate(declaration);
         pyout = unit + "\n" + declaration;
+        //std::cerr << "//////////////////translation_unit 2, pyout : " << pyout <<'\n';
+        //std::cerr << "unit: " << unit <<'\n';
+        //std::cerr << "declaration: " <<declaration << '\n';
       }
       else{
         p_yi->translate(unit);

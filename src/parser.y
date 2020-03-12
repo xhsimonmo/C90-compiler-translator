@@ -45,7 +45,7 @@
 
 
 
-%start translation_unit
+%start begin
 
 
 
@@ -440,9 +440,12 @@ jump_statement
 
 /*translation unit: (#include)source file*/
 translation_unit
-	: external_declaration                     {g_root = $1;std::cout << " translation_unit 1" << std::endl;}
-	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;g_root = new translation_unit($1, $2);}
+	: external_declaration                     {$$ = $1;std::cout << " translation_unit 1" << std::endl;}
+	| translation_unit external_declaration    {std::cout << "translation_unit 2" << std::endl;$$ = new translation_unit($1, $2);}
 	;
+
+begin
+  : translation_unit    {g_root = $1;}
 
 external_declaration
 	: function_definition        {$$ = new external_declaration(0,$1);std::cout << "external declaration 1" << std::endl;}

@@ -70,7 +70,6 @@ string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
   //int indentation;
   //char delimiter = '\t';
-  std::cerr << "indent:" <<source <<'\n';
   source.insert(0, 1,'\t'); //add /t to first line
   //string::size_type i = 0;
   for ( string::size_type it = 0; it < source.size(); it++)

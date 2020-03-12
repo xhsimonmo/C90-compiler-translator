@@ -20,7 +20,7 @@ private:
   treeptr two = NULL;
   string cname = "init_declarator_list";
 };
-// 
+//
 // void init_declarator_list::translate(string& pyout) const{
 //   debug(cname);
 //   string s1, s2;

@@ -26,7 +26,7 @@ private:
 //   string s1, s2;
 //   one-> translate(s1);
 //   two -> translate(s2);
-//   pyout = s1 + '=' + s2 + '\n';
+//   pyout = s1 + '=' + s2;// + '\n';
 // }
 
 
