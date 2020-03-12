@@ -1,11 +1,9 @@
-def x():
+one=1
 
-
-def main():
-x()
-return 10
-
-
+def f():
+	global one=1
+	
+	
 
 if __name__ == "__main__":
 	import sys

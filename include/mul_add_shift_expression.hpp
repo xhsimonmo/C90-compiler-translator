@@ -91,7 +91,7 @@ class additive_expression : public expression{
 //     break;
 //
 //     case 2:
-//     pyout = ls + "_" + rs+"/n";
+//     pyout = ls + "-" + rs+"/n";
 //     break;
 //   }
 // }

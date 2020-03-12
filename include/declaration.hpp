@@ -35,7 +35,6 @@ private:
 //     lt-> translate(s_list);
 //     pyout = s_spec + s_list;
 //   }
-//   global_variables.push_back(pyout);
 // }
 
 

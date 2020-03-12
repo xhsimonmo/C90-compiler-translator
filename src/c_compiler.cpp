@@ -14,7 +14,7 @@
 // extern const astnode * parseAST(char* filename);//altenative method
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;
-int indentation;
+//int indentation;
 int main(int argc, char *argv[]){
   if(argc != 5){
     std::cerr << "Totally 5 args are required, argument number not matched." << '\n';
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
 
   if(strcmp(argv[1], "--translate") == 0 ){
     std::cerr << "\ntranslator begin" << '\n';
-    indentation = 0;
+    //indentation = 0;
     std::string pyout;
     std::cerr  << '\n';
     root->translate(pyout);

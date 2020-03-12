@@ -4,10 +4,10 @@
 #include "ast.hpp"
 
 // compound_statement
-// 	: '{' '}'
-// 	| '{' statement_list '}'
-// 	| '{' declaration_list '}'
-// 	| '{' declaration_list statement_list '}'
+// 	: '{' '}'    {$$ = new compound_statement(0); std::cout << "compound_statement 0" << std::endl;}
+// 	| '{' statement_list '}'   {$$ = new compound_statement(1, $2); std::cout << "compound_statement 1" << std::endl;}
+// 	| '{' declaration_list '}'   {$$ = new compound_statement(2, $2); std::cout << "compound_statement 2" << std::endl;}
+// 	| '{' declaration_list statement_list /*declaration list need to be in front of statement in c language"*/ '}'    {$$ = new compound_statement(3, $2, $3); std::cout << "compound_statement 3" << std::endl;}
 // 	;
 
 class compound_statement : public statement
@@ -37,6 +37,7 @@ private:
 //     break;//do nothing?
 //     case 1:
 //     // indentation++; //encounter "{"
+//     std::cerr << "compound_statement type 1 " << '\n';
 //     left->translate(pyout);
 //     // indentation--; //exit with "}"
 //     break;

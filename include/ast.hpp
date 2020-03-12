@@ -9,7 +9,7 @@
 using std::string;
 using std::vector;
 
-extern int indentation ;//specify number of tab/"/t"
+//extern int indentation ;//specify number of tab/"/t"
 
 
 //this basically indicate the difference between "{" and "}", which is the number of "\t" to add
@@ -66,20 +66,29 @@ public:
 private:
 };
 
-
-inline string indent(string& source) //PLEASE WORK PLEASE
+string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
-  int indentation;
-  char delimiter = '/t';
-  for (auto it = source.begin(); it != source.end(); it++)
+  //int indentation;
+  //char delimiter = '\t';
+  std::cerr << "indent:" <<source <<'\n';
+  source.insert(0, 1,'\t'); //add /t to first line
+  //string::size_type i = 0;
+  for ( string::size_type it = 0; it < source.size(); it++)
   {
-    if(*it == '\n'){
-      for(int i = 0; i <= indentation; i++){
-        source = delimiter + source;//add corresponding number of indentation
-        it++;// wo nuo
-      }
+    if(source[it] == '\n' && it != source.size()-1){
+      //std::cerr << "spot line breaker in indent" << '\n';
+      source.insert(it+1,1, '\t');//add \t to every \t
+      it ++;
     }
   }
+  // for (auto it = source.begin(); it != source.end(); it++)
+  // {
+  //   if(*it == '\n'){
+  //     std::cerr << "spot line breaker in indent" << '\n';
+  //     source.insert(it+1,1, '\t');
+  //     it ++;
+  //   }
+  // }
   return source;
 }
 
@@ -89,6 +98,7 @@ void NotImplemented(){
 
  void debug(string classname){
   std::cerr << "the name of the current class is: " << classname <<  '\n';
+  std::cerr << "current global variable size: " << global_variables.size() << '\n';
 }
 
 ////////////////////////////MIPS////////////////////////////////

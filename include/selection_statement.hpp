@@ -40,11 +40,11 @@ private:
 //   switch (type) {
 //     case 0:
 //     //indentation++;
-//     pyout = "if (" + expres + "):" + '\n' + indent(ifs) ;
+//     pyout = "if " + expres + ":" + '\n' + indent(ifs) ;
 //     break;
 //     case 1:
 //     elsesta->translate(elses);
-//     pyout = "if (" + expres + "):" + '\n' + indent(ifs) + "else:" + '\n'+ indent(elses) + '\n';
+//     pyout = "if " + expres + ":" + '\n' + indent(ifs) + "else:" + '\n'+ indent(elses) + '\n';
 //     break;
 //     case 2: //no required to translate switch
 //     NotImplemented();

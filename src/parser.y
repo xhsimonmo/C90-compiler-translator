@@ -337,7 +337,7 @@ parameter_list
 parameter_declaration
 	: declaration_specifiers declarator             {$$ = new parameter_declaration(0, $1, $2); std::cout << "parameter_declaration 0" << std::endl; }
 	| declaration_specifiers abstract_declarator    {$$ = new parameter_declaration(1, $1, $2); std::cout << "parameter_declaration 1" << std::endl; }
-	| declaration_specifiers/*喵喵喵*/                   {$$ = new parameter_declaration(2, $1); std::cout << "parameter_declaration 2" << std::endl;  } /*TODO what does this do */
+	| declaration_specifiers                   {$$ = new parameter_declaration(2, $1); std::cout << "parameter_declaration 2" << std::endl;  } /*TODO what does this do */
 	;
 
 identifier_list
@@ -432,10 +432,10 @@ iteration_statement
 
 jump_statement
 	 //GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}  // no need to Implement this
-	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");std::cout << "jump_statement 0 " << std::endl;}
-	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");std::cout << "jump_statement 1 " << std::endl;}
-	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");std::cout << "jump_statement 2 " << std::endl;}
-	| RETURN expression ';'    {$$ = new jump_statement(4, $2);std::cout << "jump_statement 3 " << std::endl;}
+	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");std::cout << "jump_statement 1 " << std::endl;}
+	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");std::cout << "jump_statement 2 " << std::endl;}
+	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");std::cout << "jump_statement 3 " << std::endl;}
+	| RETURN expression ';'    {$$ = new jump_statement(4, $2);std::cout << "jump_statement 4 " << std::endl;}
 	;
 
 /*translation unit: (#include)source file*/
@@ -445,8 +445,8 @@ translation_unit
 	;
 
 external_declaration
-	: function_definition        {$$ = $1;std::cout << "external declaration 1" << std::endl;}
-	| declaration                {$$ = $1;std::cout << "external declaration 2" << std::endl;}/*global variable???*/
+	: function_definition        {$$ = new external_declaration(0,$1);std::cout << "external declaration 1" << std::endl;}
+	| declaration                {$$ =  new external_declaration(1,$1);std::cout << "external declaration 2" << std::endl;}/*global variable???*/
 	;
 
 function_definition

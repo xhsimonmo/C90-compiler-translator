@@ -32,12 +32,13 @@ private:
 //   {
 //     case 0:
 //     pyout = er;
-//
+//     break;
 //     case 1:
 //     NotImplemented();
-//
+//     break;
 //     case 2:
 //     NotImplemented();
+//     break;
 //   }
 // }
 

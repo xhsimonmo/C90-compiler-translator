@@ -4,11 +4,11 @@
 #include "ast.hpp"
 
 // jump_statement
-// 	: GOTO IDENTIFIER ';' ///no goto statement
-// 	| CONTINUE ';'
-// 	| BREAK ';'
-// 	| RETURN ';' //return nothing is undefined in C90 standard
-// 	| RETURN expression ';'
+// 	 //GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}  // no need to Implement this
+// 	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");std::cout << "jump_statement 1 " << std::endl;}
+// 	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");std::cout << "jump_statement 2 " << std::endl;}
+// 	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");std::cout << "jump_statement 3 " << std::endl;}
+// 	| RETURN expression ';'    {$$ = new jump_statement(4, $2);std::cout << "jump_statement 4 " << std::endl;}
 // 	;
 
 class jump_statement : public statement{
@@ -32,6 +32,9 @@ private:
 //   debug(cname);
 //   string return_expression;
 //   switch (type) {
+//     case 3:
+//     pyout = "return ";
+//     break;
 //     case 4 ://return
 //     expre_ptr -> translate(return_expression);
 //     pyout = "return " + return_expression + "\n";
