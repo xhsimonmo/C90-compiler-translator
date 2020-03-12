@@ -11,19 +11,19 @@
 // 	| declarator compound_statement                                          {$$ = new declaration_list($1, $2);}
 // 	;
 
-class declaration_list : public definition{
+class declaration_list : public astnode{
 public:
   declaration_list(treeptr o, treeptr t){p_o = o; p_t = t;}
   ~declaration_list(){delete p_o; delete p_t;}
   //void translate(string& pyout);
- virtual void translate(string& pyout, vector<string> global_variables)const override;
+ virtual void translate(string& pyout)const override;
 private:
   treeptr p_o;
   treeptr p_t;
   string cname = "declaration_list";
 };
 
-//  void declaration_list::translate(string& pyout, vector<string> global_variables)const{
+//  void declaration_list::translate(string& pyout)const{
 //   debug(cname);
 //   string l;
 //   string r;

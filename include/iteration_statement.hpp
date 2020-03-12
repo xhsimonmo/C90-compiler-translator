@@ -20,7 +20,7 @@ public:
 		delete san;
 		delete si;
 	}
-	inline void translate(string& pyout);
+	virtual void translate(string& pyout)const override;
 private:
 	int type;
 	treeptr yi = NULL;
@@ -30,21 +30,21 @@ private:
 	string cname = "iteration_statement";
 };
 
-void iteration_statement::translate(string& pyout){
-	debug(cname);
-	string ones, twos, threes, fours;
-	switch (type) {
-		case 0:
-		yi -> translate(ones);
-		er -> translate(twos);
-		pyout = "while (" + ones + "):" + '\n' + indent(twos) + '\n';
-		break;
-		default:
-		NotImplemented();
-		break;
-	}
-
-}
+// void iteration_statement::translate(string& pyout)const{
+// 	debug(cname);
+// 	string ones, twos, threes, fours;
+// 	switch (type) {
+// 		case 0:
+// 		yi -> translate(ones);
+// 		er -> translate(twos);
+// 		pyout = "while (" + ones + "):" + '\n' + indent(twos) + '\n';
+// 		break;
+// 		default:
+// 		NotImplemented();
+// 		break;
+// 	}
+//
+// }
 
 
 #endif

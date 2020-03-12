@@ -1,1 +1,9 @@
- int a = 2 ;
+void x(){
+    return;
+}
+
+int main()
+{
+    x();
+    return 10;
+}

@@ -11,7 +11,7 @@
 class statement_list : public statement{
 public:
   statement_list(treeptr list, treeptr _statement):l(list),r(_statement){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~statement_list(){
     delete l;
     delete r;
@@ -21,13 +21,13 @@ private:
   string cname = "statement_list";
 };
 
-void statement_list::translate(string& pyout)
-{
-  debug(cname);
-  string ls, rs;
-  l -> translate(ls);
-  r -> translate(rs);
-  pyout = ls +'\n' + rs + '\n';
-}
+// void statement_list::translate(string& pyout) const
+// {
+//   debug(cname);
+//   string ls, rs;
+//   l -> translate(ls);
+//   r -> translate(rs);
+//   pyout = ls +'\n' + rs + '\n';
+// }
 
 #endif

@@ -18,7 +18,7 @@ public:
   primary_expression(int type, string _element):element(_element){};
   primary_expression(int type, treeptr _ptr):expre_ptr(_ptr){};
 
-  inline void translate(string& pyout);//translate to Python
+  virtual void translate(string& pyout)const override;//translate to Python
 private:
   int type;
   string element;//either IDENTIFIER, CONSTANT, OR STRING_LITERAL
@@ -26,28 +26,28 @@ private:
   string cname = "primary_expression";
 };
 
-void primary_expression::translate(string& pyout)
-{
-  debug(cname);
-  switch(type){
-    case 0:
-      pyout = element;
-      break;
-
-    case 1://constant representation in c different from python
-      pyout = element;
-      break;
-
-    case 2:
-      pyout = element;
-      break;
-
-    case 3:
-      expre_ptr->translate(pyout);//for "(" expression ")"
-      break;
-  }
-
-}
+// void primary_expression::translate(string& pyout) const
+// {
+//   debug(cname);
+//   switch(type){
+//     case 0:
+//       pyout = element;
+//       break;
+//
+//     case 1://constant representation in c different from python
+//       pyout = element;
+//       break;
+//
+//     case 2:
+//       pyout = element;
+//       break;
+//
+//     case 3:
+//       expre_ptr->translate(pyout);//for "(" expression ")"
+//       break;
+//   }
+//
+// }
 
 // string c2pyconstant(string cconst)
 // {

@@ -21,7 +21,7 @@ public:
   direct_abstract_declarator(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   direct_abstract_declarator(int type_in){type = type_in; }
   ~direct_abstract_declarator(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   treeptr left = NULL;
@@ -29,9 +29,9 @@ private:
   string cname = "direct_abstract_declarator";
 };
 
-void direct_abstract_declarator::translate(string& pyout){
-  debug(cname);
-  NotImplemented();
-}
+// void direct_abstract_declarator::translate(string& pyout) const{
+//   debug(cname);
+//   NotImplemented();
+// }
 
 #endif

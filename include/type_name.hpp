@@ -12,17 +12,17 @@ class type_name : public astnode{
 public:
   type_name(treeptr o, treeptr t){left = o; right = t;}
   ~type_name(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   treeptr left;
   treeptr right;
   string cname = "type_name";
 };
 
-void type_name::translate(string& pyout){
-    debug(cname);
-    NotImplemented();
-  }
+// void type_name::translate(string& pyout) const{
+//     debug(cname);
+//     NotImplemented();
+//   }
 
 
 #endif

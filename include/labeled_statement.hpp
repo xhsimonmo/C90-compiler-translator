@@ -13,7 +13,7 @@ class labeled_statement : public statement{
 public:
   labeled_statement(int _type, treeptr _one):type(_type),one(_one){};
   labeled_statement(int _type, treeptr _one, treeptr _two):type(_type),one(_one),two(_two){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~labeled_statement(){
     delete one;
     delete two;
@@ -25,10 +25,10 @@ private:
   string cname = "labeled_statement";
 };
 
-void labeled_statement::translate(string& pyout){
-  debug(cname);
-  NotImplemented();
-}
+// void labeled_statement::translate(string& pyout) const{
+//   debug(cname);
+//   NotImplemented();
+// }
 
 //no tranlation to python required?
 

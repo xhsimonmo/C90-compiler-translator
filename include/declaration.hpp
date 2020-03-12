@@ -4,34 +4,16 @@
 #include "ast.hpp"
 
 // declaration
-// 	: declaration_specifiers ';'  {$$ = new declaration($1);}
-// 	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);}
+// 	: declaration_specifiers ';'  {$$ = new declaration($1); std::cout << "declaration 0 " << std::endl;}
+// 	| declaration_specifiers init_declarator_list ';'  {$$ = new declaration($1, $2);std::cout << "declaration 1 " << std::endl;}
 // 	;
+
 
 class declaration : public astnode{
 public:
   declaration(treeptr _spec):spec(_spec){};
   declaration(treeptr _spec, treeptr _list):spec(_spec),lt(_list){};
-   virtual void translate(string& pyout)const {debug(cname);};
-   virtual void translate(string& pyout, vector<string> global_variables)const {
-     debug(cname);
-     if(lt == NULL)
-     {
-       std::cout << "lt == NULL" << '\n';
-       spec-> translate(pyout);
-     }// actually we dont need to care about this for python?
-     else{
-       //omit declaration specifier(int, double) for python translation
-       std::cout << "lt != NULL" << '\n';
-
-       lt->translate(pyout);
-     }
-     global_variables.push_back(pyout);
-   };
-  ~declaration(){
-    delete spec;
-    delete lt;
-  }
+  virtual void translate(string& pyout)const override;
 private:
   treeptr spec = NULL;
   treeptr lt = NULL;
@@ -39,23 +21,23 @@ private:
 };
 
 
-// void declaration::translate(string& pyout, vector<string> global_variables)
+// void declaration::translate(string& pyout) const
 // {
+//   string s_spec, s_list;
 //   debug(cname);
 //   if(lt == NULL)
 //   {
-//     spec-> translate(pyout);
-//   }// actually we dont need to care about this for python?
+//     spec -> translate(pyout);
+//   }
 //   else{
 //     //omit declaration specifier(int, double) for python translation
-//     lt->translate(pyout);
+//     spec-> translate(s_spec);
+//     lt-> translate(s_list);
+//     pyout = s_spec + s_list;
 //   }
 //   global_variables.push_back(pyout);
 // }
-//
-//  void declaration::translate(string& pyout){
-//   debug(cname);
-// };
+
 
 
 #endif

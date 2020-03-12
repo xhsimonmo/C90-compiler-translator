@@ -9,7 +9,7 @@
 class specifier_qualifier_list : public astnode{
 public:
   specifier_qualifier_list(treeptr _spec, treeptr _list):spec(_spec),list(_list){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~specifier_qualifier_list(){
     delete spec;
     delete list;
@@ -20,10 +20,10 @@ private:
   string cname = "specifier_qualifier_list";
 };
 
-void specifier_qualifier_list::translate(string& pyout)
-{
-  debug(cname);
-  //skip, no type for python
-}
+// void specifier_qualifier_list::translate(string& pyout) const
+// {
+//   debug(cname);
+//   //skip, no type for python
+// }
 
 #endif

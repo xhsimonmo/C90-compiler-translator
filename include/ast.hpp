@@ -26,7 +26,7 @@ class astnode{
 public:
   astnode(){};
   virtual void translate(string& pyout)const{};
-  virtual void translate(string& pyout, vector<string> global_variables)const {};
+  //virtual void translate(string& pyout, vector<string> global_variables)const {};
   // virtual void compile(mips& mp)const{};//compiler
   //~astnode();
   const int testpoint()const{return 2;}
@@ -38,7 +38,7 @@ private:
 class expression : public astnode{
 public:
   expression(){};
-  virtual void translate(string& pyout){};
+  virtual void translate(string& pyout)const{};
   virtual ~expression(){};
 private:
 };
@@ -46,7 +46,7 @@ private:
 class definition : public astnode{
 public:
   definition(){};
-  virtual void translate(string& pyout){};
+  virtual void translate(string& pyout)const{};
   virtual ~definition(){};
 private:
 

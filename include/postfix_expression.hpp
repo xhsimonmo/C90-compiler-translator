@@ -21,7 +21,7 @@ public:
   postfix_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   postfix_expression(int type_in, treeptr p, string _id){type = type_in; ptr = p; id = _id;}
   ~postfix_expression(){delete ptr; delete opt;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   string id;
@@ -30,52 +30,52 @@ private:
   string cname = "postfix_expression";
 };
 
-void postfix_expression::translate(string& pyout){
-  debug(cname);
-std::string op;
-switch (type)
-{
-  case 0:
-  ptr->translate(pyout);
-  pyout = pyout + "()";
-  break;
-
-  case 1:
-  ptr->translate(pyout);
-  pyout = pyout + "()";
-  break;
-
-  case 2:
-  ptr->translate(pyout);
-  opt->translate(op);
-  pyout = pyout + "(" + op + ")";
-  break;
-
-  case 3:
-  ptr->translate(pyout);
-  opt->translate(op);
-  pyout = pyout + "." + op;
-  break;
-
-  // case 4:
-  // ptr->translate(pyout);
-  // pyout = pyout + "->7" + element;
-  // break;
-
-
-  case 5:
-  ptr->translate(pyout);
-  pyout = pyout + "+=1";
-  break;
-
-  case 6:
-  ptr->translate(pyout);
-  pyout = pyout + "-=1";
-  break;
-
-  default:
-  NotImplemented();
-}
-}
+// void postfix_expression::translate(string& pyout) const{
+//   debug(cname);
+// std::string op;
+// switch (type)
+// {
+//   case 0:
+//   ptr->translate(pyout);
+//   pyout = pyout + "()";
+//   break;
+//
+//   case 1:
+//   ptr->translate(pyout);
+//   pyout = pyout + "()";
+//   break;
+//
+//   case 2:
+//   ptr->translate(pyout);
+//   opt->translate(op);
+//   pyout = pyout + "(" + op + ")";
+//   break;
+//
+//   case 3:
+//   ptr->translate(pyout);
+//   opt->translate(op);
+//   pyout = pyout + "." + op;
+//   break;
+//
+//   // case 4:
+//   // ptr->translate(pyout);
+//   // pyout = pyout + "->7" + element;
+//   // break;
+//
+//
+//   case 5:
+//   ptr->translate(pyout);
+//   pyout = pyout + "+=1";
+//   break;
+//
+//   case 6:
+//   ptr->translate(pyout);
+//   pyout = pyout + "-=1";
+//   break;
+//
+//   default:
+//   NotImplemented();
+//  }
+// }
 
 #endif

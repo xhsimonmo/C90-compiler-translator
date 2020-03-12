@@ -17,7 +17,7 @@ public:
   function_definition(treeptr o, treeptr t){p_o = o; p_t = t;}
   ~function_definition(){delete p_o; delete p_t; delete p_f;}
   //void translate(string& pyout);
- inline void translate(string& pyout, vector<string> global_variables);
+ virtual void translate(string& pyout)const override;
  // inline void function_definition::compile(mips& mp);
 
 private:
@@ -27,21 +27,21 @@ private:
   string cname = "function_definition";
 };
 
- void function_definition::translate(string& pyout, vector<string> global_variables){
-  debug(cname);
-  string specify;
-  string declarator;
-  string statement;
-  string global;
-
-  p_t->translate(declarator);
-  p_f->translate(statement);
-  for (int i = 0; i < global_variables.size(); i++)
-  {
-    global = global + "global " + global_variables[i] + "\n";
-  }
-  pyout = "def" + declarator + ":/n" + global + statement + "/n";//喵喵喵
-}
+//  void function_definition::translate(string& pyout) const{
+//   debug(cname);
+//   string specify;
+//   string declarator;
+//   string statement;
+//   string global;
+//
+//   p_t->translate(declarator);
+//   p_f->translate(statement);
+//   for (int i = 0; i < global_variables.size(); i++)
+//   {
+//     global = global + "global " + global_variables[i] + "\n";
+//   }
+//   pyout = "def " + declarator + ":\n" + global + statement + "\n";//喵喵喵
+// }
 
 // void function_definition::compile(mips& mp)
 // {

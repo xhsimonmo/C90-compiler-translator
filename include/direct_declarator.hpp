@@ -17,7 +17,7 @@ public:
   direct_declarator(int _type,string _id):type(_type),id(_id){};
   direct_declarator(int _type, treeptr _one):type(_type),one(_one){};
   direct_declarator(int _type, treeptr _one, treeptr _two):type(_type),one(_one),two(_two){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~direct_declarator(){
     delete one;
     delete two;
@@ -30,38 +30,38 @@ private:
   string cname = "direct_declarator";
 };
 
-void direct_declarator::translate(string& pyout){
-  debug(cname);
-  string ls, rs;
-  switch (type) {
-    case 0:
-    pyout = id; // directly output IDENTIFIER, as python doesn't have type
-    break;
-    case 1:
-    one->translate(pyout); // parenthsis does not matter in IDENTIFIER
-    break;
-    case 2:
-    NotImplemented(); // no array
-    break;
-    case 3:
-    NotImplemented();
-    break;
-    case 4:
-    one -> translate(ls);
-    two -> translate(rs);
-    pyout = ls + "(" + rs + ")" + '\n';
-    break;
-    case 5:
-    one -> translate(ls);
-    two -> translate(rs);
-    pyout = ls + "(" + rs + ")" + '\n';
-    break;
-    case 6:
-    one -> translate(ls);
-    pyout = ls + "("  + ")" + '\n';
-    break;
-  }
-}
+// void direct_declarator::translate(string& pyout) const{
+//   debug(cname);
+//   string ls, rs;
+//   switch (type) {
+//     case 0:
+//     pyout = id; // directly output IDENTIFIER, as python doesn't have type
+//     break;
+//     case 1:
+//     one->translate(pyout); // parenthsis does not matter in IDENTIFIER
+//     break;
+//     case 2:
+//     NotImplemented(); // no array
+//     break;
+//     case 3:
+//     NotImplemented();
+//     break;
+//     case 4:
+//     one -> translate(ls);
+//     two -> translate(rs);
+//     pyout = ls + "(" + rs + ")" ;//+ '\n';
+//     break;
+//     case 5:
+//     one -> translate(ls);
+//     two -> translate(rs);
+//     pyout = ls + "(" + rs + ")" ;//+ '\n';
+//     break;
+//     case 6:
+//     one -> translate(ls);
+//     pyout = ls + "("  + ")";// + '\n';
+//     break;
+//   }
+// }
 
 
 

@@ -13,7 +13,7 @@ public:
   initializer_list(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   initializer_list(int type_in, treeptr o){type = type_in; left = o;}
   ~initializer_list(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   treeptr left;
@@ -21,23 +21,23 @@ private:
   string cname = "initializer_list";
 };
 
-void initializer_list::translate(string& pyout){
-  debug(cname);
-  string l;
-  string r;
-  left->translate(l);
-  right->translate(r);
-
-  switch(type)
-  {
-    case 0:
-    pyout = l;
-    break;
-
-    case 1:
-    NotImplemented();
-    break;
-  }
-}
+// void initializer_list::translate(string& pyout) const{
+//   debug(cname);
+//   string l;
+//   string r;
+//   left->translate(l);
+//   right->translate(r);
+//
+//   switch(type)
+//   {
+//     case 0:
+//     pyout = l;
+//     break;
+//
+//     case 1:
+//     NotImplemented();
+//     break;
+//   }
+// }
 
 #endif

@@ -16,7 +16,7 @@ class unary_expression : public expression{
 public:
   unary_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~unary_expression(){delete ptr;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   // inline void compile(string& mpout);
 private:
   int type;
@@ -24,64 +24,64 @@ private:
   string cname = "unary_expression";
 };
 
-inline void unary_expression::translate(string& pyout){
-  debug(cname);
-  switch (type)
-  {
-    case 0:
-    ptr->translate(pyout);
-    pyout = pyout + "+=1";
-    break;
-
-    case 1:
-    ptr->translate(pyout);
-    pyout = pyout + "-=1";
-    break;
-
-    // case "&":
-    // ptr->translate(pyout);
-    // pyout = "&" + pyout;
-    // break;
-
-    case 5:
-    ptr->translate(pyout);
-    pyout = "*" + pyout;
-    break;
-
-    case 6:
-    ptr->translate(pyout);
-    pyout = "+" + pyout;
-    break;
-
-    case 7:
-    ptr->translate(pyout);
-    pyout = "-" + pyout;
-    break;
-
-    // case "~":
-    // ptr->translate(pyout);
-    // pyout = "~" + pyout;
-    // break;
-    //
-    // case "!":
-    // ptr->translate(pyout);
-    // pyout = "!" + pyout;
-    // break;
-
-    case 2:
-    ptr->translate(pyout);
-    pyout = "sys.getsizeof(" + pyout + ")";
-    break;
-
-    case 3:
-    ptr->translate(pyout);
-    pyout = "sys.getsizeof(" + pyout + ")";
-    break;
-
-    default:
-    NotImplemented();
-  }
-}
+// void unary_expression::translate(string& pyout) const{
+//   debug(cname);
+//   switch (type)
+//   {
+//     case 0:
+//     ptr->translate(pyout);
+//     pyout = pyout + "+=1";
+//     break;
+//
+//     case 1:
+//     ptr->translate(pyout);
+//     pyout = pyout + "-=1";
+//     break;
+//
+//     // case "&":
+//     // ptr->translate(pyout);
+//     // pyout = "&" + pyout;
+//     // break;
+//
+//     case 5:
+//     ptr->translate(pyout);
+//     pyout = "*" + pyout;
+//     break;
+//
+//     case 6:
+//     ptr->translate(pyout);
+//     pyout = "+" + pyout;
+//     break;
+//
+//     case 7:
+//     ptr->translate(pyout);
+//     pyout = "-" + pyout;
+//     break;
+//
+//     // case "~":
+//     // ptr->translate(pyout);
+//     // pyout = "~" + pyout;
+//     // break;
+//     //
+//     // case "!":
+//     // ptr->translate(pyout);
+//     // pyout = "!" + pyout;
+//     // break;
+//
+//     case 2:
+//     ptr->translate(pyout);
+//     pyout = "sys.getsizeof(" + pyout + ")";
+//     break;
+//
+//     case 3:
+//     ptr->translate(pyout);
+//     pyout = "sys.getsizeof(" + pyout + ")";
+//     break;
+//
+//     default:
+//     NotImplemented();
+//   }
+// }
 
 // inline void unary_expression::compile(string& dst){
 //   switch(type)

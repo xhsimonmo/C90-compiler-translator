@@ -11,7 +11,7 @@
 class declaration_specifiers : public astnode{
 public:
   declaration_specifiers(treeptr _one, treeptr _two):one(_one),two(_two){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~declaration_specifiers(){
     delete one;
     delete two;
@@ -22,12 +22,12 @@ private:
   string cname = "declaration_specifiers";
 };
 
-void declaration_specifiers::translate(string& pyout){
-  debug(cname);
-
-  //for struct, skip for translation
-  //translation would not be requied here
-}
+// void declaration_specifiers::translate(string& pyout)const{
+//   debug(cname);
+//
+//   //for struct, skip for translation
+//   //translation would not be requied here
+// }
 
 
 #endif

@@ -12,20 +12,20 @@ class parameter_list : public astnode{
 public:
   parameter_list(treeptr o, treeptr t){left = o; right = t;}
   ~parameter_list(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   treeptr left;
   treeptr right;
   string cname = "parameter_list";
 };
 
-void parameter_list::translate(string& pyout){
-  debug(cname);
-  string yi;
-  string er;
-  left -> translate(yi);
-  right -> translate(er);
-  pyout = yi + "," + er;
-}
+// void parameter_list::translate(string& pyout) const{
+//   debug(cname);
+//   string yi;
+//   string er;
+//   left -> translate(yi);
+//   right -> translate(er);
+//   pyout = yi + "," + er;
+// }
 
 #endif

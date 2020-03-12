@@ -15,7 +15,7 @@ class jump_statement : public statement{
 public:
   jump_statement(int _type, string _id):type(_type),identifier(_id){};
   jump_statement(int _type, treeptr _ptr):type(_type),expre_ptr(_ptr){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~jump_statement(){
     delete expre_ptr;
   }
@@ -27,20 +27,20 @@ private:
   string cname = "jump_statement";
 };
 
-void jump_statement::translate(string& pyout)
-{
-  debug(cname);
-  string return_expression;
-  switch (type) {
-    case 4 ://return
-    expre_ptr -> translate(return_expression);
-    pyout = "return " + return_expression + "\n";
-    break;
-
-    default :
-    NotImplemented();
-  }
-}
+// void jump_statement::translate(string& pyout) const
+// {
+//   debug(cname);
+//   string return_expression;
+//   switch (type) {
+//     case 4 ://return
+//     expre_ptr -> translate(return_expression);
+//     pyout = "return " + return_expression + "\n";
+//     break;
+//
+//     default :
+//     NotImplemented();
+//   }
+// }
 
 
 

@@ -13,17 +13,17 @@ public:
   identifier_list(treeptr o, string _id){ptr = o; id = _id;}
   identifier_list(string _id){id = _id;}
   ~identifier_list(){delete ptr; }
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   treeptr ptr;
   string id;
   string cname = "identifier_list";
 };
 
-void identifier_list::translate(string& pyout){
-  debug(cname);
-    NotImplemented();
-  }
+// void identifier_list::translate(string& pyout) const{
+//   debug(cname);
+//     NotImplemented();
+//   }
 
 
 #endif

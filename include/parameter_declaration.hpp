@@ -14,7 +14,7 @@ public:
   parameter_declaration(int type_in, treeptr o, treeptr t){type = type_in; left = o; right = t;}
   parameter_declaration(int type_in, treeptr o){type = type_in; left = o;}
   ~parameter_declaration(){delete left; delete right;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   treeptr left = NULL;
@@ -22,23 +22,23 @@ private:
   string cname = "parameter_declaration";
 };
 
-void parameter_declaration::translate(string& pyout){
-  debug(cname);
-  string yi;
-  string er;
-  left -> translate(yi);
-  right -> translate(er);
-  switch(type)
-  {
-    case 0:
-    pyout = er;
-
-    case 1:
-    NotImplemented();
-
-    case 2:
-    NotImplemented();
-  }
-}
+// void parameter_declaration::translate(string& pyout) const{
+//   debug(cname);
+//   string yi;
+//   string er;
+//   left -> translate(yi);
+//   right -> translate(er);
+//   switch(type)
+//   {
+//     case 0:
+//     pyout = er;
+//
+//     case 1:
+//     NotImplemented();
+//
+//     case 2:
+//     NotImplemented();
+//   }
+// }
 
 #endif

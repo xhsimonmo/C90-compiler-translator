@@ -11,14 +11,14 @@ class storage_class_specifier : public astnode{
 public:
   storage_class_specifier(int _type):type(_type){};
   ~storage_class_specifier(){}
-  inline void translate(string& pysource);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   string cname = "storage_class_specifier";
 };
-
-void storage_class_specifier::translate(string& pyout){
-  debug(cname);
-  NotImplemented(); // e.g typedef, so on... not in python
-}
+// 
+// void storage_class_specifier::translate(string& pyout) const{
+//   debug(cname);
+//   NotImplemented(); // e.g typedef, so on... not in python
+// }
 #endif

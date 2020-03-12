@@ -10,7 +10,7 @@ class pointer : public astnode{
 public:
   pointer(int _type):type(_type){};
   pointer(int _type, treeptr _ptr):type(_type),ptr(_ptr){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~pointer(){
     delete ptr;
   }
@@ -20,9 +20,9 @@ private:
   string cname = "pointer";
 };
 
-void pointer::translate(string& pyout){
-  debug(cname);
-  NotImplemented();
-}
+// void pointer::translate(string& pyout) const{
+//   debug(cname);
+//   NotImplemented();
+// }
 
 #endif

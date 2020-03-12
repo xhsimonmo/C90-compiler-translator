@@ -11,7 +11,7 @@ class expression_statement : public statement{
  public:
   expression_statement(int _type):type(_type){};
   expression_statement(treeptr _ptr_expr):ptr_expr(_ptr_expr){};
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
   ~expression_statement(){
     delete ptr_expr;
   }
@@ -21,16 +21,16 @@ class expression_statement : public statement{
   string cname = "express_statement";
 };
 
-void expression_statement::translate(string& pyout){
-  debug(cname);
-  //string tmp;
-  if(ptr_expr != NULL)
-  {
-    ptr_expr -> translate(pyout);
-  }
-  //if it is " ; ",we don't do anything, skip(not sure)
-  // ";"suggest a null statement, do nothing
-}
+// void expression_statement::translate(string& pyout) const{
+//   debug(cname);
+//   //string tmp;
+//   if(ptr_expr != NULL)
+//   {
+//     ptr_expr -> translate(pyout);
+//   }
+//   //if it is " ; ",we don't do anything, skip(not sure)
+//   // ";"suggest a null statement, do nothing
+// }
 
 
 

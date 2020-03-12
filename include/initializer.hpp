@@ -13,17 +13,17 @@ class initializer : public astnode{
 public:
   initializer(int type_in, treeptr o){type_in = type; p = o;}
   ~initializer(){delete p;}
-  inline void translate(string& pyout);
+  virtual void translate(string& pyout)const override;
 private:
   int type;
   treeptr p;
   string cname = "initializer";
 };
 
-void initializer::translate(string& pyout){
-    debug(cname);
-    NotImplemented();
-  }
+// void initializer::translate(string& pyout) const{
+//     debug(cname);
+//     NotImplemented();
+//   }
 
 
 #endif
