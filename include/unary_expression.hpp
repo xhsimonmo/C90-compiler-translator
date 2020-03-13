@@ -17,7 +17,7 @@ public:
   unary_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~unary_expression(){delete ptr;}
   inline void translate(string& pyout);
-  // inline void compile(string& mpout);
+  inline void compile(string& mpout);
 private:
   int type;
   treeptr ptr;
@@ -83,22 +83,21 @@ inline void unary_expression::translate(string& pyout){
   }
 }
 
-// inline void unary_expression::compile(string& dst){
-//   switch(type)
-//   {
-//     case 0:
-//     ptr->compile(dst);
-//     mips.addi(dst, dst, "1");
-//     break;
-//
-//     case 1:
-//     ptr->compile(dst);
-//     mips.addi(dst, dst, "-1");
-//     break;
-//
-//   }
-//
-// }
+inline void unary_expression::compile(mips& mp){
+  ptr->compile(mp);
+  switch(type)
+  {
+    case 0:
+    mips.addi(, , "1");
+    break;
+
+    case 1:
+    mips.addi(, , "-1");
+    break;
+
+  }
+
+}
 
 
 

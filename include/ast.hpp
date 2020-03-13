@@ -27,7 +27,7 @@ public:
   astnode(){};
   virtual void translate(string& pyout)const{};
   virtual void translate(string& pyout, vector<string> global_variables)const {};
-  // virtual void compile(mips& mp)const{};//compiler
+  virtual void compile(mips& mp)const{};//compiler
   //~astnode();
   const int testpoint()const{return 2;}
 private:
