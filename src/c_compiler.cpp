@@ -43,9 +43,9 @@ int main(int argc, char *argv[]){
 
   }
   else if(argv[1] == "-S"){
-    // std::cerr << "compiler begin" << std::endl;
-    // mips mp;
-    // root -> compile(mp);
+     std::cerr << "compiler begin" << std::endl;
+     mips mp;
+     root -> compile(mp);
   }
 
   else{
