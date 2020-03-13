@@ -9,11 +9,6 @@
 using std::string;
 using std::vector;
 
-//extern int indentation ;//specify number of tab/"/t"
-
-
-//this basically indicate the difference between "{" and "}", which is the number of "\t" to add
-//it will change dynamically during parsing
 extern vector<string> global_variables;
 class astnode;
 inline void NotImplemented();
@@ -31,8 +26,6 @@ public:
   //~astnode();
   const int testpoint()const{return 2;}
 private:
-  //vector<treeptr> branches;
-
 };
 
 class expression : public astnode{
@@ -52,11 +45,6 @@ private:
 
 };
 
-// class declaration : public astnode{
-// public:
-//   declaration();
-//   virtual ~declaration(){};
-// };
 
 class statement : public astnode{
 public:
@@ -68,10 +56,11 @@ private:
 
 string indent(string& source) //PLEASE WORK PLEASE
 { //add x number of "\t" after every '\n'
-  //int indentation;
-  //char delimiter = '\t';
+  //std::cerr << "indent message:\n" << source <<'\n';
+  if(source.empty()){
+    return source;
+  }
   source.insert(0, 1,'\t'); //add /t to first line
-  //string::size_type i = 0;
   for ( string::size_type it = 0; it < source.size(); it++)
   {
     if(source[it] == '\n' && it != source.size()-1){
@@ -80,14 +69,6 @@ string indent(string& source) //PLEASE WORK PLEASE
       it ++;
     }
   }
-  // for (auto it = source.begin(); it != source.end(); it++)
-  // {
-  //   if(*it == '\n'){
-  //     std::cerr << "spot line breaker in indent" << '\n';
-  //     source.insert(it+1,1, '\t');
-  //     it ++;
-  //   }
-  // }
   return source;
 }
 
@@ -96,8 +77,8 @@ void NotImplemented(){
 }
 
  void debug(string classname){
-  std::cerr << "the name of the current class is: " << classname <<  '\n';
-  std::cerr << "current global variable size: " << global_variables.size() << '\n';
+  //std::cerr << "the name of the current class is: " << classname <<  '\n';
+  //std::cerr << "current global variable size: " << global_variables.size() << '\n';
 }
 
 ////////////////////////////MIPS////////////////////////////////

@@ -1,14 +1,10 @@
-x = 0
-def f():
-	global x 
-	x=x+1
+def main():
+	x = 0
+	x=5
+	x=x*x
+	
 	return x
 	
-
-
-def main():
-	global x 
-	return f()+f()
 
 
 if __name__ == "__main__":

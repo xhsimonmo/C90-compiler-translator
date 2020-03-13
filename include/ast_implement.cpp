@@ -7,7 +7,10 @@ void abstract_declarator::translate(string& pyout)const{
 
 void argument_expression_list::translate(string& pyout)const{
     debug(cname);
-    NotImplemented();
+    string a,b;
+    left -> translate(a);
+    right -> translate(b);
+    pyout = a + ","+b;
 }
 
 void assignment_expression::translate(string& pyout)const{
@@ -224,13 +227,14 @@ void external_declaration :: translate(string& pyout)const{
   debug(cname);
   switch (type) {
     case 0:
-    //std::cerr << "external_declaration seen as function definition" << '\n';
     ptr -> translate(pyout);
-    //std::cerr << "end of external_declaration 0:" << pyout<<'\n';
     break;
     case 1 :
     ptr -> translate(pyout);
-    global_variables.push_back(pyout);
+    string pyout_truncate = pyout;
+    string::size_type pos = pyout.find("=");
+    pyout_truncate = pyout_truncate.substr (0,pos);
+    global_variables.push_back(pyout_truncate);
     break;
   }
 }
@@ -287,12 +291,15 @@ void identifier_list::translate(string& pyout) const{
   void init_declarator::translate(string& pyout) const{
     debug(cname);
     string s1, s2;
-    one-> translate(s1);
-    //std::cerr << "s1 " <<s1 <<'\n';
-    two -> translate(s2);
-    //std::cerr << "s2 " <<s2 <<'\n';
-    pyout = s1 + '=' + s2 ;//+ '\n';
-    //std::cerr << "current pyout in init_declarator is " << pyout <<'\n';
+    if(two == NULL){
+        one-> translate(s1);
+        pyout = s1 + " = 0";// + '\n';
+    }
+    else{
+      one-> translate(s1);
+      two -> translate(s2);
+      pyout = s1 + '=' + s2;// + '\n';
+    }
   }
 
   void initializer_list::translate(string& pyout) const{
@@ -601,11 +608,11 @@ void identifier_list::translate(string& pyout) const{
       switch (type) {
         case 0:
         //indentation++;
-        pyout = "if " + expres + ":" + '\n' + indent(ifs) ;
+        pyout = "if (" + expres + "):" + '\n' + indent(ifs) ;
         break;
         case 1:
         elsesta->translate(elses);
-        pyout = "if " + expres + ":" + '\n' + indent(ifs) + "else:" + '\n'+ indent(elses) + '\n';
+        pyout = "if (" + expres + "):" + '\n' + indent(ifs) + "else:" + '\n'+ indent(elses) + '\n';
         break;
         case 2: //no required to translate switch
         NotImplemented();

@@ -10,6 +10,7 @@
 class init_declarator : public astnode{
 public:
   init_declarator(treeptr _one, treeptr _two):one(_one),two(_two){};
+  init_declarator(treeptr _one):one(_one){};
   virtual void translate(string& pyout)const override;
   ~init_declarator(){
     delete one;
@@ -24,9 +25,15 @@ private:
 // void init_declarator::translate(string& pyout) const{
 //   debug(cname);
 //   string s1, s2;
-//   one-> translate(s1);
-//   two -> translate(s2);
-//   pyout = s1 + '=' + s2;// + '\n';
+//   if(two == NULL){
+//       one-> translate(s1);
+//       pyout = s1 + "= 0";// + '\n';
+//   }
+//   else{
+//     one-> translate(s1);
+//     two -> translate(s2);
+//     pyout = s1 + '=' + s2;// + '\n';
+//   }
 // }
 
 

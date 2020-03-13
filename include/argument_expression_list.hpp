@@ -15,14 +15,17 @@ public:
   virtual void translate(string& pyout)const override;
 private:
   //int type;
-  treeptr left;
-  treeptr right;
+  treeptr left = NULL;
+  treeptr right = NULL;
   string cname = "argument_expression_list";
 };
 
-// void argument_expression_list::translate(string& pyout){
+// void argument_expression_list::translate(string& pyout) const{
 //     debug(cname);
-//     NotImplemented();
+//     string a,b;
+//     left -> translate(a);
+//     right -> translate(b);
+//     pyout = a + ","+b;
 // }
 
 #endif

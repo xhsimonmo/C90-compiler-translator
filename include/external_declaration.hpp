@@ -27,7 +27,10 @@ private:
 //     break;
 //     case 1 :
 //     ptr -> translate(pyout);
-//     global_variables.push_back(pyout);
+//     string pyout_truncate = pyout;
+//     string::size_type pos = pyout.find("=");
+//     pyout_truncate = pyout_truncate.substr (0,pos-1);
+//     global_variables.push_back(pyout_truncate);
 //     break;
 //   }
 // }

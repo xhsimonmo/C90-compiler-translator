@@ -1,14 +1,9 @@
-x = 0
 def f():
-	global x 
-	x=x+1
-	return x
-	
+	return 10
 
 
 def main():
-	global x 
-	return f()+f()
+	return f()
 
 
 if __name__ == "__main__":
