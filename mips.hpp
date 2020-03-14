@@ -2,16 +2,18 @@ class mips{
 private:
   string stack_name;
   vector <string> mpcode;//store generated mips code
-  vector<stack_content>stack;
   bool registers[32];
 
   //store temporary result
   struct temp_result
   {
+    string func_name;
     string result;
 
 
   };
+
+  temp_result info;
 
   //remember the locations of each variable (offset relative to the frame pointer, which is a register)
   struct stack_content
@@ -19,6 +21,9 @@ private:
     string name;//variable name: i
     int address;//variable (relative)locations: add 0, 4(0/4+fp)
   };
+
+  //main variable storage
+  vector<stack_content>stack;
 
   //stack frame for function calls
   vector<stack_content>func_stack;
@@ -28,13 +33,13 @@ private:
   {
     int ret_add;//SP return address
     string ret_label;
-
   }
 
 public:
   mips()//initialisation
   {
     registers[32] = {0};
+
   }
 
   //add new frame for function
@@ -93,6 +98,7 @@ public:
     nop();
   }
 
+
   void nop()
   {
     string nop = "nop";
@@ -102,6 +108,7 @@ public:
   void jal(string label)
   {
     string mp = "jal " + label;
+    mpcode.push_back(mp);
   }
 
   void li(int rd, int imm)
@@ -134,6 +141,6 @@ public:
     string mp = "addi " + to_string(rt) + "," + to_string(rs) + "," + to_string(imm);//TODO: imm might be string? unsure
     mpcode.push_back(mp);
   }
-  void
+
 
 };
