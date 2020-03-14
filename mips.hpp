@@ -142,5 +142,131 @@ public:
     mpcode.push_back(mp);
   }
 
+  void addiu(int rt, int rs, int imm)
+  {
+    string mp = "addiu " + to_string(rt) + "," + to_string(rs) + "," + to_string(imm);//TODO: imm might be string? unsure
+    mpcode.push_back(mp);
+  }
+
+  void addu(int rd, int rs, int rt)
+  {
+    string mp = "addu " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void and(int rd, int rs, int rt)
+  {
+    string mp = "and " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void andi(int rt, int rs, int imm)
+  {
+    string mp = "addiu " + to_string(rt) + "," + to_string(rs) + "," + to_string(imm);//TODO: imm might be string? unsure
+    mpcode.push_back(mp);
+  }
+
+  void sub(int rd, int rs, int rt)
+  {
+    string mp = "sub " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void subu(int rd, int rs, int rt)
+  {
+    string mp = "subu " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void beq(int rs, int rt, int offset)
+  {
+    string mp = "beq " + to_string(rs) + "," + to_string(rt) + "," + to_string(offset);//TODO: imm might be string? unsure
+    mpcode.push_back(mp);
+  }
+  // maybe add BLTZ and BLEZ if needed later
+
+  void bne(int rs, int rt, int offset)
+  {
+    string mp = "bne " + to_string(rs) + "," + to_string(rt) + "," + to_string(offset);//TODO: imm might be string? unsure
+    mpcode.push_back(mp);
+  }
+
+  void sll(int rd, int rt, int sa) // SLL rd <- rt<<sa
+  {
+    string mp = "sll " + to_string(rd) + "," + to_string(rt) + "," + to_string(sa);
+    mpcode.push_back(mp);
+  }
+
+  void sra(int rd, int rt, int sa) // arithmetic shift; signed extend
+  {
+    string mp = "sra " + to_string(rd) + "," + to_string(rt) + "," + to_string(sa);
+    mpcode.push_back(mp);
+  }
+
+  void srl(int rd, int rt, int sa) // logical unsign shift
+  {
+    string mp = "srl " + to_string(rd) + "," + to_string(rt) + "," + to_string(sa);
+    mpcode.push_back(mp);
+  }
+
+  void sltu(int rd, int rs, int rt)
+  {
+    string mp = "sltu " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void slt(int rd, int rs, int rt)
+  {
+    string mp = "slt " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void slti(int rt, int rs, int imm) // imm as signed
+  {
+    string mp = "slti " + to_string(rt) + "," + to_string(rs) + "," + to_string(imm);
+    mpcode.push_back(mp);
+  }
+
+  void mul(int rs, int rt)
+  {
+    string mp = "mult " + to_string(rs) + "," + to_string(rt); // TODO do i need to use MFLO here?
+    mpcode.push_back(mp);
+  }
+
+  void multu(int rs, int rt)
+  {
+    string mp = "multu " + to_string(rs) + "," + to_string(rt); // TODO do i need to use MFLO here?
+    mpcode.push_back(mp);
+  }
+
+  void div(int rs, int rt) // for div: rs/rt ; quotient -> LO; remainder -> HI TODO maybe add MFLO later
+  {
+    string mp = "div " + to_string(rs) + "," + to_string(rt); // TODO do i need to use MFLO here?
+    mpcode.push_back(mp);
+  }
+
+  void divu(int rs, int rt)
+  {
+    string mp = "divu " + to_string(rs) + "," + to_string(rt); // TODO do i need to use MFLO here?
+    mpcode.push_back(mp);
+  }
+
+  void xor(int rd, int rs, int rt)
+  {
+    string mp = "xor " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void or(int rd, int rs, int rt)
+  {
+    string mp = "or " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void nor(int rd, int rs, int rt)
+  {
+    string mp = "nor " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);
+    mpcode.push_back(mp);
+  }
 
 };
