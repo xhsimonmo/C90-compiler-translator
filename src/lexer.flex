@@ -95,7 +95,7 @@ L?\"(\\.|[^\\"])*\"    { yylval.str = new std::string(yytext); return(STRING_LIT
 ","            { /*count();*/ return(','); }
 ":"            { /*count();*/ return(':'); }
 "="            { /*count();*/ return('='); }
-"("            { /*count();*/ return('('); }
+"("            { /*count();*/printf("get a sym"); return('('); }
 ")"            { /*count();*/ return(')'); }
 ("["|"<:")        { /*count();*/ return('['); }
 ("]"|":>")        { /*count();*/ return(']'); }

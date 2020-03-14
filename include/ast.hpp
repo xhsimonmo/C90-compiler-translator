@@ -77,7 +77,7 @@ void NotImplemented(){
 }
 
  void debug(string classname){
-  //std::cerr << "the name of the current class is: " << classname <<  '\n';
+  std::cerr << "the name of the current class is: " << classname <<  '\n';
   //std::cerr << "current global variable size: " << global_variables.size() << '\n';
 }
 
