@@ -9,6 +9,7 @@ private:
   {
     string func_name;
     string result;
+    string func_type;
 
 
   };
