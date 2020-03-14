@@ -17,54 +17,59 @@ void assignment_expression::translate(string& pyout)const{
   debug(cname);
   string one;
   string five;
-  p_one->translate(one);
-  p_five->translate(five);
+  if(p_five == NULL){
+      p_one->translate(pyout);
+  }
+  else{
+    p_one->translate(one);
+    p_five->translate(five);
+    switch (type)
+    {
+      case 0:
+      pyout = one + "=" + five;
+      break;
 
-  switch (type)
-  {
-    case 0:
-    pyout = one + "=" + five;
-    break;
+      case 1:
+      pyout = one + "*=" + five;
+      break;
 
-    case 1:
-    pyout = one + "*=" + five;
-    break;
+      case 2:
+      pyout = one + "/=" + five;
+      break;
 
-    case 2:
-    pyout = one + "/=" + five;
-    break;
+      case 3:
+      pyout = one + "%=" + five;
+      break;
 
-    case 3:
-    pyout = one + "%=" + five;
-    break;
+      case 4:
+      pyout = one + "+=" + five;
+      break;
 
-    case 4:
-    pyout = one + "+=" + five;
-    break;
+      case 5:
+      pyout = one + "-=" + five;
+      break;
 
-    case 5:
-    pyout = one + "-=" + five;
-    break;
+      case 6:
+      pyout = one + "<<=" + five;
+      break;
 
-    case 6:
-    pyout = one + "<<=" + five;
-    break;
+      case 7:
+      pyout = one + ">>=" + five;
+      break;
 
-    case 7:
-    pyout = one + ">>=" + five;
-    break;
+      case 8:
+      pyout = one + "&=" + five;
+      break;
 
-    case 8:
-    pyout = one + "&=" + five;
-    break;
+      case 9:
+      pyout = one + "^=" + five;
+      break;
 
-    case 9:
-    pyout = one + "^=" + five;
-    break;
+      case 10:
+      pyout = one + "|=" + five;
+      break;
 
-    case 10:
-    pyout = one + "|=" + five;
-    break;
+    }
   }
 }
 
@@ -525,29 +530,37 @@ void identifier_list::translate(string& pyout) const{
       debug(cname);
       switch(type){
         case 0:
+        std::cerr << "primary_expression type 0 :" << element <<'\n';
           pyout = element;
           break;
 
         case 1://constant representation in c different from python
+        std::cerr << "primary_expression type 1" << '\n';
           pyout = element;
           break;
 
         case 2:
+        std::cerr << "primary_expression type 2" << '\n';
           pyout = element;
           break;
 
         case 3:
-          expre_ptr->translate(pyout);//for "(" expression ")"
+          string tmp;
+          std::cerr << "type 3 pf primary_expression" << '\n';
+          expre_ptr->translate(tmp);
+          pyout = "(" + tmp + ")";//for "(" expression ")"
           break;
       }
     }
 
     void relational_expression::translate(string& pyout) const{
-    debug(cname);
-    std::string op;
-    ptr->translate(pyout);
-    opt->translate(op);
-    switch (type)
+      debug(cname);
+      std::string one,op;
+      //std::cerr << "right of <" << '\n';
+      right->translate(op);
+      //std::cerr << "left of <" << '\n';
+      left->translate(pyout);
+      switch (type)
     {
       case 0:
       pyout = pyout + "<" + op;
@@ -596,7 +609,7 @@ void identifier_list::translate(string& pyout) const{
 
       default:
       NotImplemented();
-      }
+    }
     }
 
     void selection_statement::translate(string& pyout) const

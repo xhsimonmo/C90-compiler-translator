@@ -13,29 +13,31 @@
 
 class relational_expression : public expression{
 public:
-  relational_expression(int type_in, treeptr p, treeptr o){type = type_in; ptr = p; opt = o;}
-  ~relational_expression(){delete ptr; delete opt;}
+  relational_expression(int type_in, treeptr p, treeptr o){type = type_in; left = p; right = o;}
+  ~relational_expression(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
 private:
   int type;
-  treeptr ptr;
-  treeptr opt;
+  treeptr left = NULL;
+  treeptr right = NULL;
   string cname = "relational_expression";
 };
 
 // void relational_expression::translate(string& pyout) const{
-// debug(cname);
-// std::string op;
-// ptr->translate(pyout);
-// opt->translate(op);
-// switch (type)
+//   debug(cname);
+//   std::string one,op;
+//   //std::cerr << "right of <" << '\n';
+//   right->translate(op);
+//   //std::cerr << "left of <" << '\n';
+//   left->translate(one);
+//   switch (type)
 // {
 //   case 0:
-//   pyout = pyout + "<" + op;
+//   pyout = one + "<" + op;
 //   break;
 //
 //   case 1:
-//   pyout = pyout + ">" + op;
+//   pyout = one + ">" + op;
 //   break;
 //
 //   case 2:

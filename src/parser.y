@@ -161,7 +161,7 @@ conditional_expression
 	;
 
 assignment_expression
-	: conditional_expression                                             {$$ = $1; std::cerr << "assignment expression 1" << std::endl;}
+	: conditional_expression                                             {$$ = new assignment_expression($1); std::cerr << "assignment expression 1" << std::endl;}
 	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3); std::cerr << "assignment expression 2" << std::endl;}
 	;
 
@@ -399,7 +399,7 @@ compound_statement
 	: '{' '}'    {$$ = new compound_statement(0); std::cerr << "compound_statement 0" << std::endl;}
 	| '{' statement_list '}'   {$$ = new compound_statement(1, $2); std::cerr << "compound_statement 1" << std::endl;}
 	| '{' declaration_list '}'   {$$ = new compound_statement(2, $2); std::cerr << "compound_statement 2" << std::endl;}
-	| '{' declaration_list statement_list /*declaration list need to be in front of statement in c language"*/ '}'    {$$ = new compound_statement(3, $2, $3); std::cerr << "compound_statement 3" << std::endl;}
+	| '{' declaration_list statement_list '}'    {$$ = new compound_statement(3, $2, $3); std::cerr << "compound_statement 3" << std::endl;} /*declaration list need to be in front of statement in c language"*/
 	;
 
 declaration_list

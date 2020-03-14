@@ -1,12 +1,10 @@
-int x;
-
-int f()
-{
-    x=x+1;
-    return x;
-}
-
 int main()
 {
-    return f()+f();
+    if(0)
+        if(3)
+            return 11;
+        else
+            return 4;
+
+    return 11;
 }
