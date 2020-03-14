@@ -5,6 +5,14 @@ private:
   vector<stack_content>stack;
   bool registers[32];
 
+  //store temporary result
+  struct temp_result
+  {
+    string result;
+
+
+  };
+
   //remember the locations of each variable (offset relative to the frame pointer, which is a register)
   struct stack_content
   {
@@ -51,9 +59,10 @@ public:
   }
 
   //find a variable's position in stack
-  void find_variable(string var_name, int var_add)
+  int find_variable(string var_name)
   {
     bool find = false;
+    int var_add;
     while(find == false)
     {
       for (int i = 0; i < stack.size(); i++)
@@ -65,35 +74,34 @@ public:
         }
       }
     }
+    return var_add;
   }
 
 
   //make function call
-  void function_call(string func_name; int ret_addr, vector<stack_content>func_variables)
+  void function_call(string func_name, vector<string> func_param, int ret_addr, vector<stack_content>func_variables)
   {
-    //save return address
-    ...
-
-    add_frame();
-
-    string s = func_name + ":";
-    mpcode.push_back(s);
-    stack_content s1 = {"return address", ret_addr};
-    fun_stack.push_back(s1);//add return address
-    for (int i = 0; i < func_variables.size(); i++)
+    //load function parameter from stack first;
+    for(int i = 0; i < func_param.size(); i++)
     {
-      func_stack.push_back(func_variables[i]);//add function variables
+      int r = 4;//register for arguments
+      lw(r, find_variable(func_param), 30);
+      r++;//change register for next argument
     }
-    finish_frame();
 
-    //back to return address
-    ...
+    jal(func_name);
+    nop();
   }
 
   void nop()
   {
     string nop = "nop";
     mpcode.push_back(nop);
+  }
+
+  void jal(string label)
+  {
+    string mp = "jal " + label;
   }
 
   void li(int rd, int imm)
