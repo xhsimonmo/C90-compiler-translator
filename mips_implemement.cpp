@@ -215,7 +215,54 @@ void multiplicative_expression::compile(mips& mp)
 
 void additive_expression::compile(mips& mp)
 {
-  
+  add->compile(mp);
+  mips another_mp;
+  mul->compile(another_mp);
+
+  case 1://"+"
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  add(2, 2, 3);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
+
+  case 2://"-"
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  sub(2, 2, 3);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
+
+}
+
+void shift_expression::compile(mips& mp)
+{
+  l->compile(mp);
+  mips another_mp;
+  r->compile(another_mp);
+
+  case 1://"<<"
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  sll(2, 2, 3);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
+
+  case 2://">>"
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  sra(2, 2, 3);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
+
 }
 
 void unary_expression::compile(mips& mp)
