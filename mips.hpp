@@ -10,6 +10,7 @@ private:
     string func_name;
     string result;
     string func_type;
+    int var_index;//store previous results' index(in stack vector)
 
 
   };
@@ -56,7 +57,7 @@ public:
   //frame ended
   void finish_frame()
   {
-    addi(20, 30, 0);//move sp, fp
+    addi(29, 30, 0);//move sp, fp
     lw(30, 4, 29);//4=8-4
     addi(29, 29, 8);
     j(31);
@@ -132,6 +133,7 @@ public:
     nop();
   }
 
+  //TODO: do we need to consider addu???
   void add(int rd, int rs, int rt)
   {
     string mp = "add " + to_string(rd) + "," + to_string(rs) + "," + to_string(rt);

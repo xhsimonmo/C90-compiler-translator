@@ -37,20 +37,159 @@ void direct_declarator::compile(mips& mp)
     break;
 
     case 3:
-    /////???????
+    //////??????
 
     case 4:
-    break;
+    //////??????
+
 
     case 5:
-    one->compile(mp);
-    ////?????????
+    break;
+
+    case 6:
+    //////??????
 
     break;
 
   }
 
+}
 
+void assignment_expression::compile(mips& mp)
+{
+  //no unary expression
+  if(p_one == NULL)
+  {
+    p_five->compile(mp);
+  }
+  else
+  {
+    p_one->compile(mp);
+    mips another_mp;
+    p_five->compile(another_mp);
+
+    switch(type)
+    {
+      case 0://=
+      lw(3, another_mp.var_index, 30);
+      nop();
+      sw(3, mp.var_index, 30);
+      break;
+
+      case 1://"*="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      mult(2, 3);
+      mflo(2);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 2://"/="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      div(2, 3);
+      mflo(2);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 3://"%="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      div(2, 3);
+      mfhi(2);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 4://"+="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      add(2, 2, 3);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 5://"-="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      sub(2, 2, 3);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 6://"<<="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      sll(2, 2, 3);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 7://">>="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      sra(2, 2, 3);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 8://"&="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      and(2, 2, 3);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 9://"^="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      xor(2, 2, 3);
+      sw(2, mp.var_index, 30);
+      break;
+
+      case 10://"|="
+      lw(2, mp.var_index, 30);
+      lw(3, another_mp.var_index, 30);
+      nop();
+      (2, 2, 3);
+      or(2, mp.var_index, 30);
+      break;
+    }
+
+  }
+}
+
+void cast_expression::compile(mips& mp)
+{
+  if(ptr == NULL)
+  {
+    opt->compile(mp);
+  }
+  else
+  {
+    NotImplemented();
+  }
+}
+
+void multiplicative_expression::compile(mips& mp)
+{
+  mul->compile(mp);
+  mips another_mp;
+  cast->compile(another_mp);
+
+  case 1://"*"
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  mult(2, 3);
+  mflo(2);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
 
 }
 
@@ -59,7 +198,7 @@ void unary_expression::compile(mips& mp)
   switch(type)
   {
     case 0:
-    ptr->compile(dst);
+    ptr->compile(mp);
     mips.addi(dst, dst, "1");
     break;
 
