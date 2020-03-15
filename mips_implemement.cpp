@@ -191,6 +191,31 @@ void multiplicative_expression::compile(mips& mp)
   mp.var_index = sp + 4;
   break;
 
+  case 2:
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  mult(2, 3);
+  mflo(2);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
+
+  case 3:
+  lw(2, mp.var_index, 30);
+  lw(3, another_mp.var_index, 30);
+  nop();
+  mult(2, 3);
+  mfhi(2);
+  sw(2, sp+4, 30);
+  mp.var_index = sp + 4;
+  break;
+
+}
+
+void additive_expression::compile(mips& mp)
+{
+  
 }
 
 void unary_expression::compile(mips& mp)

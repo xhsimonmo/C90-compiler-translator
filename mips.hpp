@@ -133,7 +133,7 @@ public:
 
   void lw(int rd, int offset, int base_reg)
   {
-    tring mp = "lw " + to_string(rd) + "," + offset + "(" + to_string(base_reg) + ")";
+    string mp = "lw " + to_string(rd) + "," + offset + "(" + to_string(base_reg) + ")";
     mpcode.push_back(mp);
     nop();
   }
