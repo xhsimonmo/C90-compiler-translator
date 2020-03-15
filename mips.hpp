@@ -8,7 +8,7 @@ private:
   struct temp_result
   {
     string func_name;
-    string result;
+    string result; //TODO shouldn't it be stored in $2 as return value?
     string func_type;
 
 
@@ -49,7 +49,7 @@ public:
     //move down stack pointer by 8
     addi(29, 29, -8);//TODO: if pass-in parameter is used, -8; if not then -24????????????
     //move frame pointer
-    sw(30, 4, 29);//4=8-4
+    sw(30, 4, 29);//4=8-4 //TODO MIPS format for sw not correct?
     addi(30, 29, 0);//move fp, sp
 
   }
@@ -104,6 +104,11 @@ public:
   {
     string nop = "nop";
     mpcode.push_back(nop);
+  }
+  void move(int rd, int rs)
+  {
+    string mp = "move " + to_string(rd) + "," + to_string(rs) ;
+    mpcode.push_back(mp);
   }
 
   void jal(string label)
