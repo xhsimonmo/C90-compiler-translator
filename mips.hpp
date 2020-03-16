@@ -86,7 +86,7 @@ public:
 
 
   //make function call
-  void function_call(string func_name, vector<string> func_param, int ret_addr, vector<stack_content>func_variables)
+  void function_call(string func_name, vector<string> func_param, int ret_add)
   {
     //load function parameter from stack first;
     for(int i = 0; i < func_param.size(); i++)
@@ -98,6 +98,8 @@ public:
 
     jal(func_name);
     nop();
+    //return value
+    sw(2, 4, sp);//TODO:sp???
   }
 
 };

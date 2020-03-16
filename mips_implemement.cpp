@@ -15,6 +15,7 @@ void function_definition::compile(mips& mp)
   add_frame();
 
   //compound statement
+  //TODO: need to put return value in $2
   p_o->compile(mp);
 
   //finish function
