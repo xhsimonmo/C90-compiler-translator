@@ -3,6 +3,7 @@ private:
   string stack_name;
   vector <string> mpcode;//store generated mips code
   bool registers[32];
+  int labelcounter;//make unique label by number
 
   //store temporary result
   struct temp_result
@@ -11,6 +12,11 @@ private:
     string result; //TODO shouldn't it be stored in $2 as return value?
     string func_type;
     int var_index;//store previous results' index(in stack vector)
+<<<<<<< HEAD
+=======
+    int result_index;//use for statement expression result index
+
+>>>>>>> b6152e796ec6e2fc2677b92a4400209556f12f64
   };
 
   temp_result info;
@@ -29,6 +35,7 @@ private:
   vector<stack_content>func_stack;
   vector<stack_content>func_variables;
 
+  //we require one stack for each function
   struct function_content
   {
     int ret_add;//SP return address
@@ -39,6 +46,10 @@ public:
   mips()//initialisation
   {
     registers[32] = { 0 }; // TODO something not right about indent
+<<<<<<< HEAD
+=======
+    labelcounter = 0;
+>>>>>>> b6152e796ec6e2fc2677b92a4400209556f12f64
   }
 
   //add new frame for function
@@ -100,12 +111,18 @@ public:
 
 };
 
+  void add_label(string label)
+  {
+    string mp = label + ":";
+    mpcode.push_back(mp);
+  }
 
   void nop()
   {
     string nop = "nop";
     mpcode.push_back(nop);
   }
+  
   void move(int rd, int rs)
   {
     string mp = "move $" + to_string(rd) + ",$" + to_string(rs) ;
