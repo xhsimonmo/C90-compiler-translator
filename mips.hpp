@@ -11,8 +11,6 @@ private:
     string result; //TODO shouldn't it be stored in $2 as return value?
     string func_type;
     int var_index;//store previous results' index(in stack vector)
-
-
   };
 
   temp_result info;
@@ -41,7 +39,6 @@ public:
   mips()//initialisation
   {
     registers[32] = { 0 }; // TODO something not right about indent
-
   }
 
   //add new frame for function
@@ -62,7 +59,6 @@ public:
     addi(29, 29, 8);
     j(31);
     nop();
-
   }
 
   //find a variable's position in stack
@@ -122,7 +118,7 @@ public:
     mpcode.push_back(mp);
   }
 
-  void li(int rd, int imm)
+  void li(int rd, string imm)
   {
     string mp = "li $" + to_string(rd) + "," + to_string(imm);
     mpcode.push_back(mp);

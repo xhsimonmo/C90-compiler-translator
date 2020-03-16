@@ -18,7 +18,7 @@ public:
   };
   primary_expression(int _type, string _element):type(_type),element(_element){};
   primary_expression(int _type, treeptr _ptr):type(_type),expre_ptr(_ptr){};
-
+  virtual void compile(mips& mp)const override;
   virtual void translate(string& pyout)const override;//translate to Python
 private:
   int type;
@@ -26,6 +26,18 @@ private:
   treeptr expre_ptr;//the case (expression)
   string cname = "primary_expression";
 };
+
+void primary_expression :: compile(mips& mp) const{
+  switch (type) {
+    case 0: // got IDENTIFIER
+
+    li(2,element);
+    sw(2,mp.var_index,30)
+    mp.var_index = mp.var_index + 4;
+    break;
+  }
+}
+
 
 // void primary_expression::translate(string& pyout) const
 // {
