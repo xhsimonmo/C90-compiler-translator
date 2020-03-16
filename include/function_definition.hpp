@@ -57,19 +57,25 @@ private:
 //   }
 // }
 
-// void function_definition::compile(mips& mp)
-// {
-//   // string specify;
-//   string declarator;
-//   string statement;
-//   string code;
-//   // p_t->compile(declarator);
-//   p_f->compile(mp);
-//
-//
-//   code =
-//   mp.mpcode.push_back(code);
-//
-// }
+void function_definition::compile(mips& mp)
+{
+  // declarator;
+  p_f->compile(mp);
+
+  //add label
+  string declarator = mp.info.func_name;
+  declarator = declarator + ":";
+  mpcode.push_back(declarator);
+
+  //start function
+  add_frame();
+
+  //compound statement
+  p_o->compile(mp);
+
+  //finish function
+  finish_frame();
+}
+
 
 #endif
