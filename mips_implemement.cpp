@@ -34,12 +34,31 @@ void external_declaration::compile(mips& mp)const
   //don't do anything yet
 };
 
+void compound_statement::compile(mips& mp)const{
+  debug(name);
+  //dont do things yet;
+  switch (type) {
+    case 0:
+    break;
+    case 1:
+    left -> compile(mp);
+    break;
+    case 2:
+    left -> compile(mp);
+    break;
+    case 3:
+    left -> compile(mp);
+    right -> compile(mp);
+    break;
+  }
+}
+
 void direct_declarator::compile(mips& mp)
 {
   switch(type)
   {
     case 0:
-    mp.info.func_type = id;
+    mp.info.func_type = id;//should be func_name
     break;
 
     case 1:

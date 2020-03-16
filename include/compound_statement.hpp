@@ -29,10 +29,24 @@ private:
   string cname = "compound_statement";
 };
 
-void compound_statement::compile(mips& mp)const{
-  debug(name);
-  //dont do things yet;
-}
+// void compound_statement::compile(mips& mp)const{
+//   debug(name);
+//   //dont do things yet;
+//   switch (type) {
+//     case 0:
+//     break;
+//     case 1:
+//     left -> compile(mp);
+//     break;
+//     case 2:
+//     left -> compile(mp);
+//     break;
+//     case 3:
+//     left -> compile(mp);
+//     right -> compile(mp);
+//     break;
+//   }
+// }
 
 
 

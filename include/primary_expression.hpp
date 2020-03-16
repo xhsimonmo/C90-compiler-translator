@@ -28,6 +28,7 @@ private:
 };
 
 void primary_expression :: compile(mips& mp) const{
+  debug(cname);
   switch (type) {
     case 0: // got IDENTIFIER
 
@@ -35,6 +36,21 @@ void primary_expression :: compile(mips& mp) const{
     sw(2,mp.var_index,30)
     mp.var_index = mp.var_index + 4;
     break;
+
+    case 1:
+    li(2,element);//element is the value to stored
+    sw(2,mp.var_index,30)
+    mp.var_index = mp.var_index + 4;
+    break;
+
+    case 2:
+    NotImplemented();
+    break;
+
+    case 3:
+    expre_ptr -> compile(mp);
+    break;
+
   }
 }
 

@@ -1,3 +1,6 @@
+#ifndef mips_hpp
+#define mips_hpp
+
 class mips{
 private:
   string stack_name;
@@ -12,11 +15,8 @@ private:
     string result; //TODO shouldn't it be stored in $2 as return value?
     string func_type;
     int var_index;//store previous results' index(in stack vector)
-<<<<<<< HEAD
-=======
     int result_index;//use for statement expression result index
 
->>>>>>> b6152e796ec6e2fc2677b92a4400209556f12f64
   };
 
   temp_result info;
@@ -46,10 +46,7 @@ public:
   mips()//initialisation
   {
     registers[32] = { 0 }; // TODO something not right about indent
-<<<<<<< HEAD
-=======
     labelcounter = 0;
->>>>>>> b6152e796ec6e2fc2677b92a4400209556f12f64
   }
 
   //add new frame for function
@@ -73,18 +70,19 @@ public:
   }
 
   //find a variable's position in stack
-  int find_variable(string var_name)
+  int find_variable(string var_name) //maybe return enum of bool and int
   {
     bool find = false;
     int var_add;
-    while(find == false)
+    while(find == false) // infinite loop?if not find
     {
-      for (int i = 0; i < stack.size(); i++)
+      for (int i = 0; i < func_variables.size(); i++)
       {
-        if(stack[i].name == var_name)
+        if(func_variables[i].name == var_name)
         {
           find = true;
-          var_add = stack[i].address;
+          var_add = func_variables[i].address;
+          break;
         }
       }
     }
@@ -122,7 +120,7 @@ public:
     string nop = "nop";
     mpcode.push_back(nop);
   }
-  
+
   void move(int rd, int rs)
   {
     string mp = "move $" + to_string(rd) + ",$" + to_string(rs) ;
@@ -306,4 +304,6 @@ public:
     mpcode.push_back(mp);
   }
 
-//};
+};
+
+#endif
