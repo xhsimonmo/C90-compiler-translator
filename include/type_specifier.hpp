@@ -23,6 +23,7 @@ public:
     type = _type;
   }
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp)const override;
 
 private:
   int type;
@@ -36,6 +37,12 @@ private:
 //   //skip, no type for python
 // }
 
+
+// void type_specifier::compile(mips& mp)const
+// {
+//   debug(cname);
+//   //don't do anything yet?
+// };
 
 
 

@@ -13,6 +13,7 @@ public:
     delete ptr;
   }
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp)const override;
 private:
   int type;
   treeptr ptr = NULL;
@@ -34,5 +35,11 @@ private:
 //     break;
 //   }
 // }
+
+// void external_declaration::compile(mips& mp)const
+// {
+//   debug(cname);
+//   //don't do anything yet
+// };
 
 #endif

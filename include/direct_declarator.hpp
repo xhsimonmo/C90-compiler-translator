@@ -30,6 +30,39 @@ private:
   string cname = "direct_declarator";
 };
 
+// void direct_declarator::compile(mips& mp)
+// {
+//   switch(type)
+//   {
+//     case 0:
+//     mp.info.func_type = id;
+//     break;
+//
+//     case 1:
+//     one->compile(mp);
+//     break;
+//
+//     case 2:
+//     break;
+//
+//     case 3:
+//     //////??????
+//
+//     case 4:
+//     //////??????
+//
+//
+//     case 5:
+//     break;
+//
+//     case 6:
+//     //////??????
+//
+//     break;
+//
+//   }
+// }
+
 // void direct_declarator::translate(string& pyout) const{
 //   debug(cname);
 //   string ls, rs;

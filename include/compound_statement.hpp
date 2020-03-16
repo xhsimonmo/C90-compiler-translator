@@ -17,6 +17,7 @@ public:
   compound_statement(int _type, treeptr _list):type(_type), left(_list){};
   compound_statement(int _type, treeptr dec_list, treeptr sta_list):type(_type), left(dec_list),right(sta_list){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp)const override;
   ~compound_statement(){
     delete left;
     delete right;
@@ -27,6 +28,12 @@ private:
   treeptr right = NULL;//statement_list in type 3
   string cname = "compound_statement";
 };
+
+void compound_statement::compile(mips& mp)const{
+  debug(name);
+  //dont do things yet;
+}
+
 
 
 // void compound_statement::translate(string& pyout) const{

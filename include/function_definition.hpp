@@ -17,6 +17,7 @@ public:
   function_definition(treeptr o, treeptr t){p_o = o; p_t = t;}
   ~function_definition(){delete p_o; delete p_t; delete p_f;}
  virtual void translate(string& pyout)const override;
+ virtual void compile(mips& mp)const override;
  // inline void function_definition::compile(mips& mp);
 
 private:
@@ -57,25 +58,25 @@ private:
 //   }
 // }
 
-void function_definition::compile(mips& mp)
-{
-  // declarator;
-  p_f->compile(mp);
-
-  //add label
-  string declarator = mp.info.func_name;
-  declarator = declarator + ":";
-  mpcode.push_back(declarator);
-
-  //start function
-  add_frame();
-
-  //compound statement
-  p_o->compile(mp);
-
-  //finish function
-  finish_frame();
-}
+// void function_definition::compile(mips& mp)const
+// {
+//   // declarator;
+//   p_f->compile(mp);
+//
+//   //add label
+//   string declarator = mp.info.func_name;
+//   declarator = declarator + ":";
+//   mpcode.push_back(declarator);
+//
+//   //start function
+//   add_frame();
+//
+//   //compound statement
+//   p_o->compile(mp);
+//
+//   //finish function
+//   finish_frame();
+// }
 
 
 #endif

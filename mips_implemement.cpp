@@ -21,6 +21,18 @@ void function_definition::compile(mips& mp)
   finish_frame();
 }
 
+void type_specifier::compile(mips& mp)const
+{
+  debug(cname);
+  //don't do anything yet for type specifier, assume INT?
+};
+
+void external_declaration::compile(mips& mp)const
+{
+  debug(cname);
+  //don't do anything yet
+};
+
 void direct_declarator::compile(mips& mp)
 {
   switch(type)
@@ -52,7 +64,6 @@ void direct_declarator::compile(mips& mp)
     break;
 
   }
-
 }
 
 void assignment_expression::compile(mips& mp)
