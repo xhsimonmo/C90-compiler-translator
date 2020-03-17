@@ -17,6 +17,7 @@ public:
   unary_expression(int type_in, treeptr p){type = type_in; ptr = p;}
   ~unary_expression(){delete ptr;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   // inline void compile(string& mpout);
 private:
   int type;

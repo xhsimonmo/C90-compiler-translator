@@ -16,6 +16,7 @@ public:
   selection_statement(int _type, treeptr a, treeptr b, treeptr c ):type(_type),expre_ptr(a),ifsta(b),elsesta(c){
   };
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~selection_statement(){
     delete expre_ptr;
     delete ifsta;

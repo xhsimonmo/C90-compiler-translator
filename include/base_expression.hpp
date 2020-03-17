@@ -8,6 +8,7 @@ public:
   base_expression(treeptr o, treeptr f){p_one = o; p_five = f;}
   ~base_expression(){delete p_one; delete p_five;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   treeptr p_one;

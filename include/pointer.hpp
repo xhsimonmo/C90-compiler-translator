@@ -11,6 +11,7 @@ public:
   pointer(int _type):type(_type){};
   pointer(int _type, treeptr _ptr):type(_type),ptr(_ptr){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~pointer(){
     delete ptr;
   }

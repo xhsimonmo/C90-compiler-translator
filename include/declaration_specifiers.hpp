@@ -12,6 +12,7 @@ class declaration_specifiers : public astnode{
 public:
   declaration_specifiers(treeptr _one, treeptr _two):one(_one),two(_two){};
   virtual void translate(string& pyout)const override;
+virtual void compile(mips& mp) const override;
   ~declaration_specifiers(){
     delete one;
     delete two;

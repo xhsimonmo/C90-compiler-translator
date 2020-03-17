@@ -14,6 +14,7 @@ public:
   declaration(treeptr _spec):spec(_spec){};
   declaration(treeptr _spec, treeptr _list):spec(_spec),lt(_list){};
   virtual void translate(string& pyout)const override;
+ virtual void compile(mips& mp) const override;
 private:
   treeptr spec = NULL;
   treeptr lt = NULL;

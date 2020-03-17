@@ -11,6 +11,7 @@ class init_declarator_list : public astnode{
 public:
   init_declarator_list(treeptr _one, treeptr _two):one(_one),two(_two){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~init_declarator_list(){
     delete one;
     delete two;

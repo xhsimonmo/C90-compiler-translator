@@ -22,6 +22,7 @@ public:
   postfix_expression(int type_in, treeptr p, string _id){type = type_in; ptr = p; id = _id;}
   ~postfix_expression(){delete ptr; delete opt;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   string id;

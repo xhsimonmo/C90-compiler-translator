@@ -12,11 +12,12 @@ public:
   storage_class_specifier(int _type):type(_type){};
   ~storage_class_specifier(){}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   string cname = "storage_class_specifier";
 };
-// 
+//
 // void storage_class_specifier::translate(string& pyout) const{
 //   debug(cname);
 //   NotImplemented(); // e.g typedef, so on... not in python

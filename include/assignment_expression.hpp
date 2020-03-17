@@ -36,6 +36,115 @@ private:
   string cname = "assignment_expression";
 };
 
+// void assignment_expression::compile(mips& mp)
+// {
+//   //no unary expression
+//   if(p_one == NULL)
+//   {
+//     p_five->compile(mp);
+//   }
+//   else
+//   {
+//     p_one->compile(mp);
+//     mips another_mp;
+//     p_five->compile(another_mp);
+//
+//     switch(type)
+//     {
+//       case 0://=
+//       lw(3, another_mp.temp_result.var_index, 30); // TODO make var_index extern?
+//       nop();
+//       sw(3, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 1://"*="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       mult(2, 3);
+//       mflo(2);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 2://"/="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       div(2, 3);
+//       mflo(2);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 3://"%="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       div(2, 3);
+//       mfhi(2);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 4://"+="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       add(2, 2, 3);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 5://"-="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       sub(2, 2, 3);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 6://"<<="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       sll(2, 2, 3);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 7://">>="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       sra(2, 2, 3);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 8://"&="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       and(2, 2, 3);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 9://"^="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       xor(2, 2, 3);
+//       sw(2, mp.temp_result.var_index, 30);
+//       break;
+//
+//       case 10://"|="
+//       lw(2, mp.temp_result.var_index, 30);
+//       lw(3, another_mp.temp_result.var_index, 30);
+//       nop();
+//       (2, 2, 3);
+//       or(2, mp.temp_result.var_index, 30);
+//       break;
+//     }
+//
+//   }
+// }
+
+
 // void assignment_expression::translate(string& pyout)const{
 //   debug(cname);
 //   string one;

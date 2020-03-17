@@ -13,6 +13,7 @@ public:
   type_name(treeptr o, treeptr t){left = o; right = t;}
   ~type_name(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   treeptr left;
   treeptr right;

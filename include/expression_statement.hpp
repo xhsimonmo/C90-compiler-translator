@@ -12,6 +12,7 @@ class expression_statement : public statement{
   expression_statement(int _type):type(_type){};
   expression_statement(treeptr _ptr_expr):ptr_expr(_ptr_expr){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~expression_statement(){
     delete ptr_expr;
   }

@@ -11,6 +11,7 @@ class declarator : public astnode{
 public:
   declarator(treeptr _ptr, treeptr _direct_decla):ptr(_ptr), direct_decla(_direct_decla){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~declarator(){
     delete ptr;
     delete direct_decla;

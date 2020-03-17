@@ -13,6 +13,7 @@ public:
   parameter_list(treeptr o, treeptr t){left = o; right = t;}
   ~parameter_list(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   treeptr left;
   treeptr right;

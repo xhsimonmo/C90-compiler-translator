@@ -16,6 +16,7 @@ public:
   jump_statement(int _type, string _id):type(_type),identifier(_id){};
   jump_statement(int _type, treeptr _ptr):type(_type),expre_ptr(_ptr){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~jump_statement(){
     delete expre_ptr;
   }

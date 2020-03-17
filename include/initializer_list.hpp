@@ -14,6 +14,7 @@ public:
   initializer_list(int type_in, treeptr o){type = type_in; left = o;}
   ~initializer_list(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   treeptr left;
