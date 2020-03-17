@@ -1,4 +1,4 @@
-temp_result.temp_result.var_index#include "menu.hpp"
+#include "menu.hpp"
 
 
 void function_definition::compile(mips& mp)
@@ -53,6 +53,10 @@ void compound_statement::compile(mips& mp)const{
   }
 }
 
+
+
+
+
 void direct_declarator::compile(mips& mp)
 {
   switch(type)
@@ -97,12 +101,13 @@ void assignment_expression::compile(mips& mp)
   {
     p_one->compile(mp);
     mips another_mp;
-    p_five->compile(another_mp);
+    p_five->compile(another_mp); another_mp->b:24
+
 
     switch(type)
     {
-      case 0://=
-      lw(3, another_mp.temp_result.var_index, 30);
+      case 0://=   a=b -> int a = 2; int b = 3; mp
+      lw(3, another_mp.temp_result.var_index, 30);//b
       nop();
       sw(3, mp.temp_result.var_index, 30);
       break;
