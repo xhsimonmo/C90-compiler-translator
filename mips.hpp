@@ -315,6 +315,12 @@ public:
     mpcode.push_back(mp);
   }
 
+  void b(string label)
+  {
+    string mp = "b " + label;
+    mpcode.push_back(mp);
+  }
+
 };
 
 #endif

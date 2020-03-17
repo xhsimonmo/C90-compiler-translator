@@ -372,6 +372,100 @@ void selection_statement::compile(mips& mp)
   }
 
 
+  // 	: WHILE '(' expression ')' statement
+  // 	| DO statement WHILE '(' expression ')' ';'
+  // 	| FOR '(' expression_statement expression_statement ')' statement
+  // 	| FOR '(' expression_statement expression_statement expression ')' statement
+  // 	;
+
+  void iteration_statement::compile(mips& mp)const{
+
+    string condition = "condition" + to_string(labelcounter);
+    labelcounter++;
+    mips cond_expr;
+
+    string statement = "statement" + to_string(labelcounter);
+    labelcounter++;
+    mips state_expr;
+
+    string for_s1 = "for_state" + to_string(labelcounter);
+    labelcounter++;
+    mips for_state1;//san
+
+    string for_s2 = "for_state" + to_string(labelcounter);
+    labelcounter++;
+    mips for_state2;//si
+
+
+    switch(type)
+    {
+      case 0:
+      b(condition);
+      nop();
+
+      add_label(statement);
+      er->compile(state_expr);//get statement
+
+      add_label(condition);
+      yi->compile(cond_expr);//get conidtion expression
+      lw(2, cond_expr.temp_result.result_index, 30);//store expression result in r2
+      bne(2, 0, statement);//if true go to statement
+      nop();
+
+      case 1://same as case 0, but condition and statement are reversed.
+      b(statement);
+      nop();
+
+      add_label(condition);
+      yi->compile(cond_expr);
+
+      add_label(statement);
+      er->compile(state_expr);
+      lw(2, state_expr.temp_result.result_index, 30);//store expression result in r2
+      bne(2, 0, condition);//if true go to statement
+      nop();
+
+      case 2:
+      yi->compile(cond_expr);//make init part
+      b();
+      nop();
+
+      //for loop statement branch
+      add_label(for_s1);
+      san->compile(for_state1);
+
+      //for loop condition!!!not statement
+      add_label(statement);
+      er->compile(state_expr);//get statement
+      lw(2, cond_expr.temp_result.result_index, 30);//store expression result in r2
+      bne(2, 0, for_s1);//if true go to statement
+      nop();
+
+      case 3:
+      yi->compile(cond_expr);//make init part
+      b();
+      nop();
+
+      //for loop statement branch
+      add_label(for_s2);
+      si->compile(for_state2);
+      //iteration expression
+      san->compile(for_state1);
+
+      //for loop condition!!!not statement
+      add_label(statement);
+      er->compile(state_expr);//get statement
+      lw(2, cond_expr.temp_result.result_index, 30);//store expression result in r2
+      bne(2, 0, for_s2);//if true go to statement
+      nop();
+
+    }
+
+
+
+  }
+
+
 
 
 
