@@ -1,12 +1,12 @@
 #ifndef mips_hpp
 #define mips_hpp
 
+//#include "ast.hpp"
 #include <string>
 #include <vector>
-
-// #include "ast.hpp"
-using namespace string;
-using namespace vector;
+using std::string;
+using std::vector;
+using std::to_string;
 
 class mips{
 private:
@@ -47,12 +47,12 @@ private:
   {
     int ret_add;//SP return address
     string ret_label;
-  }
+  };
 
 public:
   mips()//initialisation
   {
-    registers[32] = { 0 }; // TODO something not right about indent
+    //registers[32] = { 0 }; // TODO something not right about indent
     labelcounter = 0;
   }
 
@@ -71,28 +71,32 @@ public:
   {
     addi(29, 30, 0);//move sp, fp
     lw(30, 4, 29);//4=8-4
-    addi(29, 29, 8);
-    j(31);
-    nop();
+    // addi(29, 29, 8);
+    // j(31);
+    // nop();
     auto it = mpcode.begin();
     info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
     string function_header = "addi $29,$29,"+info.var_index;
     mpcode.insert(it, function_header);//add function header back
+
+    addi(29, 29, to_string(info.var_index));
+    j(31);
+    nop();
   }
 
   //find a variable's position in stack
-  int find_variable(string var_name, vector<stack_content>variables) //maybe return enum of bool and int
+  int find_variable(string var_name) //maybe return enum of bool and int
   {
     bool find = false;
     int var_add;
     while(find == false) // infinite loop?if not find
     {
-      for (int i = 0; i < variables.size(); i++)
+      for (int i = 0; i < func_variables.size(); i++)
       {
-        if(variables[i].name == var_name)
+        if(func_variables[i].name == var_name)
         {
           find = true;
-          var_add = variables[i].address;
+          var_add = func_variables[i].address;
           break;
         }
       }
@@ -108,17 +112,17 @@ public:
     for(int i = 0; i < func_param.size(); i++)
     {
       int r = 4;//register for arguments
-      lw(r, find_variable(func_param), 30);
+      lw(r, find_variable(func_param[i]), 30);
       r++;//change register for next argument
     }
 
     jal(func_name);
     nop();
     //return value
-    sw(2, 4, sp);//TODO:sp???
+    sw(2, 4, 29);//TODO:sp???
   }
 
-};
+// };
 
   void add_label(string label)
   {
@@ -146,14 +150,14 @@ public:
 
   void li(int rd, string imm)
   {
-    string mp = "li $" + to_string(rd) + "," + to_string(imm);
+    string mp = "li $" + to_string(rd) + "," + imm;
     mpcode.push_back(mp);
   }//TODO: imm might be string? unsure
 
   //store a word to memory
   void sw(int rd, int offset, int base_reg)
   {
-    string mp = "sw $" + to_string(rd) + "," + offset + "($" + to_string(base_reg) + ")";
+    string mp = "sw $" + to_string(rd) + "," + to_string(offset) + "($" + to_string(base_reg) + ")";
     mpcode.push_back(mp);
   }
 
@@ -170,15 +174,15 @@ public:
     string mp = "add $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
     mpcode.push_back(mp);
   }
-  void addi(int rt, int rs, int imm)
+  void addi(int rt, int rs, string imm)
   {
-    string mp = "addi $" + to_string(rt) + ",$" + to_string(rs) + "," + to_string(imm);//TODO: imm might be string? unsure
+    string mp = "addi $" + to_string(rt) + ",$" + to_string(rs) + "," + imm;//TODO: imm might be string? unsure
     mpcode.push_back(mp);
   }
 
-  void addiu(int rt, int rs, int imm)
+  void addiu(int rt, int rs, string imm)
   {
-    string mp = "addiu $" + to_string(rt) + ",$" + to_string(rs) + "," + to_string(imm);//TODO: imm might be string? unsure
+    string mp = "addiu $" + to_string(rt) + ",$" + to_string(rs) + "," + imm;//TODO: imm might be string? unsure
     mpcode.push_back(mp);
   }
 
@@ -188,15 +192,15 @@ public:
     mpcode.push_back(mp);
   }
 
-  void and(int rd, int rs, int rt)
+  void _and(int rd, int rs, int rt)
   {
     string mp = "and $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
     mpcode.push_back(mp);
   }
 
-  void andi(int rt, int rs, int imm)
+  void andi(int rt, int rs, string imm)
   {
-    string mp = "addiu $" + to_string(rt) + ",$" + to_string(rs) + "," + to_string(imm);//TODO: imm might be string? unsure
+    string mp = "addiu $" + to_string(rt) + ",$" + to_string(rs) + "," + imm;//TODO: imm might be string? unsure
     mpcode.push_back(mp);
   }
 
@@ -255,9 +259,9 @@ public:
     mpcode.push_back(mp);
   }
 
-  void slti(int rt, int rs, int imm) // imm as signed
+  void slti(int rt, int rs, string imm) // imm as signed
   {
-    string mp = "slti $" + to_string(rt) + ",$" + to_string(rs) + "," + to_string(imm);
+    string mp = "slti $" + to_string(rt) + ",$" + to_string(rs) + "," + imm;
     mpcode.push_back(mp);
   }
 
@@ -297,13 +301,13 @@ public:
     mpcode.push_back(mp);
   }
 
-  void xor(int rd, int rs, int rt)
+  void _xor(int rd, int rs, int rt)
   {
     string mp = "xor $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
     mpcode.push_back(mp);
   }
 
-  void or(int rd, int rs, int rt)
+  void _or(int rd, int rs, int rt)
   {
     string mp = "or $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
     mpcode.push_back(mp);
@@ -312,6 +316,12 @@ public:
   void nor(int rd, int rs, int rt)
   {
     string mp = "nor $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
+    mpcode.push_back(mp);
+  }
+
+  void j(int rd)
+  {
+    string mp = "j $" + to_string(rd);
     mpcode.push_back(mp);
   }
 

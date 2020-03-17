@@ -81,18 +81,18 @@ public:
   }
 
   //find a variable's position in stack
-  int find_variable(string var_name, vector<stack_content>variables) //maybe return enum of bool and int
+  int find_variable(string var_name) //maybe return enum of bool and int
   {
     bool find = false;
     int var_add;
     while(find == false) // infinite loop?if not find
     {
-      for (int i = 0; i < variables.size(); i++)
+      for (int i = 0; i < func_variables.size(); i++)
       {
-        if(variables[i].name == var_name)
+        if(func_variables[i].name == var_name)
         {
           find = true;
-          var_add = variables[i].address;
+          var_add = func_variables[i].address;
           break;
         }
       }

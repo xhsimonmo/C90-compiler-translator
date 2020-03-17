@@ -1,6 +1,8 @@
 #ifndef menu_hpp
 #define menu_hpp
 
+#include "mips.hpp"
+
 #include "ast.hpp"
 #include "abstract_declarator.hpp"
 #include "initializer_list.hpp"

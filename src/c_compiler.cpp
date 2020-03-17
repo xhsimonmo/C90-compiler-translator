@@ -24,8 +24,8 @@ int main(int argc, char *argv[]){
   //string filename = argv[2];
   yyin = fopen(argv[2], "r");
   const astnode* root = parseAST();
-  std::ofstream pyfile;//output ...py
-  pyfile.open(argv[4]);
+  std::ofstream outfile;//output ...py
+  outfile.open(argv[4]);
 
   if(strcmp(argv[1], "--translate") == 0 ){
     std::cerr << "\ntranslator begin" << '\n';
@@ -39,20 +39,27 @@ int main(int argc, char *argv[]){
     std::cerr << "pyout in main is \n\n" << pyout <<'\n';
     //pyout = pyout + addmain;
     pyout.append(addmain);
-    pyfile << pyout;
+    outfile << pyout;
 
   }
   else if(argv[1] == "-S"){
      std::cerr << "compiler begin" << std::endl;
      mips mp;
      root -> compile(mp);
+     string generated_mips;
+     for(auto it = mp.mpcode.begin(); it !=mp.mpcode.end();it++ )
+     {
+       generated_mips.append(*it);
+     }
+     outfile << generated_mips;
+
   }
 
   else{
     std::cerr << "no valid flag is provided to operate." << '\n';
     std::exit(-1);
   }
-  pyfile.close();
+  outfile.close();
   return 0;
 
 }
