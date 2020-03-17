@@ -14,6 +14,7 @@ public:
   translation_unit(treeptr o){p_yi = o;}
   ~translation_unit(){delete p_yi; delete p_er;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   treeptr p_yi = NULL;
   treeptr p_er = NULL;

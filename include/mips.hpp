@@ -9,24 +9,24 @@ using std::vector;
 using std::to_string;
 
 class mips{
-private:
+public:
   string stack_name;
   vector <string> mpcode;//store generated mips code
   bool registers[32];
   int labelcounter;//make unique label by number TODO put it in ast.hpp?
 
-  //store temporary result
-  struct temp_result
-  {
-    string func_name;
-    string result; //TODO shouldn't it be stored in $2 as return value?
-    string func_type;
-    int var_index;//store previous results' index(in stack vector)
-    int result_index;//use for statement expression result index
-
-  };
-
-  temp_result info;
+  // //store temporary result
+  // struct temp_result
+  // {
+  //   string func_name;
+  //   string result; //TODO shouldn't it be stored in $2 as return value?
+  //   string func_type;
+  //   int var_index;//store previous results' index(in stack vector)
+  //   int result_index;//use for statement expression result index
+  //
+  // };
+  //
+  // temp_result info;
 
   //remember the locations of each variable (offset relative to the frame pointer, which is a register)
   struct stack_content
@@ -49,7 +49,20 @@ private:
     string ret_label;
   };
 
-public:
+//public:
+  //store temporary result
+  struct temp_result
+  {
+    string func_name;
+    string result; //TODO shouldn't it be stored in $2 as return value?
+    string func_type;
+    int var_index;//store previous results' index(in stack vector)
+    int result_index;//use for statement expression result index
+
+  };
+
+  temp_result info;
+
   mips()//initialisation
   {
     //registers[32] = { 0 }; // TODO something not right about indent
@@ -79,7 +92,7 @@ public:
     string function_header = "addi $29,$29,"+info.var_index;
     mpcode.insert(it, function_header);//add function header back
 
-    addi(29, 29, to_string(info.var_index));
+    addi(29, 29, (to_string(info.var_index)));
     j(31);
     nop();
   }
@@ -163,7 +176,7 @@ public:
 
   void lw(int rd, int offset, int base_reg)
   {
-    string mp = "lw $" + to_string(rd) + "," + offset + "($" + to_string(base_reg) + ")";
+    string mp = "lw $" + to_string(rd) + "," + to_string(offset) + "($" + to_string(base_reg) + ")";
     mpcode.push_back(mp);
     nop();
   }

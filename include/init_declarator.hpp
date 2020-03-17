@@ -12,6 +12,7 @@ public:
   init_declarator(treeptr _one, treeptr _two):one(_one),two(_two){};
   init_declarator(treeptr _one):one(_one){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~init_declarator(){
     delete one;
     delete two;

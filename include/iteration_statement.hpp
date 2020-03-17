@@ -21,6 +21,7 @@ public:
 		delete si;
 	}
 	virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
 	int type;
 	treeptr yi = NULL;

@@ -16,6 +16,7 @@ public:
   relational_expression(int type_in, treeptr p, treeptr o){type = type_in; left = p; right = o;}
   ~relational_expression(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   treeptr left = NULL;

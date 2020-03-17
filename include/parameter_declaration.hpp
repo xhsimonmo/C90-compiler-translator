@@ -15,6 +15,7 @@ public:
   parameter_declaration(int type_in, treeptr o){type = type_in; left = o;}
   ~parameter_declaration(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   treeptr left = NULL;

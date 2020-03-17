@@ -12,6 +12,7 @@ class statement_list : public statement{
 public:
   statement_list(treeptr list, treeptr _statement):l(list),r(_statement){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~statement_list(){
     delete l;
     delete r;

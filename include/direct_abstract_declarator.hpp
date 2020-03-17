@@ -22,6 +22,7 @@ public:
   direct_abstract_declarator(int type_in){type = type_in; }
   ~direct_abstract_declarator(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   treeptr left = NULL;

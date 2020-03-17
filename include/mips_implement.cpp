@@ -12,7 +12,7 @@ void function_definition::compile(mips& mp)const
   //add label
   string declarator = mp.info.func_name;
   declarator = declarator + ":";
-  mpcode.push_back(declarator);
+  mp.mpcode.push_back(declarator);
 
   //start function
   mp.add_frame();
@@ -27,8 +27,22 @@ void function_definition::compile(mips& mp)const
 void type_specifier::compile(mips& mp)const
 {
   debug(cname);
-  //don't do anything yet for type specifier, assume INT?
+  //don't do anything yet?
+  switch(type)
+  {
+    case 0:
+    break;
+    case 1:
+    break;
+    case 2:
+    break;
+    case 3:
+    break;
+    case 4:
+    break;
+  }
 };
+
 
 void external_declaration::compile(mips& mp)const
 {
@@ -37,7 +51,7 @@ void external_declaration::compile(mips& mp)const
 };
 
 void compound_statement::compile(mips& mp)const{
-  debug(name);
+  debug(cname);
   //dont do things yet;
   switch (type) {
     case 0:
@@ -104,7 +118,14 @@ void assignment_expression::compile(mips& mp)
     switch(type)
     {
       case 0://=
-      lw(3, another_mp.temp_result.var_index, 30); // TODO make var_index extern?
+      if(mp.info.result.empty())
+      {
+        mp.lw(3, another_mp.info.var_index, 30); // TODO make var_index extern?
+      } // we have an identifier not a number
+      else{
+        mp.li(3, another_mp.info.result);//got a number
+      }
+
       nop();
       sw(3, mp.temp_result.var_index, 30);
       break;

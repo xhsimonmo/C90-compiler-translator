@@ -13,6 +13,7 @@ public:
   argument_expression_list(treeptr o, treeptr t){ left = o; right = t;}
   ~argument_expression_list(){delete left; delete right;}
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   //int type;
   treeptr left = NULL;

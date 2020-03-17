@@ -14,6 +14,7 @@ public:
   identifier_list(string _id){id = _id;}
   ~identifier_list(){delete ptr; }
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   treeptr ptr;
   string id;

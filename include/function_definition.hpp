@@ -27,27 +27,27 @@ private:
   string cname = "function_definition";
 };
 
-void function_definition::compile(mips& mp)const
-{
-  // declarator;
-  if(p_o != NULL){
-      p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
-  }
-  p_t-> compile(mp);
-  //add label
-  string declarator = mp.info.func_name;
-  declarator = declarator + ":";
-  mpcode.push_back(declarator);
-
-  //start function
-  add_frame();
-
-  //compound statement
-  p_f->compile(mp);
-
-  //finish function
-  finish_frame();
-}
+// void function_definition::compile(mips& mp)const
+// {
+//   // declarator;
+//   if(p_o != NULL){
+//       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
+//   }
+//   p_t-> compile(mp);
+//   //add label
+//   string declarator = mp.info.func_name;
+//   declarator = declarator + ":";
+//   mpcode.push_back(declarator);
+//
+//   //start function
+//   mp.add_frame();
+//
+//   //compound statement
+//   p_f->compile(mp);
+//
+//   //finish function
+//   mp.finish_frame();
+// }
 
 //  void function_definition::translate(string& pyout) const{
 //   debug(cname);

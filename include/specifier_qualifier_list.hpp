@@ -10,6 +10,7 @@ class specifier_qualifier_list : public astnode{
 public:
   specifier_qualifier_list(treeptr _spec, treeptr _list):spec(_spec),list(_list){};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
   ~specifier_qualifier_list(){
     delete spec;
     delete list;

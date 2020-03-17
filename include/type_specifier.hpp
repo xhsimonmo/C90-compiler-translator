@@ -38,24 +38,24 @@ private:
 // }
 
 
-void type_specifier::compile(mips& mp)const
-{
-  debug(cname);
-  //don't do anything yet?
-  switch(type)
-  {
-    case 0:
-    break;
-    case 1:
-    break;
-    case 2:
-    break;
-    case 3:
-    break;
-    case 4:
-    break;
-  }
-};
+// void type_specifier::compile(mips& mp)const
+// {
+//   debug(cname);
+//   //don't do anything yet?
+//   switch(type)
+//   {
+//     case 0:
+//     break;
+//     case 1:
+//     break;
+//     case 2:
+//     break;
+//     case 3:
+//     break;
+//     case 4:
+//     break;
+//   }
+// };
 
 
 

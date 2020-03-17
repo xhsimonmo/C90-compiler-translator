@@ -17,6 +17,7 @@ public:
   ~declaration_list(){delete p_o; delete p_t;}
   //void translate(string& pyout);
  virtual void translate(string& pyout)const override;
+virtual void compile(mips& mp) const override;
 private:
   treeptr p_o;
   treeptr p_t;
