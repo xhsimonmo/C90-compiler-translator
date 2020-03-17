@@ -1,6 +1,7 @@
 #include "menu.hpp"
 #include "ast.hpp"
 
+
 void function_definition::compile(mips& mp)const
 {
   // declarator;
@@ -14,13 +15,13 @@ void function_definition::compile(mips& mp)const
   mpcode.push_back(declarator);
 
   //start function
-  add_frame();
+  mp.add_frame();
 
   //compound statement
   p_f->compile(mp);
 
   //finish function
-  finish_frame();
+  mp.finish_frame();
 }
 
 void type_specifier::compile(mips& mp)const
@@ -54,7 +55,7 @@ void compound_statement::compile(mips& mp)const{
   }
 }
 
-void direct_declarator::compile(mips& mp)
+void direct_declarator::compile(mips& mp)const
 {
   switch(type)
   {
@@ -103,7 +104,7 @@ void assignment_expression::compile(mips& mp)
     switch(type)
     {
       case 0://=
-      lw(3, another_mp.temp_result.var_index, 30);
+      lw(3, another_mp.temp_result.var_index, 30); // TODO make var_index extern?
       nop();
       sw(3, mp.temp_result.var_index, 30);
       break;
@@ -195,7 +196,7 @@ void assignment_expression::compile(mips& mp)
   }
 }
 
-void cast_expression::compile(mips& mp)
+void cast_expression::compile(mips& mp) const
 {
   if(ptr == NULL)
   {
@@ -207,7 +208,7 @@ void cast_expression::compile(mips& mp)
   }
 }
 
-void multiplicative_expression::compile(mips& mp)
+void multiplicative_expression::compile(mips& mp) const
 {
   mul->compile(mp);
   mips another_mp;
@@ -245,7 +246,7 @@ void multiplicative_expression::compile(mips& mp)
 
 }
 
-void additive_expression::compile(mips& mp)
+void additive_expression::compile(mips& mp) const
 {
   add->compile(mp);
   mips another_mp;
@@ -271,7 +272,7 @@ void additive_expression::compile(mips& mp)
 
 }
 
-void shift_expression::compile(mips& mp)
+void shift_expression::compile(mips& mp) const
 {
   l->compile(mp);
   mips another_mp;
@@ -297,7 +298,7 @@ void shift_expression::compile(mips& mp)
 
 }
 
-void unary_expression::compile(mips& mp)
+void unary_expression::compile(mips& mp) const
 {
   switch(type)
   {
@@ -321,7 +322,7 @@ void unary_expression::compile(mips& mp)
 // 	| IF '(' expression ')' statement ELSE statement
 // 	| SWITCH '(' expression ')' statement //no translation for switch
 // 	;
-void selection_statement::compile(mips& mp)
+void selection_statement::compile(mips& mp) const
 {
   string below_if = "Selection" + to_string(labelcounter);//make label
   labelcounter++;

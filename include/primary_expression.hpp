@@ -32,14 +32,12 @@ void primary_expression :: compile(mips& mp) const{
   switch (type) {
     case 0: // got IDENTIFIER
 
-    li(2,element);
-    sw(2,mp.var_index,30)
     mp.var_index = mp.var_index + 4;
     break;
 
     case 1:
-    li(2,element);//element is the value to stored
-    sw(2,mp.var_index,30)
+    mp.li(2,element);//element is the value to stored
+    mp.sw(2,mp.var_index,30)
     mp.var_index = mp.var_index + 4;
     break;
 

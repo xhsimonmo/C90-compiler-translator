@@ -28,6 +28,7 @@ public:
   assignment_expression(treeptr o){p_one = o;}
   ~assignment_expression(){delete p_one; delete p_five;};
   virtual void translate(string& pyout)const override;
+  virtual void compile(mips& mp) const override;
 private:
   int type;
   treeptr p_one = NULL;
