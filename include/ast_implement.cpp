@@ -10,7 +10,7 @@ void argument_expression_list::translate(string& pyout)const{
     string a,b;
     left -> translate(a);
     right -> translate(b);
-    pyout = a + ","+b;
+    pyout = a + "," + b;
 }
 
 void assignment_expression::translate(string& pyout)const{
@@ -234,7 +234,7 @@ void external_declaration :: translate(string& pyout)const{
     case 0:
     ptr -> translate(pyout);
     break;
-    case 1 :
+    case 1:
     ptr -> translate(pyout);
     string pyout_truncate = pyout;
     string::size_type pos = pyout.find("=");
