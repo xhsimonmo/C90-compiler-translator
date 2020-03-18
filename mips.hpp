@@ -10,10 +10,7 @@ using namespace vector;
 
 class mips{
 private:
-  string stack_name;
-  vector <string> mpcode;//store generated mips code
   bool registers[32];
-  int labelcounter;//make unique label by number TODO put it in ast.hpp?
 
   //store temporary result
   struct temp_result
@@ -28,26 +25,6 @@ private:
 
   temp_result info;
 
-  //remember the locations of each variable (offset relative to the frame pointer, which is a register)
-  struct stack_content
-  {
-    string name;//variable name: i
-    int address;//variable (relative)locations: add 0, 4(0/4+fp)
-  };
-
-  //main variable storage
-  vector<stack_content>stack;
-
-  //stack frame for function calls
-  vector<stack_content>func_stack;
-  vector<stack_content>func_variables;
-
-  //we require one stack for each function
-  struct function_content
-  {
-    int ret_add;//SP return address
-    string ret_label;
-  }
 
 public:
   mips()//initialisation
@@ -59,12 +36,14 @@ public:
   //add new frame for function
   void add_frame(string func_name)
   {
-    //move down stack pointer by 8
-    //addi(29, 29, -8);//TODO: if pass-in parameter is used, -8; if not then -24???????????? TODO we added it at the end
-    //move frame pointer
+    //everytime start a new frame, add a stack(vector) for it
+    vector<stack_content>frame_stack;//TODO: can vector have same name?
+    stack_collection.push_back(frame_stack);
     sw(30, 4, 29);//4=8-4 //TODO MIPS format for sw not correct?
     addi(30, 29, 0);//move fp, sp
 
+    //frame counter +1
+    frame_counter++;
   }
   //frame ended
   void finish_frame()
