@@ -22,6 +22,18 @@ private:
   string cname = "cast_expression";
 };
 
+// void cast_expression::compile(mips& mp)
+// {
+//   if(ptr == NULL)
+//   {
+//     opt->compile(mp);
+//   }
+//   else
+//   {
+//     NotImplemented();
+//   }
+// }
+
 // void cast_expression::translate(string& pyout) const{
 //       debug(cname);
 //   std::string op;

@@ -53,6 +53,44 @@ class multiplicative_expression : public expression{
 //   }
 // }
 
+// void multiplicative_expression::compile(mips& mp)
+// {
+//   mul->compile(mp);
+//   mips another_mp;
+//   cast->compile(another_mp);
+//
+//   case 1://"*"
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   mult(2, 3);
+//   mflo(2);
+//   sw(2, sp+4, 30);
+//   mp.temp_result.var_index = sp + 4;
+//   break;
+//
+//   case 2:
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   mult(2, 3);
+//   mflo(2);
+//   sw(2, sp+4, 30);
+//   mp.temp_result.var_index = sp + 4;
+//   break;
+//
+//   case 3:
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   mult(2, 3);
+//   mfhi(2);
+//   sw(2, sp+4, 30);
+//   mp.temp_result.var_index = sp + 4;
+//   break;
+//
+// }
+
 
 /////////////////////////////////////additive_expression///////////////////////////////////////////////////
 
@@ -96,6 +134,32 @@ class additive_expression : public expression{
 //     pyout = ls + "-" + rs+"/n";
 //     break;
 //   }
+// }
+
+// void additive_expression::compile(mips& mp)
+// {
+//   add->compile(mp);
+//   mips another_mp;
+//   mul->compile(another_mp);
+//
+//   case 1://"+"
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   add(2, 2, 3);
+//   sw(2, sp+4, 30);
+//   mp.temp_result.var_index = sp + 4;
+//   break;
+//
+//   case 2://"-"
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   sub(2, 2, 3);
+//   sw(2, sp+4, 30);
+//   mp.temp_result.var_index = sp + 4;
+//   break;
+//
 // }
 
 /////////////////////////////////////bitwise_shift_expression///////////////////////////////////////////////////
@@ -142,6 +206,32 @@ class shift_expression : public expression{
 //     pyout = ls + ">>" + rs+"/n";
 //     break;
 //   }
+// }
+
+// void shift_expression::compile(mips& mp)
+// {
+//   l->compile(mp);
+//   mips another_mp;
+//   r->compile(another_mp);
+//
+//   case 1://"<<"
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   sll(2, 2, 3);
+//   sw(2, sp+4, 30);
+//   mp.temp_result.var_index = sp + 4;
+//   break;
+//
+//   case 2://">>"
+//   lw(2, mp.temp_result.var_index, 30);
+//   lw(3, another_mp.temp_result.var_index, 30);
+//   nop();
+//   sra(2, 2, 3);
+//   sw(2, sp+4, 30);
+//   mp.var_index = sp + 4;
+//   break;
+//
 // }
 
 #endif

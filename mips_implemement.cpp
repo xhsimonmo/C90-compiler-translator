@@ -461,14 +461,9 @@ void selection_statement::compile(mips& mp)
       lw(2, cond_expr.temp_result.result_index, 30);//store expression result in r2
       bne(2, 0, for_s2);//if true go to statement
       nop();
-
     }
 
-
-
   }
-
-
 
 
 
