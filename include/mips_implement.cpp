@@ -391,3 +391,55 @@ void selection_statement::compile(mips& mp) const
 
 
 }
+
+void jump_statement::compile(mips& mp) const {
+  switch (type) {
+    case 0:
+    NotImplemented();
+    break;
+    case 1:
+    NotImplemented();
+    break;
+    case 2:
+    NotImplemented();
+    break;
+    case 3: // simply "return; " gives error
+    NotImplemented();
+    break;
+    case 4:
+    mips mp_tmp;
+    expre_ptr -> compile(mp_tmp);
+    mp.li(2,mp_tmp.info.result)
+    break;
+  }
+}
+
+void primary_expression :: compile(mips& mp) const{
+  debug(cname);
+  switch (type) {
+    case 0: // got IDENTIFIER
+    // mp.var_index = mp.var_index + 4;
+    // mp.func_variables.push_back(element,mp.var_index );
+    //mp.var_index = mp.var_index + 4;
+    mp.info.func_name = element;//update func_name, name of a variable
+    mp.info.var_index = mp.find_variable(element);//fetch address of the variable
+    break;
+
+    case 1:
+
+    mp.info.result = element;
+    //mp.li(2,element);//element is the value to stored
+    //mp.sw(2,mp.var_index,30)
+    //mp.var_index = mp.var_index + 4;
+    break;
+
+    case 2:
+    NotImplemented();
+    break;
+
+    case 3:
+    expre_ptr -> compile(mp);
+    break;
+
+  }
+}

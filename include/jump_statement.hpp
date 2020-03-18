@@ -24,9 +24,32 @@ public:
 private:
   int type;
   string identifier;
-  treeptr expre_ptr;
+  treeptr expre_ptr = NULL;
   string cname = "jump_statement";
 };
+
+// void jump_statement::compile(mips& mp) const {
+//   switch (type) {
+//     case 0:
+//     NotImplemented();
+//     break;
+//     case 1:
+//     NotImplemented();
+//     break;
+//     case 2:
+//     NotImplemented();
+//     break;
+//     case 3: // simply "return; " gives error
+//     NotImplemented();
+//     break;
+//     case 4:
+//     mips mp_tmp;
+//     expre_ptr -> compile(mp_tmp);
+//     mp.li(2,mp_tmp.info.result)
+//     break;
+//   }
+// }
+
 
 // void jump_statement::translate(string& pyout) const
 // {
