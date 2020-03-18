@@ -13,14 +13,17 @@ void function_definition::compile(mips& mp)const
   declarator = declarator + ":";
   mpcode.push_back(declarator);
 
+  //make a new vector for mips code when start a new frame_stack
+  vector<string>mips_code;
+  mpcode_collection.push_back(mips_code);
   //start function
-  add_frame();
+  add_frame(declarator, mips_code);
 
   //compound statement
   p_f->compile(mp);
 
   //finish function
-  finish_frame();
+  finish_frame(mips_code);
 }
 
 void type_specifier::compile(mips& mp)const

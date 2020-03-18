@@ -20,7 +20,8 @@ extern struct stack_content
 };
 //collection of stack vector for each frame(two-dimension);
 extern vector<vector<stack_content>>stack_collection;
-extern vector <string> mpcode;//store generated mips code
+extern vector<vector<string>> mpcode_collection;//store generated mips code
+extern vector<string>mpcode;//final mips code collection
 
 extern vector<string> global_variables;
 class astnode;

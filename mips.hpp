@@ -34,11 +34,17 @@ public:
   }
 
   //add new frame for function
-  void add_frame(string func_name)
+  void add_frame(string func_name, vector<string>mips_code)
   {
     //everytime start a new frame, add a stack(vector) for it
     vector<stack_content>frame_stack;//TODO: can vector have same name?
     stack_collection.push_back(frame_stack);
+
+    //define this in function_definition
+    // //make a new vector for mips code when start a new frame_stack
+    // vector<string>mips_code;
+    // mpcode_collection.push_back(mips_code);
+
     sw(30, 4, 29);//4=8-4 //TODO MIPS format for sw not correct?
     addi(30, 29, 0);//move fp, sp
 
@@ -46,14 +52,15 @@ public:
     frame_counter++;
   }
   //frame ended
-  void finish_frame()
+  void finish_frame(vector<string>mips_code)
   {
     addi(29, 30, 0);//move sp, fp
     lw(30, 4, 29);//4=8-4
     addi(29, 29, 8);
     j(31);
     nop();
-    auto it = mpcode.begin();
+
+    auto it = mips_code.begin();
     info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
     string function_header = "addi $29,$29,"+info.var_index;
     mpcode.insert(it, function_header);//add function header back
