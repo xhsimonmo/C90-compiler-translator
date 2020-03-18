@@ -227,8 +227,7 @@ void multiplicative_expression::compile(mips& mp)
   nop();
   mult(2, 3);
   mflo(2);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
   case 2:
@@ -237,8 +236,7 @@ void multiplicative_expression::compile(mips& mp)
   nop();
   mult(2, 3);
   mflo(2);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
   case 3:
@@ -247,8 +245,7 @@ void multiplicative_expression::compile(mips& mp)
   nop();
   mult(2, 3);
   mfhi(2);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
 }
@@ -264,8 +261,7 @@ void additive_expression::compile(mips& mp)
   lw(3, another_mp.temp_result.var_index, 30);
   nop();
   add(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
   case 2://"-"
@@ -273,8 +269,7 @@ void additive_expression::compile(mips& mp)
   lw(3, another_mp.temp_result.var_index, 30);
   nop();
   sub(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
 }
@@ -290,8 +285,7 @@ void shift_expression::compile(mips& mp)
   lw(3, another_mp.temp_result.var_index, 30);
   nop();
   sll(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
   case 2://">>"
@@ -299,36 +293,30 @@ void shift_expression::compile(mips& mp)
   lw(3, another_mp.temp_result.var_index, 30);
   nop();
   sra(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.var_index = sp + 4;
+  sw(2, mp.temp_result.var_index, 30);//load to a's stack position
   break;
 
 }
 
-void unary_expression::compile(mips& mp)
-{
-  switch(type)
-  {
-    case 0:
-    ptr->compile(mp);
-    mips.addi(dst, dst, "1");
-    break;
+// void unary_expression::compile(mips& mp)
+// {
+//   switch(type)
+//   {
+//     case 0:
+//     ptr->compile(mp);
+//     mips.addi(dst, dst, "1");
+//     break;
+//
+//     case 1:
+//     ptr->compile(dst);
+//     mips.addi(dst, dst, "-1");
+//     break;
+//
+//     case 2:
+//
+//   }
+// }
 
-    case 1:
-    ptr->compile(dst);
-    mips.addi(dst, dst, "-1");
-    break;
-
-    case 2:
-
-  }
-}
-
-// selection_statement
-// 	: IF '(' expression ')' statement
-// 	| IF '(' expression ')' statement ELSE statement
-// 	| SWITCH '(' expression ')' statement //no translation for switch
-// 	;
 void selection_statement::compile(mips& mp)
 {
   string below_if = "Selection" + to_string(labelcounter);//make label
