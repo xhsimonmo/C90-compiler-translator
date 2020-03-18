@@ -17,13 +17,13 @@ void function_definition::compile(mips& mp)const
   vector<string>mips_code;
   mpcode_collection.push_back(mips_code);
   //start function
-  add_frame(declarator, mips_code);
+  mp.add_frame(declarator, mips_code);
 
   //compound statement
   p_f->compile(mp);
 
   //finish function
-  finish_frame(mips_code);
+  mp.finish_frame(mips_code);
 }
 
 void type_specifier::compile(mips& mp)const
@@ -39,7 +39,7 @@ void external_declaration::compile(mips& mp)const
 };
 
 void compound_statement::compile(mips& mp)const{
-  debug(name);
+  debug(cname);
   //dont do things yet;
   switch (type) {
     case 0:
