@@ -102,7 +102,7 @@ void direct_declarator::compile(mips& mp)const
   }
 }
 
-void assignment_expression::compile(mips& mp)
+void assignment_expression::compile(mips& mp)const
 {
   //no unary expression
   if(p_one == NULL)
@@ -126,91 +126,91 @@ void assignment_expression::compile(mips& mp)
         mp.li(3, another_mp.info.result);//got a number
       }
 
-      nop();
-      sw(3, mp.temp_result.var_index, 30);
+      mp.nop();
+      mp.sw(3, mp.info.var_index, 30);
       break;
 
       case 1://"*="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      mult(2, 3);
-      mflo(2);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp.mult(2, 3);
+      mp.mflo(2);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 2://"/="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
       div(2, 3);
-      mflo(2);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.mflo(2);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 3://"%="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
       div(2, 3);
-      mfhi(2);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.mfhi(2);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 4://"+="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      add(2, 2, 3);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp.add(2, 2, 3);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 5://"-="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      sub(2, 2, 3);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp.sub(2, 2, 3);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 6://"<<="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      sll(2, 2, 3);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp.sll(2, 2, 3);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 7://">>="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      sra(2, 2, 3);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp.sra(2, 2, 3);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 8://"&="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      and(2, 2, 3);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp._and(2, 2, 3);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 9://"^="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
-      xor(2, 2, 3);
-      sw(2, mp.temp_result.var_index, 30);
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
+      mp._xor(2, 2, 3);
+      mp.sw(2, mp.info.var_index, 30);
       break;
 
       case 10://"|="
-      lw(2, mp.temp_result.var_index, 30);
-      lw(3, another_mp.temp_result.var_index, 30);
-      nop();
+      mp.lw(2, mp.info.var_index, 30);
+      mp.lw(3, another_mp.info.var_index, 30);
+      mp.nop();
       (2, 2, 3);
-      or(2, mp.temp_result.var_index, 30);
+      mp._or(2, mp.info.var_index, 30);
       break;
     }
 
@@ -234,37 +234,38 @@ void multiplicative_expression::compile(mips& mp) const
   mul->compile(mp);
   mips another_mp;
   cast->compile(another_mp);
-
+  switch (type) {
   case 1://"*"
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  mult(2, 3);
-  mflo(2);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.mult(2, 3);
+  mp.mflo(2);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
 
   case 2:
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  mult(2, 3);
-  mflo(2);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.mult(2, 3);
+  mp.mflo(2);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
 
   case 3:
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  mult(2, 3);
-  mfhi(2);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.mult(2, 3);
+  mp.mfhi(2);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
 
+  }
 }
 
 void additive_expression::compile(mips& mp) const
@@ -272,25 +273,25 @@ void additive_expression::compile(mips& mp) const
   add->compile(mp);
   mips another_mp;
   mul->compile(another_mp);
-
+  switch (type) {
   case 1://"+"
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  add(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.add(2, 2, 3);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
 
   case 2://"-"
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  sub(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.sub(2, 2, 3);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
-
+  }
 }
 
 void shift_expression::compile(mips& mp) const
@@ -298,25 +299,25 @@ void shift_expression::compile(mips& mp) const
   l->compile(mp);
   mips another_mp;
   r->compile(another_mp);
-
+  switch(type){
   case 1://"<<"
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  sll(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.temp_result.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.sll(2, 2, 3);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
 
   case 2://">>"
-  lw(2, mp.temp_result.var_index, 30);
-  lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  sra(2, 2, 3);
-  sw(2, sp+4, 30);
-  mp.var_index = sp + 4;
+  mp.lw(2, mp.info.var_index, 30);
+  mp.lw(3, another_mp.info.var_index, 30);
+  mp.nop();
+  mp.sra(2, 2, 3);
+  mp.sw(2, sp+4, 30);
+  mp.info.var_index = sp + 4;
   break;
-
+  }
 }
 
 void unary_expression::compile(mips& mp) const
@@ -325,12 +326,12 @@ void unary_expression::compile(mips& mp) const
   {
     case 0:
     ptr->compile(mp);
-    mips.addi(dst, dst, "1");
+    mp.addi(dst, dst, "1");
     break;
 
     case 1:
     ptr->compile(dst);
-    mips.addi(dst, dst, "-1");
+    mp.addi(dst, dst, "-1");
     break;
 
     case 2:
@@ -345,40 +346,40 @@ void unary_expression::compile(mips& mp) const
 // 	;
 void selection_statement::compile(mips& mp) const
 {
-  string below_if = "Selection" + to_string(labelcounter);//make label
-  labelcounter++;
+  string below_if = "Selection" + to_string(mp.labelcounter);//make label
+  mp.labelcounter++;
   mips expre_mp;
   expre_ptr->compile(expre_mp);
 
-  string else_label = "Selection" + to_string(labelcounter);//label when else start
-  labelcounter++;
-
+  string else_label = "Selection" + to_string(mp.labelcounter);//label when else start
+  mp.labelcounter++;
+  mips sta_mp;
   switch(type)
   {
     case 0:
-    lw(2, expre_mp.temp_result.result_index, 30);//store expression result in r2
-    beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
-    nop();
+    mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
+    mp.beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
+    mp.nop();
     //then make the if statement(if is true)
-    mips sta_mp;
+    // mips sta_mp;
     ifsta->compile(sta_mp);
-    add_label(below_if);
+    mp.add_label(below_if);
     break;
 
     case 1:
-    lw(2, expre_mp.temp_result.result_index, 30);//store expression result in r2
-    beq(2, 0, else_label);//if false f=go to else
-    nop();
+    mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
+    mp.beq(2, 0, else_label);//if false f=go to else
+    mp.nop();
     //then make the if statement(if is true)
-    mips sta_mp;
+    // mips sta_mp;
     ifsta->compile(sta_mp);
     b(below_if);
 
     //else statement
-    add_label(else_label);
+    mp.add_label(else_label);
     mips s_mp;
     s_mp->compile(s_mp);
-    add_label(below_if);
+    mp.add_label(below_if);
     break;
 
     case 2:
@@ -387,9 +388,6 @@ void selection_statement::compile(mips& mp) const
 
 
   }
-
-
-
 
 
 }

@@ -70,7 +70,7 @@ public:
   }
 
   //add new frame for function
-  void add_frame(string func_name)
+  void add_frame()// why this parameter?string func_name)
   {
     //move down stack pointer by 8
     //addi(29, 29, -8);//TODO: if pass-in parameter is used, -8; if not then -24???????????? TODO we added it at the end
