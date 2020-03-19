@@ -9,7 +9,7 @@
 using std::string;
 using std::vector;
 
-
+extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
 extern int frame_counter;//make unique number for frame: as the stack index!
 //remember the locations of each variable (offset relative to the frame pointer, which is a register)
