@@ -81,6 +81,7 @@ private:
     // mpcode_collection[current_frame]_collection.push_back(mips_code);
     initilise_arg(true);//all argument available at the beginning
     sw(30, 4, 29);//4=8-4 //TODO MIPS format for sw not correct?
+    sw(31, 8, 29);//return address
     addi(30, 29, 0);//move fp, sp
 
     //frame counter +1
@@ -90,6 +91,7 @@ private:
   void finish_frame(vector<string>mips_code)
   {
     addi(29, 30, 0);//move sp, fp
+    lw(31, 8, 29);
     lw(30, 4, 29);//4=8-4
     addi(29, 29, 8);
     j(31);
