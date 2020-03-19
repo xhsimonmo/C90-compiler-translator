@@ -15,10 +15,14 @@ public:
   virtual void translate(string& pyout)const override;
   virtual void compile(mips& mp) const override;
 private:
-  treeptr left;
-  treeptr right;
+  treeptr left = NULL;
+  treeptr right = NULL;
   string cname = "parameter_list";
 };
+
+void parameter_list :: compile(mips& mp)const{
+
+}
 
 // void parameter_list::translate(string& pyout) const{
 //   debug(cname);

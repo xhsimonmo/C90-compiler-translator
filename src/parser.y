@@ -36,7 +36,7 @@
 
 %type<expr> primary_expression postfix_expression argument_expression_list unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression equality_expression and_expression
 %type<expr> exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
-%type<expr> init_declarator_list init_declarator storage_class_specifier type_specifier specifier_qualifier_list declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration identifier_list
+%type<expr> init_declarator_list init_declarator storage_class_specifier type_specifier specifier_qualifier_list declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration
 %type<expr> type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement compound_statement declaration_list statement_list expression_statement selection_statement
 %type<expr> iteration_statement jump_statement translation_unit external_declaration function_definition
 
@@ -308,7 +308,7 @@ direct_declarator
 	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);  std::cerr << "direct_declarator 2" << std::endl;}
 	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);  std::cerr << "direct_declarator 3" << std::endl;}
 	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);  std::cerr << "direct_declarator 4" << std::endl;}
-	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);  std::cerr << "direct_declarator 5" << std::endl;}
+	//| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);  std::cerr << "direct_declarator 5" << std::endl;} KR style
 	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);  std::cerr << "direct_declarator 6" << std::endl;}
 
 pointer
@@ -340,10 +340,10 @@ parameter_declaration
 	| declaration_specifiers                   {$$ = new parameter_declaration(2, $1); std::cerr << "parameter_declaration 2" << std::endl;  } /*TODO what does this do */
 	;
 
-identifier_list
+/* identifier_list
 	: IDENTIFIER                                     {$$ = new identifier_list(*$1);std::cerr << "identifier_list 0; an IDENTIFIER: " << std::endl;}
 	| identifier_list ',' IDENTIFIER                 {$$ = new identifier_list($1, *$3); std::cerr << "identifier_list 1; an IDENTIFIER: " <<   std::endl;}
-	;
+	; */
 
 type_name
 	: specifier_qualifier_list                       {$$ = $1;std::cerr << "type name 1" << std::endl; }

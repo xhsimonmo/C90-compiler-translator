@@ -31,38 +31,40 @@ private:
   string cname = "direct_declarator";
 };
 
-void direct_declarator::compile(mips& mp)
-{
-  switch(type)
-  {
-    case 0:
-    mp.info.func_type = id;
-    break;
-
-    case 1:
-    one->compile(mp);
-    break;
-
-    case 2:
-    break;
-
-    case 3:
-    //////??????
-
-    case 4:
-    //////??????
-
-
-    case 5:
-    break;
-
-    case 6:
-    //////??????
-
-    break;
-
-  }
-}
+// void direct_declarator::compile(mips& mp)
+// {
+//   switch(type)
+//   {
+//     case 0:
+//     mp.info.func_name = id;
+//     break;
+//
+//     case 1:
+//     one->compile(mp);
+//     break;
+//
+//     case 2:
+//     std::cerr << "array !" << '\n';
+//     break;
+//
+//     case 3:
+//     NotImplemented();// no Implement for array[]
+//     break;
+//     case 4:
+//     one->compile(mp); // eg:  f()
+//     mips another_mp;
+//     two->compile(another_mp);//parameter!
+//     break;
+//
+//     case 5:
+//     NotImplemented(); //never reach, KR style.
+//     break;
+//
+//     case 6:
+//     one->compile(mp);
+//     break;
+//   }
+// }
 
 // void direct_declarator::translate(string& pyout) const{
 //   debug(cname);
