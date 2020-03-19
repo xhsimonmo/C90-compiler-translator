@@ -8,6 +8,21 @@ using std::string;
 using std::vector;
 using std::to_string;
 
+extern int current_frame;//indicate current frame index;
+extern int labelcounter;//make unique label by number
+extern int frame_counter;//make unique number for frame: as the stack index!
+//remember the locations of each variable (offset relative to the frame pointer, which is a register)
+extern struct stack_content
+{
+  string name;//variable name: i
+  int address;//variable (relative)locations: add 0, 4(0/4+fp)
+};
+//collection of stack vector for each frame(two-dimension);
+extern vector<vector<stack_content>>stack_collection;
+extern vector<vector<string>> mpcode_collection;//store generated mips code
+extern vector<string>mpcode;//final mips code collection
+
+
 class mips{
 private:
   bool registers[32];
@@ -98,7 +113,7 @@ private:
     for(int i = 0; i < func_param.size(); i++)
     {
       int r = 4;//register for arguments
-      lw(r, find_variable(func_param[i]), 30);
+      lw(r, find_variable(func_param[i], stack_collection[current_frame]), 30);
       r++;//change register for next argument
     }
 
