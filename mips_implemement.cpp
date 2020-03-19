@@ -61,7 +61,7 @@ void compound_statement::compile(mips& mp)const{
 
 
 
-void direct_declarator::compile(mips& mp)
+void direct_declarator::compile(mips& mp)const
 {
   switch(type)
   {
@@ -94,7 +94,7 @@ void direct_declarator::compile(mips& mp)
   }
 }
 
-void assignment_expression::compile(mips& mp)
+void assignment_expression::compile(mips& mp)const
 {
   //no unary expression
   if(p_one == NULL)
@@ -215,7 +215,7 @@ void cast_expression::compile(mips& mp)
   }
 }
 
-void multiplicative_expression::compile(mips& mp)
+void multiplicative_expression::compile(mips& mp)const
 {
   mul->compile(mp);
   mips another_mp;
@@ -250,7 +250,7 @@ void multiplicative_expression::compile(mips& mp)
 
 }
 
-void additive_expression::compile(mips& mp)
+void additive_expression::compile(mips& mp)const
 {
   add->compile(mp);
   mips another_mp;
@@ -274,7 +274,7 @@ void additive_expression::compile(mips& mp)
 
 }
 
-void shift_expression::compile(mips& mp)
+void shift_expression::compile(mips& mp)const
 {
   l->compile(mp);
   mips another_mp;
@@ -317,7 +317,7 @@ void shift_expression::compile(mips& mp)
 //   }
 // }
 
-void selection_statement::compile(mips& mp)
+void selection_statement::compile(mips& mp)const
 {
   string below_if = "Selection" + to_string(labelcounter);//make label
   labelcounter++;

@@ -15,15 +15,16 @@ void function_definition::compile(mips& mp)const
 
   //make a new vector for mips code when start a new frame_stack
   vector<string>mips_code;
+  //add to the final code collection first, then modify it
   mpcode_collection.push_back(mips_code);
   //start function
-  add_frame(declarator, mips_code);
+  mp.add_frame(declarator, mips_code);
 
   //compound statement
   p_f->compile(mp);
 
   //finish function
-  finish_frame(mips_code);
+  mp.finish_frame(mpcode_collection[current_frame]);
 }
 
 void type_specifier::compile(mips& mp)const
@@ -58,7 +59,14 @@ void compound_statement::compile(mips& mp)const{
 }
 
 
+<<<<<<< HEAD
 void direct_declarator::compile(mips& mp)
+=======
+
+
+
+void direct_declarator::compile(mips& mp)const
+>>>>>>> c73b3f90e3c1fbb2a125ffbbbc4b3ee00ba5529a
 {
   switch(type)
   {
@@ -93,7 +101,7 @@ void direct_declarator::compile(mips& mp)
   }
 }
 
-void assignment_expression::compile(mips& mp)
+void assignment_expression::compile(mips& mp)const
 {
   //no unary expression
   if(p_one == NULL)
@@ -202,7 +210,7 @@ void assignment_expression::compile(mips& mp)
   }
 }
 
-void cast_expression::compile(mips& mp)
+void cast_expression::compile(mips& mp)const
 {
   if(ptr == NULL)
   {
@@ -214,7 +222,7 @@ void cast_expression::compile(mips& mp)
   }
 }
 
-void multiplicative_expression::compile(mips& mp)
+void multiplicative_expression::compile(mips& mp)const
 {
   mul->compile(mp);
   mips another_mp;
@@ -249,7 +257,7 @@ void multiplicative_expression::compile(mips& mp)
 
 }
 
-void additive_expression::compile(mips& mp)
+void additive_expression::compile(mips& mp)const
 {
   add->compile(mp);
   mips another_mp;
@@ -273,7 +281,7 @@ void additive_expression::compile(mips& mp)
 
 }
 
-void shift_expression::compile(mips& mp)
+void shift_expression::compile(mips& mp)const
 {
   l->compile(mp);
   mips another_mp;
@@ -316,7 +324,7 @@ void shift_expression::compile(mips& mp)
 //   }
 // }
 
-void selection_statement::compile(mips& mp)
+void selection_statement::compile(mips& mp)const
 {
   string below_if = "Selection" + to_string(labelcounter);//make label
   labelcounter++;
