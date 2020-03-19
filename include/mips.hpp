@@ -12,6 +12,17 @@ extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
 extern int frame_counter;//make unique number for frame: as the stack index!
 //remember the locations of each variable (offset relative to the frame pointer, which is a register)
+extern bool arg_reg[4];//to register the availability of $4 - $7 registers in argument
+inline int arg_check(){
+  for(int i = 0 ; i < 4; i++)
+  {
+    if(arg_reg[i] == true)
+    {
+      return i; //find one available reg
+    }
+  }
+  return -1;//more than four arguments
+}
 extern struct stack_content
 {
   string name;//variable name: i
@@ -59,7 +70,7 @@ private:
     // //make a new vector for mips code when start a new frame_stack
     // vector<string>mips_code;
     // mpcode_collection[current_frame]_collection.push_back(mips_code);
-
+    arg_reg[] = {true, true, true, true};//all argument available at the beginning
     sw(30, 4, 29);//4=8-4 //TODO MIPS format for sw not correct?
     addi(30, 29, 0);//move fp, sp
 
@@ -79,14 +90,14 @@ private:
     info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
     string function_header = "addi $29,$29,"+info.var_index;
     mips_code.insert(it, function_header);//add function header back
-
+    arg_reg[] = {true, true, true, true};//release the argument registers
     // //after processing, add to the final code collection
     // mpcode_collection.push_back(mips_code);
   }
 
 
   //find a variable's position in stack
-  int find_variable(string var_name, vector<stack_content>variables) //maybe return enum of bool and int
+  int find_variable(string var_name, vector<stack_content>variables)
   {
     bool find = false;
     int var_add;

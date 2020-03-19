@@ -59,14 +59,10 @@ void compound_statement::compile(mips& mp)const{
 }
 
 
-<<<<<<< HEAD
-void direct_declarator::compile(mips& mp)
-=======
 
 
 
 void direct_declarator::compile(mips& mp)const
->>>>>>> c73b3f90e3c1fbb2a125ffbbbc4b3ee00ba5529a
 {
   switch(type)
   {

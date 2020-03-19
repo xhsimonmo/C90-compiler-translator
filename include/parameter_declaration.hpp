@@ -23,6 +23,16 @@ private:
   string cname = "parameter_declaration";
 };
 
+void parameter_declaration :: compile(mips& mp) constant_expression{
+  int arg_reg = arg_check() + 4;
+  if(arg_reg >= 4){
+    mp.sw(arg_reg, (arg_reg-4)*4, 30);//point upwards
+  }
+  else{ //case when more than 4 arguments
+
+  }
+}
+
 // void parameter_declaration::translate(string& pyout) const{
 //   debug(cname);
 //   string yi;
