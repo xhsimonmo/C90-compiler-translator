@@ -30,6 +30,37 @@ private:
   treeptr opt;
   string cname = "postfix_expression";
 };
+void postfix::compile(mips& mp)const{
+  debug(cname);
+  switch (type) {
+    case 0://array?
+    std::cerr << "array" << '\n';
+    break;
+    case 1:
+    ptr->compile(mp);
+    sw.jal(mp.info.func_name ); //maybe need to add f()?
+    break;
+    case 2:
+    ptr->compile(mp);
+    string function_name = mp.info.func_name;
+    mips another_mp;
+    right -> compile(another_mp);
+    break;
+    case 3:
+    NotImplemented();
+    break;
+    case 4:
+    NotImplemented();
+    break;
+    case 5:
+    
+    break;
+    case 6:
+    break;
+  }
+}
+
+
 
 // void postfix_expression::translate(string& pyout) const{
 //   debug(cname);

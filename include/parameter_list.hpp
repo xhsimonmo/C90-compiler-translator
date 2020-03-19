@@ -20,9 +20,11 @@ private:
   string cname = "parameter_list";
 };
 
-void parameter_list :: compile(mips& mp)const{
-
-}
+// void parameter_list::compile(mips& mp)const{
+//   left -> compile(mp);
+//   mips another_mp;
+//   right -> compile(another_mp);
+// }
 
 // void parameter_list::translate(string& pyout) const{
 //   debug(cname);

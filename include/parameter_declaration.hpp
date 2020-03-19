@@ -23,15 +23,27 @@ private:
   string cname = "parameter_declaration";
 };
 
-void parameter_declaration :: compile(mips& mp) constant_expression{
-  int arg_reg = arg_check() + 4;
-  if(arg_reg >= 4){
-    mp.sw(arg_reg, (arg_reg-4)*4, 30);//point upwards
-  }
-  else{ //case when more than 4 arguments
-
-  }
-}
+// void parameter_declaration :: compile(mips& mp) const{
+//   if(right == NULL){
+//     left -> compile(mp); // e,g int
+//   }
+//   else{
+//     left -> compile(mp); // e,g int
+//     mips another_mp; // the get the name of declarator
+//     right -> compile(another_mp);
+//     string variable_name = another_mp.info.func_name;//get name of variable, like a;
+//     int availability = arg_check();
+//     int arg_reg = availability + 4;
+//     if(arg_reg >= 4){
+//       mp.sw(arg_reg, ((arg_reg-4)*4+12) , 30);//point upwards add 12 because we have ra and sp stored in beginning
+//       stack_collection[current_frame].push_back(variable_name, ((arg_reg-4)*4+12));
+//     }
+//     else{ //case when more than 4 arguments
+//         stack_collection[current_frame].push_back(variable_name, (12+16+4*arg_overflow));
+//         arg_overflow++;
+//     }
+//   }
+// }
 
 // void parameter_declaration::translate(string& pyout) const{
 //   debug(cname);
