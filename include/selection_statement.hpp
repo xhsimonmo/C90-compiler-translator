@@ -53,7 +53,7 @@ private:
 //   }
 // }
 
-// void selection_statement::compile(mips& mp)
+// void selection_statement::compile(mips& mp)const
 // {
 //   string below_if = "Selection" + to_string(labelcounter);//make label
 //   labelcounter++;
@@ -63,10 +63,10 @@ private:
 //   string else_label = "Selection" + to_string(labelcounter);//label when else start
 //   labelcounter++;
 //
-//   switch(type)
+//   mp.switch(type)
 //   {
 //     case 0:
-//     lw(2, expre_mp.temp_result.result_index, 30);//store expression result in r2
+//     mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
 //     beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
 //     nop();
 //     //then make the if statement(if is true)
@@ -76,7 +76,7 @@ private:
 //     break;
 //
 //     case 1:
-//     lw(2, expre_mp.temp_result.result_index, 30);//store expression result in r2
+//     mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
 //     beq(2, 0, else_label);//if false f=go to else
 //     nop();
 //     //then make the if statement(if is true)
@@ -92,7 +92,14 @@ private:
 //     break;
 //
 //     case 2:
-//     //TODO:do we need that???
+//     //switch statement
+//     mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
+//     beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
+//     nop();
+//     //then make the if statement(if is true)
+//     mips sta_mp;
+//     ifsta->compile(sta_mp);
+//     add_label(below_if);
 //     break;
 //
 //   }

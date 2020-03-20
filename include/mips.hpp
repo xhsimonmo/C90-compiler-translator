@@ -53,6 +53,7 @@ private:
     string func_name;
     string result; //TODO shouldn't it be stored in $2 as return value?
     string func_type;
+    //note: var_index need to be negative
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
 
