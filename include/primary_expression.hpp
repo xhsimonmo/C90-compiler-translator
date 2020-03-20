@@ -35,7 +35,7 @@ void primary_expression :: compile(mips& mp) const{
     // mp.func_variables.push_back(element,mp.var_index );
     //mp.var_index = mp.var_index + 4;
     mp.info.func_name = element;//update func_name, name of a variable
-    mp.info.var_index = mp.find_variable(element);//fetch address of the variable
+    //mp.info.var_index = mp.find_variable(element);//fetch address of the variable
     break;
 
     case 1:

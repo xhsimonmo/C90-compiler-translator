@@ -2,6 +2,7 @@
 #define menu_hpp
 
 #include "mips.hpp"
+#include "function_parameter.hpp"
 
 #include "ast.hpp"
 #include "abstract_declarator.hpp"

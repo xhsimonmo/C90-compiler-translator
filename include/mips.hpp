@@ -12,26 +12,8 @@ extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
 extern int frame_counter;//make unique number for frame: as the stack index!
 //remember the locations of each variable (offset relative to the frame pointer, which is a register)
-extern bool arg_reg[4];//to register the availability of $4 - $7 registers in argument
-extern int arg_overflow; //record the number of argumnets exceed obove 4
-inline int arg_check(){
-  for(int i = 0 ; i < 4; i++)
-  {
-    if(arg_reg[i] == true)
-    {
-      arg_reg[i] = false;
-      return i; //find one available reg
-    }
-  }
-  return -1;//more than four arguments
-}
-inline void initilise_arg(bool b){
-  for(int i = 0; i < 4; i++)
-  {
-    arg_reg[i] = b;
-  }
-  arg_overflow = 0;
-}
+
+
 extern struct stack_content
 {
   string name;//variable name: i
@@ -50,7 +32,7 @@ private:
   //store temporary result
   struct temp_result
   {
-    string func_name;
+    string func_name; // name of variable
     string result; //TODO shouldn't it be stored in $2 as return value?
     string func_type;
     int var_index;//store previous results' index(in stack vector)
@@ -74,6 +56,7 @@ private:
     //everytime start a new frame, add a stack(vector) for it
     vector<stack_content>frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
     stack_collection.push_back(frame_stack);
+    arg_count.push_back(0);//initially the number of arguments in callee functions; index same as current_frame
 
     //define this in function_definition
    //make a new vector for mips code when start a new frame_stack
@@ -104,6 +87,7 @@ private:
     initilise_arg(true);;//release the argument registers; actually not necessay, let it be there
     // //after processing, add to the final code collection
     // mpcode_collection.push_back(mips_code);
+    current_frame--;
   }
 
 

@@ -70,7 +70,7 @@ postfix_expression
 	;
 
 argument_expression_list
-	: assignment_expression                                  {$$ = $1; std::cerr << "argument expression 1" << std::endl;}
+	: assignment_expression                                  {$$ = new argument_expression_list($1); std::cerr << "argument expression 1" << std::endl;}
 	| argument_expression_list ',' assignment_expression     {$$ = new argument_expression_list($1, $3); std::cerr << "argument expression 2" << std::endl;}
 	;
 
