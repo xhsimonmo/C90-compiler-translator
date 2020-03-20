@@ -47,12 +47,14 @@ int main(int argc, char *argv[]){
      mips mp;
      root -> compile(mp);
      string generated_mips;
-     for(auto it = mp.mpcode.begin(); it !=mp.mpcode.end();it++ )
+     for(int i = 0; i < mpcode_collection.size();i++)
      {
-       generated_mips.append(*it);
+       for(auto it = mpcode_collection[i].begin(); it !=mpcode_collection[i].size();it++ )
+       {
+         generated_mips.append(*it);
+       }
      }
      outfile << generated_mips;
-
   }
 
   else{
