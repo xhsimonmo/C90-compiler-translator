@@ -5,12 +5,17 @@ void abstract_declarator::translate(string& pyout)const{
     NotImplemented();
 }
 
-void argument_expression_list::translate(string& pyout)const{
+void argument_expression_list::translate(string& pyout) const{
     debug(cname);
     string a,b;
-    left -> translate(a);
-    right -> translate(b);
-    pyout = a + "," + b;
+    if(right != NULL){
+      left -> translate(a);
+      right -> translate(b);
+      pyout = a + ","+b;
+    }
+    else{
+      left -> translate(pyout);
+    }
 }
 
 void assignment_expression::translate(string& pyout)const{

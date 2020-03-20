@@ -100,9 +100,9 @@ void direct_declarator::compile(mips& mp)const
 void assignment_expression::compile(mips& mp)const
 {
   //no unary expression
-  if(p_one == NULL)
+  if(p_five == NULL)
   {
-    p_five->compile(mp);
+    p_one->compile(mp);
   }
   else
   {
@@ -580,4 +580,55 @@ void parameter_declaration :: compile(mips& mp) const{
         arg_overflow++;
     }
   }
+}
+
+
+void postfix::compile(mips& mp)const{
+  debug(cname);
+  switch (type) {
+    case 0://array?
+    std::cerr << "array" << '\n';
+    break;
+    case 1:
+    ptr->compile(mp);
+    mp.jal(mp.info.func_name ); //maybe need to add f()?
+    mp.nop();
+    break;
+    case 2: //postfix_expression '(' argument_expression_list ')'
+    ptr->compile(mp);
+    string function_name = mp.info.func_name;
+    mips another_mp;
+    caller_arg_count = 0;//set number of callee arguments count to 0
+    opt -> compile(another_mp);
+    mp.jal(function_name);
+    mp.nop();
+    break;
+    case 3:
+    NotImplemented();
+    break;
+    case 4:
+    NotImplemented();
+    break;
+    case 5: // a++
+    //mips another_mp; //start a new mips class so info.result is empty at first
+    ptr -> compile(mp);
+    string variable_name = another_mp.info.func_name;
+    mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+    mp.addiu(2,2,1);
+    mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
+    break;
+    case 6: // a--
+    ptr -> compile(mp);
+    string variable_name = another_mp.info.func_name;
+    mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+    mp.addiu(2,2,-1);
+    mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
+    break;
+  }
+}
+
+void argument_expression_list::compile(mips& mp)const{
+  left ->compile(mp);
+  mips another_mp;
+  right -> compile(another_mp);
 }

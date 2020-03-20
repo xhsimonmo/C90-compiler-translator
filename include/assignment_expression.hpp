@@ -39,9 +39,9 @@ private:
 // void assignment_expression::compile(mips& mp)
 // {
 //   //no unary expression
-//   if(p_one == NULL)
+//   if(p_five == NULL)
 //   {
-//     p_five->compile(mp);
+//     p_one->compile(mp);
 //   }
 //   else
 //   {
