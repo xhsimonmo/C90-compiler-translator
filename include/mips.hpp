@@ -13,7 +13,6 @@ extern int labelcounter;//make unique label by number
 // extern int frame_counter;//make unique number for frame: as the stack index!
 //remember the locations of each variable (offset relative to the frame pointer, which is a register)
 
-
 extern struct stack_content
 {
   string name;//variable name: i
@@ -25,6 +24,7 @@ extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<string>mpcode;//final mips code collection
 
 extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
+extern int array_index;//current array index in current frame
 
 class mips{
 private:
@@ -40,7 +40,6 @@ private:
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
 
-    int array_index;
   };
 
   temp_result info;
@@ -70,6 +69,7 @@ private:
     //make an array stac for each frame
     vector<array_struct>array_stack;
     array_collection.push_back(array_stack);
+    array_index = 0;//everytime meet array declaration, +1
 
     //define this in function_definition
    //make a new vector for mips code when start a new frame_stack
