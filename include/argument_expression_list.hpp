@@ -27,14 +27,14 @@ private:
 //   if(right == NULL){
 //     mips another_mp;
 //     left->compile(another_mp); // will reach a primary expression, either variable or number
-//     callee_value_process();
+//     callee_value_process(another_mp);
 //   }
 //   else{
 //     mips another_mp;
 //     left -> compile(another_mp);
 //     mips tmp_mp;
 //     right -> compile(tmp_mp);
-//     callee_value_process();
+//     callee_value_process(tmp_mp);
 //   }
 // }
 

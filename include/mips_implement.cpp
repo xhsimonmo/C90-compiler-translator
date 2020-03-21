@@ -8,7 +8,7 @@ void function_definition::compile(mips& mp)const
       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
       string declarator = mp.info.func_name;
       declarator = declarator + ":";
-      stack_collection[current_frame].push_back(declarator);
+      mpcode_collection[current_frame].push_back(declarator);
 
       //start function
       mp.add_frame();
@@ -25,7 +25,7 @@ void function_definition::compile(mips& mp)const
     //add label
     string declarator = mp.info.func_name;
     declarator = declarator + ":";
-    stack_collection[current_frame].push_back(declarator);
+    mpcode_collection[current_frame].push_back(declarator);
 
     //start function
     mp.add_frame();
@@ -663,7 +663,7 @@ void parameter_declaration :: compile(mips& mp) const{
 }
 
 
-void postfix::compile(mips& mp)const{
+void postfix_expression::compile(mips& mp)const{
   debug(cname);
   mips another_mp;
 
@@ -720,14 +720,14 @@ void argument_expression_list::compile(mips& mp)const{
   if(right == NULL){
     mips another_mp;
     left->compile(another_mp); // will reach a primary expression, either variable or number
-    callee_value_process();
+    callee_value_process(another_mp);
   }
   else{
     mips another_mp;
     left -> compile(another_mp);
     mips tmp_mp;
     right -> compile(tmp_mp);
-    callee_value_process();
+    callee_value_process(tmp_mp);
   }
 }
 

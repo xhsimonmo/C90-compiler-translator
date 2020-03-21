@@ -2,6 +2,7 @@
 #define mips_hpp
 
 //#include "ast.hpp"
+#include "function_parameter.hpp"
 #include <string>
 #include <vector>
 using std::string;
@@ -12,7 +13,8 @@ extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
 // extern int frame_counter;//make unique number for frame: as the stack index!
 // //remember the locations of each variable (offset relative to the frame pointer, which is a register)
-extern struct stack_content
+
+struct stack_content
 {
   string name;//variable name: i
   int address;//variable (relative)locations: add 0, 4(0/4+fp)
@@ -20,13 +22,14 @@ extern struct stack_content
 //collection of stack vector for each frame(two-dimension);
 extern vector<vector<stack_content>>stack_collection;
 extern vector<vector<string>> mpcode_collection;//store generated mips code
-extern vector<string>mpcode;//final mips code collection
+extern vector<int> arg_count_collection;//this is the counter of arguments callee function
+//extern vector<string>mpcode;//final mips code collection
 
-extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
-extern int array_index;//current array index in current frame
-
+//extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
+//extern int array_index;//current array index in current frame
+inline void initilise_arg(bool b);
 class mips{
-private:
+public:
   bool registers[32];
 
   //store temporary result
@@ -47,7 +50,7 @@ private:
   {
     string name;
     vector<int>array_add;//store array initializer address;
-  }
+  };
 
   mips()//initialisation
   {
@@ -56,28 +59,27 @@ private:
   }
 
   //add new frame for function
-  void add_frame(string func_name, vector<string>mips_code)
+  void add_frame()//string func_name, vector<string>mips_code)
   {
     //indicate the current frame index; it should be the same index for mips_code
     current_frame = stack_collection.size();
     //everytime start a new frame, add a stack(vector) for it
     vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
     stack_collection.push_back(frame_stack);
-    arg_count.push_back(0);//initially the number of arguments in callee functions; index same as current_frame
+    arg_count_collection.push_back(0);//initially the number of arguments in callee functions; index same as current_frame
 
     //make an array stac for each frame
     vector<array_struct>array_stack;
-    array_collection.push_back(array_stack);
-    array_index = 0;//everytime meet array declaration, +1
+    //array_collection.push_back(array_stack);
+    //array_index = 0;//everytime meet array declaration, +1
 
     //define this in function_definition
    //make a new vector for mips code when start a new frame_stack
     // vector<string>mips_code;
     // mpcode_collection[current_frame]_collection.push_back(mips_code);
     initilise_arg(true);//all argument available at the beginning
-    arg_count_collection.push_back(0);//indexed by current_frame; record the highest number of arguments in callee in current frame
-
-    addiu(29,29,-12);
+    string imm = "-12";
+    addiu(29,29,imm);
     sw(30, 4,29);
     sw(31,8,29);
     // this instruction is added at the end_frame: addiu(29,29,offset)
@@ -92,17 +94,18 @@ private:
     move(29,30);//move sp up to same location as fp
     lw(31, 8, 29);
     lw(30, 4, 29);//4=8-4
-    addi(29, 29, 12);
+    string imm = "12";
+    addiu(29, 29, imm);
     j(31);
     nop();
 
-    auto it = stack_collection[current_frame].begin();
+    auto it = mpcode_collection[current_frame].begin();
     //info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
     int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + 4; // 4 is compulsory but nor necessary,just to be safe
     memory_allocate = -4*memory_allocate;
     string str_memory_allocate = to_string(memory_allocate);
     string function_header = "addiu $29,$29,"+str_memory_allocate;
-    stack_collection[current_frame].insert(it+3, function_header);//add function header back
+    mpcode_collection[current_frame].insert(it+3, function_header);//add function header back
     initilise_arg(true);;//release the argument registers; actually not necessay, let it be there
     //current_frame--;
   }
@@ -355,5 +358,43 @@ private:
   }
 
 };
+
+extern bool arg_reg[4];//to register the availability of $4 - $7 registers in argument
+extern int arg_overflow; //record the number of argumnets exceed obove 4
+extern int caller_arg_count;//used to record the arguments of callee functions
+inline int arg_check(){
+  for(int i = 0 ; i < 4; i++)
+  {
+    if(arg_reg[i] == true)
+    {
+      arg_reg[i] = false;
+      return i; //find one available reg
+    }
+  }
+  return -1;//more than four arguments
+}
+
+inline void initilise_arg(bool b){
+  for(int i = 0; i < 4; i++)
+  {
+    arg_reg[i] = b;
+  }
+  arg_overflow = 0;//reset it
+}
+
+// extern vector<int> arg_count_collection;//this is the counter of arguments callee function
+
+inline void callee_value_process(mips& mp){
+
+  if(caller_arg_count < 4){
+    //mp.lw(2,variable_index,30);
+    mp.move((caller_arg_count+4),2); //directly load const to reg 2
+  }
+  else{
+    //mp.lw(2,variable_index,30);
+    mp.sw(2,caller_arg_count*4,29);//SP at the bottom, store things up
+  }
+  caller_arg_count++;
+}
 
 #endif

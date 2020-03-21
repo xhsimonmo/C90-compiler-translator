@@ -6,15 +6,9 @@
 #include <string>
 #include <string.h>
 
-
-//bin/c_compiler --translate a.c -o a.py
-//bin/c_compiler -S [source-file.c] -o [dest-file.s]
-//bin/c_compiler --translate [source-file.c] -o [dest-file.py]
-
-// extern const astnode * parseAST(char* filename);//altenative method
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;
-//int indentation;
+
 int main(int argc, char *argv[]){
   if(argc != 5){
     std::cerr << "Totally 5 args are required, argument number not matched." << '\n';
@@ -49,9 +43,10 @@ int main(int argc, char *argv[]){
      string generated_mips;
      for(int i = 0; i < mpcode_collection.size();i++)
      {
-       for(auto it = mpcode_collection[i].begin(); it !=mpcode_collection[i].size();it++ )
+       for(auto it = mpcode_collection[i].begin(); it !=mpcode_collection[i].end();it++ )
        {
          generated_mips.append(*it);
+         generated_mips += '\n';
        }
      }
      outfile << generated_mips;

@@ -1,7 +1,7 @@
 #ifndef init_declarator_h
 #define init_declarator_h
 #include"ast.hpp"
-init_declarator
+// init_declarator
 	// : declarator   {$$ = new init_declarator($1); std::cerr << "init_declarator 0 " << std::endl;}
 	// | declarator '=' initializer   {$$ = new init_declarator($1,$3);  std::cerr << "init_declarator 1" << std::endl;}
 	// ;
