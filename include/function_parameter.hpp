@@ -28,27 +28,15 @@ inline void initilise_arg(bool b){
 
 extern vector<int> arg_count;//this is the counter of arguments callee function
 
-inline callee_value_process(mips& mp)const{
-  if(mp.info.result.empty()) // the primary_expression returned is a varibae
-  {
-    int variable_index = find_variable(mp.info.func_name, stack_collection[current_frame]);
-    if(caller_arg_count < 4){
-      mp.lw(2,variable_index,30);
-      mp.li((caller_arg_count+4),mp.info.result); //directly load const to reg 2
-    }
-    else{
-      mp.lw(2,variable_index,30);
-      mp.sw(2,caller_arg_count*4,29);
-    }
+inline callee_value_process()const{
+
+  if(caller_arg_count < 4){
+    //mp.lw(2,variable_index,30);
+    mp.move((caller_arg_count+4),2); //directly load const to reg 2
   }
   else{
-    if(caller_arg_count < 4){
-      mp.li((caller_arg_count+4),mp.info.result); //directly load const to reg 2
-    }
-    else{ //arguments greater than 4
-      mp.li(2,mp.info.result);
-      mp.sw(2,caller_arg_count*4,29);
-    }
+    //mp.lw(2,variable_index,30);
+    mp.sw(2,caller_arg_count*4,29);//SP at the bottom, store things up
   }
   caller_arg_count++;
 }

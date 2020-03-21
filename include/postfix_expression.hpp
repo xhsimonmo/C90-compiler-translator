@@ -61,14 +61,14 @@ private:
 //     //mips another_mp; //start a new mips class so info.result is empty at first
 //     ptr -> compile(mp);
 //     string variable_name = another_mp.info.func_name;
-//     mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+//     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
 //     mp.addiu(2,2,1);
 //     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
 //     break;
 //     case 6: // a--
 //     ptr -> compile(mp);
 //     string variable_name = another_mp.info.func_name;
-//     mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+//     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
 //     mp.addiu(2,2,-1);
 //     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
 //     break;

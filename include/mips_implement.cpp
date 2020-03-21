@@ -536,20 +536,23 @@ void jump_statement::compile(mips& mp) const {
 
 void primary_expression :: compile(mips& mp) const{
   debug(cname);
-  mp.switch (type) {
+  switch (type) {
     case 0: // got IDENTIFIER
     // mp.var_index = mp.var_index + 4;
     // mp.func_variables.push_back(element,mp.var_index );
     //mp.var_index = mp.var_index + 4;
     mp.info.func_name = element;//update func_name, name of a variable
-    mp.info.var_index = mp.find_variable(element);//fetch address of the variable
+    int var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
+    mp.info.var_index = var_index;
+    mp.lw(2,var_index,30);//load value to $2
     break;
 
     case 1:
 
     mp.info.result = element;
+    mp.li(2,element);
     //mp.li(2,element);//element is the value to stored
-    //mp.mp.sw(2,mp.var_index,30)
+    //mp.sw(2,mp.var_index,30)
     //mp.var_index = mp.var_index + 4;
     break;
 
@@ -617,7 +620,6 @@ void postfix::compile(mips& mp)const{
     ptr->compile(mp);
     string function_name = mp.info.func_name;
     mips another_mp;
-    caller_arg_count = 0;//set number of callee arguments count to 0
     opt -> compile(another_mp);
     mp.jal(function_name);
     mp.nop();
@@ -632,14 +634,14 @@ void postfix::compile(mips& mp)const{
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     string variable_name = another_mp.info.func_name;
-    mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+    //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,1);
     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
     ptr -> compile(mp);
     string variable_name = another_mp.info.func_name;
-    mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+    //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,-1);
     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
     break;
@@ -647,9 +649,19 @@ void postfix::compile(mips& mp)const{
 }
 
 void argument_expression_list::compile(mips& mp)const{
-  left ->compile(mp);
-  mips another_mp;
-  right -> compile(another_mp);
+  debug(cname);
+  if(right == NULL){
+    mips another_mp;
+    left->compile(another_mp); // will reach a primary expression, either variable or number
+    callee_value_process();
+  }
+  else{
+    mips another_mp;
+    left -> compile(another_mp);
+    mips tmp_mp;
+    right -> compile(tmp_mp);
+    callee_value_process();
+  }
 }
 
 // initializer
