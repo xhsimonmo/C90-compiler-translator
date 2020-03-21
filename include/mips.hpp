@@ -11,12 +11,7 @@ using std::to_string;
 extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
 // extern int frame_counter;//make unique number for frame: as the stack index!
-<<<<<<< HEAD
 // //remember the locations of each variable (offset relative to the frame pointer, which is a register)
-=======
-//remember the locations of each variable (offset relative to the frame pointer, which is a register)
-
->>>>>>> d619f924270a84268c68bb40b3e1c3963db30fea
 extern struct stack_content
 {
   string name;//variable name: i
@@ -92,7 +87,7 @@ private:
     //frame_counter++;
   }
   //frame ended
-  void finish_frame(vector<string>mips_code)
+  void finish_frame()
   {
     move(29,30);//move sp up to same location as fp
     lw(31, 8, 29);

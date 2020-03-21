@@ -70,12 +70,22 @@ void compound_statement::compile(mips& mp)const{
     break;
   }
 }
-void init_declarator_list::compile(mips& mp)const
-{
-  debug(cname);
-  one -> compile(mp);
-  mips another_mp;
-  two -> compile(another_mp);
+void init_declarator::compile(mips& mp)const{
+  if(two == NULL)
+   {
+     left -> compile(mp);
+     string init_name = mp.info.func_name;
+     int offset = -4 * (stack_collection[current_frame].size());
+     stack_collection[current_frame].push_back(init_name,offset);
+   }
+   else{
+     left -> compile(mp);
+     string init_name = mp.info.func_name;
+     int offset = -4 * (stack_collection[current_frame].size());
+     stack_collection[current_frame].push_back(init_name,offset);
+     right -> compile(mp);
+     mp.sw(2,offset,30);
+   }
 }
 
 
@@ -579,9 +589,10 @@ void jump_statement::compile(mips& mp) const {
     NotImplemented();
     break;
     case 4:
-    mips mp_tmp;
-    expre_ptr -> compile(mp_tmp);
-    mp.li(2,mp_tmp.info.result)
+    //mips mp_tmp;
+    expre_ptr -> compile(mp_tmp); // return value in $2
+    //mp.li(2,mp_tmp.info.result)
+    mp.finish_frame();
     break;
   }
 }

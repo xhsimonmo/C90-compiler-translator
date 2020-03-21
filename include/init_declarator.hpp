@@ -22,15 +22,23 @@ private:
   string cname = "init_declarator";
 };
 
-void init_declarator::compile(mips& mp)const{
-  if(two == NULL)
-
-  one -> compile(mp); // get the name of newly
-
-  mips another_mp;
-  two -> compile(another_mp);
-
-}
+// void init_declarator::compile(mips& mp)const{
+//   if(two == NULL)
+//    {
+//      left -> compile(mp);
+//      string init_name = mp.info.func_name;
+//      int offset = -4 * (stack_collection[current_frame].size());
+//      stack_collection[current_frame].push_back(init_name,offset);
+//    }
+//    else{
+//      left -> compile(mp);
+//      string init_name = mp.info.func_name;
+//      int offset = -4 * (stack_collection[current_frame].size());
+//      stack_collection[current_frame].push_back(init_name,offset);
+//      right -> compile(mp);
+//      mp.sw(2,offset,30);
+//    }
+// }
 
 // void init_declarator::translate(string& pyout) const{
 //   debug(cname);
