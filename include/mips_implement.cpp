@@ -104,7 +104,9 @@ void direct_declarator::compile(mips& mp)const
     case 2:
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
-
+    //everytime create a new array
+    array_struct a;
+    array_collection[current_frame].push_back(a);
     break;
 
     case 3:
@@ -657,7 +659,6 @@ void postfix::compile(mips& mp)const{
   switch (type) {
     case 0://array?
     ptr->compile(another_mp);//fill index of array (in all frame arrays)
-    int array_index = another_mp.info.array_index;
 
     opt->compile(mp);//should store index in $2
     sll(2, 2, 2);//x4
@@ -728,6 +729,7 @@ void initializer::compile(mips& mp) const
 {
   switch(type)
   {
+    array_collection[current_frame][array_index].array_add
     case 0:
     p->compile(mp);//this should store all identifier address in mp
     int last_element = mp.array_info.array_add.size() - 1;
