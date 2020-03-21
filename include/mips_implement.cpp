@@ -4,27 +4,40 @@
 void function_definition::compile(mips& mp)const
 {
   // declarator;
-  if(p_o != NULL){
+  if(p_f == NULL){ // only two parts
       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
+      string declarator = mp.info.func_name;
+      declarator = declarator + ":";
+      stack_collection[current_frame].push_back(declarator);
+
+      //start function
+      mp.add_frame();
+
+      //compound statement
+      p_t->compile(mp);
+
+      //finish function
+      mp.finish_frame();
   }
-  p_t-> compile(mp);
-  //add label
-  string declarator = mp.info.func_name;
-  declarator = declarator + ":";
-  mpcode.push_back(declarator);
+  else{
+    p_o -> compile(mp);// type_specifier
+    p_t-> compile(mp);
+    //add label
+    string declarator = mp.info.func_name;
+    declarator = declarator + ":";
+    stack_collection[current_frame].push_back(declarator);
 
-  //make a new vector for mips code when start a new frame_stack
-  vector<string>mips_code;
-  //add to the final code collection first, then modify it
-  mpcode_collection.push_back(mips_code);
-  //start function
-  mp.add_frame(declarator, mips_code);
+    //start function
+    mp.add_frame();
 
-  //compound statement
-  p_f->compile(mp);
+    //compound statement
+    p_f->compile(mp);
 
-  //finish function
-  mp.finish_frame(mpcode_collection[current_frame]);
+    //finish function
+    mp.finish_frame();
+
+  }
+
 }
 
 void type_specifier::compile(mips& mp)const
@@ -57,7 +70,13 @@ void compound_statement::compile(mips& mp)const{
     break;
   }
 }
-
+void init_declarator_list::compile(mips& mp)const
+{
+  debug(cname);
+  one -> compile(mp);
+  mips another_mp;
+  two -> compile(another_mp);
+}
 
 
 
@@ -121,11 +140,11 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
       nop();
-      mult(2, 3);
-      mflo(2);
+      mp.mult(2, 3);
+      mp.mflo(2);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -344,24 +363,55 @@ void shift_expression::compile(mips& mp)const
 
 }
 
-// void unary_expression::compile(mips& mp)
-// {
-//   mp.switch(type)
-//   {
-//     case 0:
-//     ptr->compile(mp);
-//     mips.addi(dst, dst, "1");
-//     break;
-//
-//     case 1:
-//     ptr->compile(dst);
-//     mips.addi(dst, dst, "-1");
-//     break;
-//
-//     case 2:
-//
-//   }
-// }
+void unary_expression::compile(mips& mp)
+{
+  mp.switch(type)
+  {
+    case 0:
+    ptr->compile(mp);
+    mp.addiu(2, 2, 1);
+    mp.sw(2,mp.info.var_index,30);
+    break;
+
+    case 1:
+    ptr->compile(mp);
+    mp.addiu(2, 2, -1);
+    mp.sw(2,mp.info.var_index,30);
+    break;
+
+    case 2: //sizeof
+    NotImplemented();
+    break;
+    case 3: //sizeof ()
+    NotImplemented();
+    break;
+    case 4:// &
+    NotImplemented();
+    break;
+    case 5: // *
+    NotImplemented();
+    break;
+    case 6: // +
+    ptr->compile(mp);
+    break;
+    case 7: // -
+    ptr -> compile(mp);
+    mp.li(3,-1);
+    mp.mult(2,3)
+    mp.mflo(2);
+    mp.sw(2,mp.info.var_index,30);
+    break;
+    case 8: // ~ bit wise NOT
+    mp.li(3,-1); // -1 is 111111 for xor
+    mp._xor(2,2,3);
+    mp.sw(2,mp.info.var_index,30);
+    break;
+    case 9: // !
+    NotImplemented();
+    break;
+
+  }
+}
 
 void selection_statement::compile(mips& mp)const
 {
@@ -534,7 +584,11 @@ void primary_expression :: compile(mips& mp) const{
     mp.info.func_name = element;//update func_name, name of a variable
     int var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
-    mp.lw(2,var_index,30);//load value to $2
+    if(var_index != -1) //this variable indeed has been saved
+    {
+      mp.lw(2,var_index,30);//load value to $2
+    }
+
     break;
 
     case 1:

@@ -30,23 +30,40 @@ private:
 // void function_definition::compile(mips& mp)const
 // {
 //   // declarator;
-//   if(p_o != NULL){
+//   if(p_f == NULL){ // only two parts
 //       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
+//       string declarator = mp.info.func_name;
+//       declarator = declarator + ":";
+//       stack_collection[current_frame].push_back(declarator);
+//
+//       //start function
+//       mp.add_frame();
+//
+//       //compound statement
+//       p_t->compile(mp);
+//
+//       //finish function
+//       mp.finish_frame();
 //   }
-//   p_t-> compile(mp);
-//   //add label
-//   string declarator = mp.info.func_name;
-//   declarator = declarator + ":";
-//   mpcode.push_back(declarator);
+//   else{
+//     p_o -> compile(mp);// type_specifier
+//     p_t-> compile(mp);
+//     //add label
+//     string declarator = mp.info.func_name;
+//     declarator = declarator + ":";
+//     stack_collection[current_frame].push_back(declarator);
 //
-//   //start function
-//   mp.add_frame();
+//     //start function
+//     mp.add_frame();
 //
-//   //compound statement
-//   p_f->compile(mp);
+//     //compound statement
+//     p_f->compile(mp);
 //
-//   //finish function
-//   mp.finish_frame();
+//     //finish function
+//     mp.finish_frame();
+//
+//   }
+//
 // }
 
 //  void function_definition::translate(string& pyout) const{

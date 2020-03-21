@@ -26,7 +26,7 @@ inline void initilise_arg(bool b){
   arg_overflow = 0;//reset it
 }
 
-extern vector<int> arg_count;//this is the counter of arguments callee function
+extern vector<int> arg_count_collection;//this is the counter of arguments callee function
 
 inline callee_value_process()const{
 

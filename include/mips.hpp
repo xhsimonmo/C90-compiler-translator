@@ -10,10 +10,8 @@ using std::to_string;
 
 extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
-extern int frame_counter;//make unique number for frame: as the stack index!
-//remember the locations of each variable (offset relative to the frame pointer, which is a register)
-
-
+// extern int frame_counter;//make unique number for frame: as the stack index!
+// //remember the locations of each variable (offset relative to the frame pointer, which is a register)
 extern struct stack_content
 {
   string name;//variable name: i
@@ -55,7 +53,7 @@ private:
     //indicate the current frame index; it should be the same index for mips_code
     current_frame = stack_collection.size();
     //everytime start a new frame, add a stack(vector) for it
-    vector<stack_content>frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
+    vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
     stack_collection.push_back(frame_stack);
     arg_count.push_back(0);//initially the number of arguments in callee functions; index same as current_frame
 
@@ -64,31 +62,36 @@ private:
     // vector<string>mips_code;
     // mpcode_collection[current_frame]_collection.push_back(mips_code);
     initilise_arg(true);//all argument available at the beginning
-    sw(30, 4, 29);//4=8-4 //TODO MIPS format for sw not correct?
-    sw(31, 8, 29);//return address
-    addi(30, 29, 0);//move fp, sp
+    arg_count_collection.push_back(0);//indexed by current_frame; record the highest number of arguments in callee in current frame
+
+    addiu(29,29,-12);
+    sw(30, 4,29);
+    sw(31,8,29);
+    // this instruction is added at the end_frame: addiu(29,29,offset)
+    move(29,30);
 
     //frame counter +1
-    frame_counter++;
+    //frame_counter++;
   }
   //frame ended
   void finish_frame(vector<string>mips_code)
   {
-    addi(29, 30, 0);//move sp, fp
+    move(29,30);//move sp up to same location as fp
     lw(31, 8, 29);
     lw(30, 4, 29);//4=8-4
-    addi(29, 29, 8);
+    addi(29, 29, 12);
     j(31);
     nop();
 
-    auto it = mips_code.begin();
-    info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
-    string function_header = "addiu $29,$29,"+info.var_index;
-    mips_code.insert(it, function_header);//add function header back
+    auto it = stack_collection[current_frame].begin();
+    //info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
+    int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + 4; // 4 is compulsory but nor necessary,just to be safe
+    memory_allocate = -4*memory_allocate;
+    string str_memory_allocate = to_string(memory_allocate);
+    string function_header = "addiu $29,$29,"+str_memory_allocate;
+    stack_collection[current_frame].insert(it+3, function_header);//add function header back
     initilise_arg(true);;//release the argument registers; actually not necessay, let it be there
-    // //after processing, add to the final code collection
-    // mpcode_collection.push_back(mips_code);
-    current_frame--;
+    //current_frame--;
   }
 
 

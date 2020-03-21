@@ -23,6 +23,10 @@ private:
   string cname = "init_declarator";
 };
 
+void init_declarator::compile(mips& mp)const{
+  one -> 
+}
+
 // void init_declarator::translate(string& pyout) const{
 //   debug(cname);
 //   string s1, s2;

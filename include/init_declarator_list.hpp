@@ -21,6 +21,14 @@ private:
   treeptr two = NULL;
   string cname = "init_declarator_list";
 };
+
+// void init_declarator_list::compile(mips& mp)const
+// {
+//   debug(cname);
+//   one -> compile(mp);
+//   mips another_mp;
+//   two -> compile(another_mp);
+// }
 //
 // void init_declarator_list::translate(string& pyout) const{
 //   debug(cname);
