@@ -1,11 +1,10 @@
 #ifndef init_declarator_h
 #define init_declarator_h
 #include"ast.hpp"
-
-// init_declarator
-// 	: declarator   {$$ = $1}
-// 	| declarator '=' initializer   {$$ = new init_declarator($1,$2);}
-// 	;
+init_declarator
+	// : declarator   {$$ = new init_declarator($1); std::cerr << "init_declarator 0 " << std::endl;}
+	// | declarator '=' initializer   {$$ = new init_declarator($1,$3);  std::cerr << "init_declarator 1" << std::endl;}
+	// ;
 
 class init_declarator : public astnode{
 public:
@@ -24,7 +23,13 @@ private:
 };
 
 void init_declarator::compile(mips& mp)const{
-  one -> 
+  if(two == NULL)
+
+  one -> compile(mp); // get the name of newly
+
+  mips another_mp;
+  two -> compile(another_mp);
+
 }
 
 // void init_declarator::translate(string& pyout) const{
