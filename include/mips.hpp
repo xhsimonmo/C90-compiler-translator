@@ -38,10 +38,16 @@ private:
     //note: var_index need to be negative
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
-
   };
 
   temp_result info;
+
+  struct array_struct
+  {
+    string name;
+    vector<int>array_add;//store array initializer address;
+  }
+  array_struct array_info;
 
   mips()//initialisation
   {
