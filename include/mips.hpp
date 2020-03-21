@@ -10,7 +10,7 @@ using std::to_string;
 
 extern int current_frame;//indicate current frame index;
 extern int labelcounter;//make unique label by number
-extern int frame_counter;//make unique number for frame: as the stack index!
+// extern int frame_counter;//make unique number for frame: as the stack index!
 //remember the locations of each variable (offset relative to the frame pointer, which is a register)
 
 
@@ -24,6 +24,7 @@ extern vector<vector<stack_content>>stack_collection;
 extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<string>mpcode;//final mips code collection
 
+extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
 
 class mips{
 private:
@@ -38,6 +39,8 @@ private:
     //note: var_index need to be negative
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
+
+    int array_index;
   };
 
   temp_result info;
@@ -47,7 +50,6 @@ private:
     string name;
     vector<int>array_add;//store array initializer address;
   }
-  array_struct array_info;
 
   mips()//initialisation
   {
@@ -65,6 +67,10 @@ private:
     stack_collection.push_back(frame_stack);
     arg_count.push_back(0);//initially the number of arguments in callee functions; index same as current_frame
 
+    //make an array stac for each frame
+    vector<array_struct>array_stack;
+    array_collection.push_back(array_stack);
+
     //define this in function_definition
    //make a new vector for mips code when start a new frame_stack
     // vector<string>mips_code;
@@ -75,7 +81,7 @@ private:
     addi(30, 29, 0);//move fp, sp
 
     //frame counter +1
-    frame_counter++;
+    current_frame++;
   }
   //frame ended
   void finish_frame(vector<string>mips_code)

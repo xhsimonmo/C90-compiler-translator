@@ -602,14 +602,15 @@ void postfix::compile(mips& mp)const{
 
   switch (type) {
     case 0://array?
-    opt->compile(mp);//should store searching index in $2
-    ptr->compile(another_mp);//fill array name in
+    ptr->compile(another_mp);//fill index of array (in all frame arrays)
+    int array_index = another_mp.info.array_index;
+
+    opt->compile(mp);//should store index in $2
     sll(2, 2, 2);//x4
-    addi(3, 30, 8);
-    add(2, 3, 2);
-    lw(2, 20, 2);//last location index? not too sure how
-    nop();
-    sw(2, 24, 30);//last one + 4
+    int offset = array_collection[current_frame][array_index].array_add[0];
+    addi(2, 2, to_string(offset));
+    sw(2, 2, fp);
+    //store the result in $2
     break;
     case 1:
     ptr->compile(mp);
