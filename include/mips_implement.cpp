@@ -80,7 +80,15 @@ void init_declarator_list::compile(mips& mp)const
 
 
 
-
+// direct_declarator
+// 	: IDENTIFIER   {$$ = new direct_declarator(0,*$1);}
+// 	| '(' declarator ')'  {$$ = new direct_declarator(1,$2);}
+// 	| direct_declarator '[' constant_expression ']'  {$$ = new direct_declarator(2,$1,$3);}  array declaration
+// 	| direct_declarator '[' ']'   {$$ = new direct_declarator(3,$1);}   array declaration
+// 	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);}  function declaration
+// 	| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);} function declaration
+// 	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);} function declaration C90 page 67
+// 	;
 void direct_declarator::compile(mips& mp)const
 {
   mp.switch(type)
@@ -94,7 +102,9 @@ void direct_declarator::compile(mips& mp)const
     break;
 
     case 2:
-    std::cerr << "array !" << '\n';
+    //it uses const expression so size is constant
+    two->compile(mp);//this should store result to $2
+
     break;
 
     case 3:
@@ -642,9 +652,19 @@ void parameter_declaration :: compile(mips& mp) const{
 
 void postfix::compile(mips& mp)const{
   debug(cname);
+  mips another_mp;
+
   switch (type) {
     case 0://array?
-    std::cerr << "array" << '\n';
+    ptr->compile(another_mp);//fill index of array (in all frame arrays)
+    int array_index = another_mp.info.array_index;
+
+    opt->compile(mp);//should store index in $2
+    sll(2, 2, 2);//x4
+    int offset = array_collection[current_frame][array_index].array_add[0];
+    addi(2, 2, to_string(offset));
+    sw(2, 2, fp);
+    //store the result in $2
     break;
     case 1:
     ptr->compile(mp);
@@ -697,4 +717,57 @@ void argument_expression_list::compile(mips& mp)const{
     right -> compile(tmp_mp);
     callee_value_process();
   }
+}
+
+// initializer
+// 	: assignment_expression                  {$$ = $1;}
+// 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
+// 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
+// 	;
+void initializer::compile(mips& mp) const
+{
+  switch(type)
+  {
+    case 0:
+    p->compile(mp);//this should store all identifier address in mp
+    int last_element = mp.array_info.array_add.size() - 1;
+    int current_add = mp.array_info.array_add[last_element];
+    current_add = current_add + 4;
+    int element_add[mp.array_info.array_add.size()];
+    for(int i = 0; i < mp.array_info.array_add.size(); i++)
+    {
+      sw(0, offset, 30);
+      element[i] = current_add;
+      current_add = current_add + 4;
+    }
+    //TODO: unsure about numbers: li instead of lw?
+    for(int i = 0; i < mp.array_info.array_add.size(); i++)
+    {
+      lw(2, mp.array_info.array_add[i], 30);
+      nop();
+      sw(2, element[i], 30);
+    }
+    case 1:
+    //same as above
+    p->compile(mp);//this should store all identifier address in mp
+    int last_element = mp.array_info.array_add.size() - 1;
+    int current_add = mp.array_info.array_add[last_element];
+    current_add = current_add + 4;
+    int element_add[mp.array_info.array_add.size()];
+    for(int i = 0; i < mp.array_info.array_add.size(); i++)
+    {
+      sw(0, offset, 30);
+      element[i] = current_add;
+      current_add = current_add + 4;
+    }
+    //TODO: unsure about numbers: li instead of lw?
+    for(int i = 0; i < mp.array_info.array_add.size(); i++)
+    {
+      lw(2, mp.array_info.array_add[i], 30);
+      nop();
+      sw(2, element[i], 30);
+    }
+  }
+
+
 }
