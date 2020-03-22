@@ -676,16 +676,18 @@ void parameter_declaration :: compile(mips& mp) const{
 void postfix_expression::compile(mips& mp)const{
   debug(cname);
   mips another_mp;
-
+  string variable_name;
+  string function_name;
+  int offset;
   switch (type) {
     case 0://array?
     ptr->compile(another_mp);//fill index of array (in all frame arrays)
 
     opt->compile(mp);//should store index in $2
     mp.sll(2, 2, 2);//x4
-    int offset = array_collection[current_frame][array_index].array_add[0];
+    offset = array_collection[current_frame][array_index].array_add[0];
     mp.addi(2, 2, to_string(offset));
-    mp.sw(2, 2, 30);
+    mp.sw(2, 2, fp);
     //store the result in $2
     break;
     case 1:
@@ -695,8 +697,8 @@ void postfix_expression::compile(mips& mp)const{
     break;
     case 2: //postfix_expression '(' argument_expression_list ')'
     ptr->compile(mp);
-    string function_name = mp.info.func_name;
-    mips another_mp;
+    function_name = mp.info.func_name;
+    // mips another_mp;
     opt -> compile(another_mp);
     mp.jal(function_name);
     mp.nop();
@@ -710,14 +712,14 @@ void postfix_expression::compile(mips& mp)const{
     case 5: // a++
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
-    string variable_name = another_mp.info.func_name;
+    variable_name = another_mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,"1");
     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
     ptr -> compile(mp);
-    string variable_name = another_mp.info.func_name;
+    variable_name = another_mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,"-1");
     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
