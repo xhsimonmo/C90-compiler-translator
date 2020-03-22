@@ -47,6 +47,7 @@ private:
   struct array_struct
   {
     string name;
+    string size;
     vector<int>array_add;//store array initializer address;
   }
 
