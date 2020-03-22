@@ -1,11 +1,10 @@
 #ifndef init_declarator_h
 #define init_declarator_h
 #include"ast.hpp"
-
 // init_declarator
-// 	: declarator   {$$ = $1}
-// 	| declarator '=' initializer   {$$ = new init_declarator($1,$2);}
-// 	;
+	// : declarator   {$$ = new init_declarator($1); std::cerr << "init_declarator 0 " << std::endl;}
+	// | declarator '=' initializer   {$$ = new init_declarator($1,$3);  std::cerr << "init_declarator 1" << std::endl;}
+	// ;
 
 class init_declarator : public astnode{
 public:
@@ -22,6 +21,24 @@ private:
   treeptr two = NULL;
   string cname = "init_declarator";
 };
+
+// void init_declarator::compile(mips& mp)const{
+//   if(two == NULL)
+//    {
+//      one -> compile(mp);
+//      string init_name = mp.info.func_name;
+//      int offset = -4 * (stack_collection[current_frame].size());
+//      stack_collection[current_frame].push_back(init_name,offset);
+//    }
+//    else{
+//      one -> compile(mp);
+//      string init_name = mp.info.func_name;
+//      int offset = -4 * (stack_collection[current_frame].size());
+//      stack_collection[current_frame].push_back(init_name,offset);
+//      two -> compile(mp);
+//      mp.sw(2,offset,30);
+//    }
+// }
 
 // void init_declarator::translate(string& pyout) const{
 //   debug(cname);

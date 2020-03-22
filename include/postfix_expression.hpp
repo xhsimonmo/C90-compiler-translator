@@ -32,7 +32,7 @@ private:
 };
 
 
-// void postfix::compile(mips& mp)const{
+// void postfix_expression::compile(mips& mp)const{
 //   debug(cname);
 //   switch (type) {
 //     case 0://array?
@@ -49,6 +49,10 @@ private:
 //     mips another_mp;
 //     opt -> compile(another_mp);
 //     mp.jal(function_name);
+//     if(caller_arg_count > arg_count_collection[current_frame]){
+//       arg_count_collection[current_frame] = caller_arg_count;
+//     }
+//     caller_arg_count = 0; // set it back for next function callee
 //     mp.nop();
 //     break;
 //     case 3:

@@ -4,27 +4,40 @@
 void function_definition::compile(mips& mp)const
 {
   // declarator;
-  if(p_o != NULL){
+  if(p_f == NULL){ // only two parts
       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
+      string declarator = mp.info.func_name;
+      declarator = declarator + ":";
+      mpcode_collection[current_frame].push_back(declarator);
+
+      //start function
+      mp.add_frame();
+
+      //compound statement
+      p_t->compile(mp);
+
+      //finish function
+      mp.finish_frame();
   }
-  p_t-> compile(mp);
-  //add label
-  string declarator = mp.info.func_name;
-  declarator = declarator + ":";
-  mpcode.push_back(declarator);
+  else{
+    p_o -> compile(mp);// type_specifier
+    p_t-> compile(mp);
+    //add label
+    string declarator = mp.info.func_name;
+    declarator = declarator + ":";
+    mpcode_collection[current_frame].push_back(declarator);
 
-  //make a new vector for mips code when start a new frame_stack
-  vector<string>mips_code;
-  //add to the final code collection first, then modify it
-  mpcode_collection.push_back(mips_code);
-  //start function
-  mp.add_frame(declarator, mips_code);
+    //start function
+    mp.add_frame();
 
-  //compound statement
-  p_f->compile(mp);
+    //compound statement
+    p_f->compile(mp);
 
-  //finish function
-  mp.finish_frame(mpcode_collection[current_frame]);
+    //finish function
+    mp.finish_frame();
+
+  }
+
 }
 
 void type_specifier::compile(mips& mp)const
@@ -40,9 +53,9 @@ void external_declaration::compile(mips& mp)const
 };
 
 void compound_statement::compile(mips& mp)const{
-  debug(name);
+  debug(cname);
   //dont do things yet;
-  mp.switch (type) {
+  switch (type) {
     case 0:
     break;
     case 1:
@@ -58,7 +71,25 @@ void compound_statement::compile(mips& mp)const{
   }
 }
 
-
+void init_declarator::compile(mips& mp)const{
+  if(two == NULL)
+   {
+     one -> compile(mp);
+     string init_name = mp.info.func_name;
+     int offset = -4 * (stack_collection[current_frame].size());
+     stack_content tmp = {init_name,offset};
+     stack_collection[current_frame].push_back(tmp);
+   }
+   else{
+     one -> compile(mp);
+     string init_name = mp.info.func_name;
+     int offset = -4 * (stack_collection[current_frame].size());
+     stack_content tmp = {init_name,offset};
+     stack_collection[current_frame].push_back(tmp);
+     two -> compile(mp);
+     mp.sw(2,offset,30);
+   }
+}
 
 
 // direct_declarator
@@ -72,7 +103,8 @@ void compound_statement::compile(mips& mp)const{
 // 	;
 void direct_declarator::compile(mips& mp)const
 {
-  mp.switch(type)
+    mips another_mp;
+  switch(type)
   {
     case 0:
     mp.info.func_name = id;
@@ -86,8 +118,8 @@ void direct_declarator::compile(mips& mp)const
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     //everytime create a new array
-    array_struct a;
-    array_collection[current_frame].push_back(a);
+    // array_struct a;
+    // array_collection[current_frame].push_back(a);
     break;
 
     case 3:
@@ -95,7 +127,6 @@ void direct_declarator::compile(mips& mp)const
     break;
     case 4:
     one->compile(mp); // eg:  f()
-    mips another_mp;
     two->compile(another_mp);//parameter!
     break;
 
@@ -120,12 +151,12 @@ void assignment_expression::compile(mips& mp)const
   {
     mips another_mp;
 
-    mp.switch(type)
+    switch(type)
     {
       case 0:
       p_one->compile(mp);
       p_five->compile(another_mp);
-      nop();
+      mp.nop();
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -133,11 +164,11 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      mult(2, 3);
-      mflo(2);
+      mp.nop();
+      mp.mult(2, 3);
+      mp.mflo(2);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -145,11 +176,11 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      div(2, 3);
-      mflo(2);
+      mp.nop();
+      mp.div(2, 3);
+      mp.mflo(2);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -157,11 +188,11 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      div(2, 3);
-      mfhi(2);
+      mp.nop();
+      mp.div(2, 3);
+      mp.mfhi(2);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -169,10 +200,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      add(2, 2, 3);
+      mp.nop();
+      mp.add(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -180,10 +211,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      sub(2, 2, 3);
+      mp.nop();
+      mp.sub(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -191,10 +222,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      sll(2, 2, 3);
+      mp.nop();
+      mp.sll(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -202,10 +233,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      sra(2, 2, 3);
+      mp.nop();
+      mp.sra(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -213,10 +244,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      _and(2, 2, 3);
+      mp.nop();
+      mp._and(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -224,10 +255,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      _xor(2, 2, 3);
+      mp.nop();
+      mp._xor(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -235,10 +266,10 @@ void assignment_expression::compile(mips& mp)const
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
       p_five->compile(another_mp);
-      move(3, 2);
+      mp.move(3, 2);
       p_one->compile(mp);
-      nop();
-      _or(2, 2, 3);
+      mp.nop();
+      mp._or(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
     }
@@ -261,16 +292,17 @@ void cast_expression::compile(mips& mp)const
 void multiplicative_expression::compile(mips& mp)const
 {
   mips another_mp;
+  switch (type) {
 
   case 1://"*"
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   mul->compile(mp);
-  nop();
-  mult(2, 3);
-  mflo(2);
+  mp.nop();
+  mp.mult(2, 3);
+  mp.mflo(2);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
@@ -278,11 +310,11 @@ void multiplicative_expression::compile(mips& mp)const
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   mul->compile(mp);
-  nop();
-  div(2, 3);
-  mflo(2);
+  mp.nop();
+  mp.div(2, 3);
+  mp.mflo(2);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
@@ -290,27 +322,29 @@ void multiplicative_expression::compile(mips& mp)const
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   mul->compile(mp);
-  nop();
-  div(2, 3);
-  mfhi(2);
+  mp.nop();
+  mp.div(2, 3);
+  mp.mfhi(2);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
+}
 }
 
 void additive_expression::compile(mips& mp)const
 {
   mips another_mp;
+  switch (type) {
 
   case 1://"+"
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   mul->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   add->compile(mp);
-  nop();
-  add(2, 2, 3);
+  mp.nop();
+  mp.add(2, 2, 3);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
@@ -318,28 +352,28 @@ void additive_expression::compile(mips& mp)const
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   mul->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   add->compile(mp);
-  nop();
-  sub(2, 2, 3);
+  mp.nop();
+  mp.sub(2, 2, 3);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
-
+}
 }
 
 void shift_expression::compile(mips& mp)const
 {
 
   mips another_mp;
-
+  switch (type) {
   case 1://"<<"
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   r->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   l->compile(mp);
-  nop();
-  sll(2, 2, 3);
+  mp.nop();
+  mp.sll(2, 2, 3);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
@@ -347,33 +381,64 @@ void shift_expression::compile(mips& mp)const
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   r->compile(another_mp);
-  move(3, 2);
+  mp.move(3, 2);
   l->compile(mp);
-  nop();
-  sra(2, 2, 3);
+  mp.nop();
+  mp.sra(2, 2, 3);
   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
-
+}
 }
 
-// void unary_expression::compile(mips& mp)
-// {
-//   mp.switch(type)
-//   {
-//     case 0:
-//     ptr->compile(mp);
-//     mips.addi(dst, dst, "1");
-//     break;
-//
-//     case 1:
-//     ptr->compile(dst);
-//     mips.addi(dst, dst, "-1");
-//     break;
-//
-//     case 2:
-//
-//   }
-// }
+void unary_expression::compile(mips& mp)const
+{
+  switch(type)
+  {
+    case 0:
+    ptr->compile(mp);
+    mp.addiu(2, 2, "1");
+    mp.sw(2,mp.info.var_index,30);
+    break;
+
+    case 1:
+    ptr->compile(mp);
+    mp.addiu(2, 2, "-1");
+    mp.sw(2,mp.info.var_index,30);
+    break;
+
+    case 2: //sizeof
+    NotImplemented();
+    break;
+    case 3: //sizeof ()
+    NotImplemented();
+    break;
+    case 4:// &
+    NotImplemented();
+    break;
+    case 5: // *
+    NotImplemented();
+    break;
+    case 6: // +
+    ptr->compile(mp);
+    break;
+    case 7: // -
+    ptr -> compile(mp);
+    mp.li(3,"-1");
+    mp.mult(2,3);
+    mp.mflo(2);
+    mp.sw(2,mp.info.var_index,30);
+    break;
+    case 8: // ~ bit wise NOT
+    mp.li(3,"-1"); // -1 is 111111 for xor
+    mp._xor(2,2,3);
+    mp.sw(2,mp.info.var_index,30);
+    break;
+    case 9: // !
+    NotImplemented();
+    break;
+
+  }
+}
 
 void selection_statement::compile(mips& mp)const
 {
@@ -384,51 +449,52 @@ void selection_statement::compile(mips& mp)const
 
   string else_label = "Selection" + to_string(labelcounter);//label when else start
   labelcounter++;
-
-  mp.switch(type)
+  mips sta_mp;
+  mips s_mp;
+  switch(type)
   {
     case 0:
     mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
-    beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
-    nop();
+    mp.beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
+    mp.nop();
     //then make the if statement(if is true)
-    mips sta_mp;
+    //mips sta_mp;
     ifsta->compile(sta_mp);
-    add_label(below_if);
+    mp.add_label(below_if);
     break;
 
     case 1:
     mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
-    beq(2, 0, else_label);//if false f=go to else
-    nop();
+    mp.beq(2, 0, else_label);//if false f=go to else
+    mp.nop();
     //then make the if statement(if is true)
-    mips sta_mp;
+    //mips sta_mp;
     ifsta->compile(sta_mp);
-    b(below_if);
+    mp.b(below_if);
 
     //else statement
-    add_label(else_label);
-    mips s_mp;
-    s_mp->compile(s_mp);
-    add_label(below_if);
+    mp.add_label(else_label);
+    // mips s_mp;
+    elsesta->compile(s_mp);
+    mp.add_label(below_if);
     break;
 
     case 2:
     //switch statement
     mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
-    beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
-    nop();
+    mp.beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
+    mp.nop();
     //then make the if statement(if is true)
-    mips sta_mp;
+    //mips sta_mp;
     ifsta->compile(sta_mp);
-    add_label(below_if);
+    mp.add_label(below_if);
     break;
 
   }
+}
 
 
-  void iteration_statement::compile(mips& mp)const{
-
+void iteration_statement::compile(mips& mp)const{
     string condition = "condition" + to_string(labelcounter);
     labelcounter++;
     mips cond_expr;
@@ -446,76 +512,77 @@ void selection_statement::compile(mips& mp)const
     mips for_state2;//si
 
 
-    mp.switch(type)
+    switch(type)
     {
       case 0:
-      b(condition);
-      nop();
+      mp.b(condition);
+      mp.nop();
 
-      add_label(statement);
+      mp.add_label(statement);
       er->compile(state_expr);//get statement
 
-      add_label(condition);
+      mp.add_label(condition);
       yi->compile(cond_expr);//get conidtion expression
       mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
-      bne(2, 0, statement);//if true go to statement
-      nop();
+      mp.bne(2, 0, statement);//if true go to statement
+      mp.nop();
 
       case 1://same as case 0, but condition and statement are reversed.
-      b(statement);
-      nop();
+      mp.b(statement);
+      mp.nop();
 
-      add_label(condition);
+      mp.add_label(condition);
       yi->compile(cond_expr);
 
-      add_label(statement);
+      mp.add_label(statement);
       er->compile(state_expr);
       mp.lw(2, state_expr.info.result_index, 30);//store expression result in r2
-      bne(2, 0, condition);//if true go to statement
-      nop();
+      mp.bne(2, 0, condition);//if true go to statement
+      mp.nop();
 
       case 2:
       yi->compile(cond_expr);//make init part
-      b(statement);
-      nop();
+      mp.b(statement);
+      mp.nop();
 
       //for loop statement branch
-      add_label(for_s1);
+      mp.add_label(for_s1);
       san->compile(for_state1);
 
       //for loop condition!!!not statement
-      add_label(statement);
+      mp.add_label(statement);
       er->compile(state_expr);//get statement
       mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
-      bne(2, 0, for_s1);//if true go to statement
-      nop();
+      mp.bne(2, 0, for_s1);//if true go to statement
+      mp.nop();
 
       case 3:
       yi->compile(cond_expr);//make init part
-      b(statement);
-      nop();
+      mp.b(statement);
+      mp.nop();
 
       //for loop statement branch
-      add_label(for_s2);
+      mp.add_label(for_s2);
       si->compile(for_state2);
       //iteration expression
       san->compile(for_state1);
 
       //for loop condition!!!not statement
-      add_label(statement);
+      mp.add_label(statement);
       er->compile(state_expr);//get statement
       mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
-      bne(2, 0, for_s2);//if true go to statement
-      nop();
+      mp.bne(2, 0, for_s2);//if true go to statement
+      mp.nop();
     }
 
   }
 
 
-}
+
 
 void jump_statement::compile(mips& mp) const {
-  mp.switch (type) {
+  mips mp_tmp;
+  switch (type) {
     case 0:
     NotImplemented();
     break;
@@ -529,24 +596,30 @@ void jump_statement::compile(mips& mp) const {
     NotImplemented();
     break;
     case 4:
-    mips mp_tmp;
-    expre_ptr -> compile(mp_tmp);
-    mp.li(2,mp_tmp.info.result)
+    //mips mp_tmp;
+    expre_ptr -> compile(mp_tmp); // return value in $2
+    //mp.li(2,mp_tmp.info.result)
+    mp.finish_frame();
     break;
   }
 }
 
 void primary_expression :: compile(mips& mp) const{
   debug(cname);
+  int var_index;
   switch (type) {
     case 0: // got IDENTIFIER
     // mp.var_index = mp.var_index + 4;
     // mp.func_variables.push_back(element,mp.var_index );
     //mp.var_index = mp.var_index + 4;
     mp.info.func_name = element;//update func_name, name of a variable
-    int var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
+    var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
-    mp.lw(2,var_index,30);//load value to $2
+    if(var_index != -1) //this variable indeed has been saved
+    {
+      mp.lw(2,var_index,30);//load value to $2
+    }
+
     break;
 
     case 1:
@@ -588,17 +661,19 @@ void parameter_declaration :: compile(mips& mp) const{
     int arg_reg = availability + 4;
     if(arg_reg >= 4){
       mp.sw(arg_reg, ((arg_reg-4)*4+12) , 30);//point upwards add 12 because we have ra and sp stored in beginning
-      stack_collection[current_frame].push_back(variable_name, ((arg_reg-4)*4+12));
+      stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
+      stack_collection[current_frame].push_back(stack);
     }
     else{ //case when more than 4 arguments
-        stack_collection[current_frame].push_back(variable_name, (12+16+4*arg_overflow));
-        arg_overflow++;
+      stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
+      stack_collection[current_frame].push_back(stack);
+      arg_overflow++;
     }
   }
 }
 
 
-void postfix::compile(mips& mp)const{
+void postfix_expression::compile(mips& mp)const{
   debug(cname);
   mips another_mp;
 
@@ -606,10 +681,10 @@ void postfix::compile(mips& mp)const{
     case 0://array?
     ptr->compile(another_mp);//fill index of array (in all frame arrays)
     opt->compile(mp);//should store index in $2
-    sll(2, 2, 2);//x4
+    mp.sll(2, 2, 2);//x4
     int offset = array_collection[current_frame][array_index].array_add[0];
-    addi(2, 2, to_string(offset));
-    sw(2, 2, fp);
+    mp.addi(2, 2, to_string(offset));
+    mp.sw(2, 2, 30);
     //store the result in $2
     break;
     case 1:
@@ -636,14 +711,14 @@ void postfix::compile(mips& mp)const{
     ptr -> compile(mp);
     string variable_name = another_mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
-    mp.addiu(2,2,1);
+    mp.addiu(2,2,"1");
     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
     ptr -> compile(mp);
     string variable_name = another_mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
-    mp.addiu(2,2,-1);
+    mp.addiu(2,2,"-1");
     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
     break;
   }
@@ -654,14 +729,14 @@ void argument_expression_list::compile(mips& mp)const{
   if(right == NULL){
     mips another_mp;
     left->compile(another_mp); // will reach a primary expression, either variable or number
-    callee_value_process();
+    callee_value_process(another_mp);
   }
   else{
     mips another_mp;
     left -> compile(another_mp);
     mips tmp_mp;
     right -> compile(tmp_mp);
-    callee_value_process();
+    callee_value_process(tmp_mp);
   }
 }
 

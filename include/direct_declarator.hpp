@@ -18,7 +18,7 @@ public:
   direct_declarator(int _type, treeptr _one):type(_type),one(_one){};
   direct_declarator(int _type, treeptr _one, treeptr _two):type(_type),one(_one),two(_two){};
   virtual void translate(string& pyout)const override;
-  virtual void compile(mips& mp);
+  virtual void compile(mips& mp)const override;
   ~direct_declarator(){
     delete one;
     delete two;
@@ -31,8 +31,9 @@ private:
   string cname = "direct_declarator";
 };
 
-// void direct_declarator::compile(mips& mp)
+// void direct_declarator::compile(mips& mp)const
 // {
+      // mips another_mp;
 //   switch(type)
 //   {
 //     case 0:
@@ -52,7 +53,7 @@ private:
 //     break;
 //     case 4:
 //     one->compile(mp); // eg:  f()
-//     mips another_mp;
+//     //mips another_mp;
 //     two->compile(another_mp);//parameter!
 //     break;
 //
