@@ -242,16 +242,28 @@ public:
     mpcode_collection[current_frame].push_back(mp);
   }
 
-  void beq(int rs, int rt, int offset)
+  // void beq(int rs, int rt, int offset)
+  // {
+  //   string mp = "beq $" + to_string(rs) + ",$" + to_string(rt) + "," + to_string(offset);//TODO: imm might be string? unsure
+  //   mpcode_collection[current_frame].push_back(mp);
+  // }
+  void beq(int rs, int rt, string offset)
   {
-    string mp = "beq $" + to_string(rs) + ",$" + to_string(rt) + "," + to_string(offset);//TODO: imm might be string? unsure
+    string mp = "beq $" + to_string(rs) + ",$" + to_string(rt) + "," + offset;//TODO: imm might be string? unsure
     mpcode_collection[current_frame].push_back(mp);
   }
+
+
   // maybe add BLTZ and BLEZ if needed later
 
-  void bne(int rs, int rt, int offset)
+  // void bne(int rs, int rt, int offset)
+  // {
+  //   string mp = "bne $" + to_string(rs) + ",$" + to_string(rt) + "," + to_string(offset);//TODO: imm might be string? unsure
+  //   mpcode_collection[current_frame].push_back(mp);
+  // }
+  void bne(int rs, int rt, string offset)
   {
-    string mp = "bne $" + to_string(rs) + ",$" + to_string(rt) + "," + to_string(offset);//TODO: imm might be string? unsure
+    string mp = "bne $" + to_string(rs) + ",$" + to_string(rt) + "," + offset;//TODO: imm might be string? unsure
     mpcode_collection[current_frame].push_back(mp);
   }
 

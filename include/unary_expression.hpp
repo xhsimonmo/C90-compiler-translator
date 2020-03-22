@@ -35,7 +35,7 @@ private:
   string cname = "unary_expression";
 };
 
-// void unary_expression::compile(mips& mp)
+// void unary_expression::compile(mips& mp)const
 // {
 //   mp.switch(type)
 //   {

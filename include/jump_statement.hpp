@@ -29,6 +29,7 @@ private:
 };
 
 // void jump_statement::compile(mips& mp) const {
+// mips mp_tmp;
 //   switch (type) {
 //     case 0:
 //     NotImplemented();

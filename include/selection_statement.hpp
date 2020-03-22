@@ -3,9 +3,9 @@
 #include "ast.hpp"
 
 // selection_statement
-// 	: IF '(' expression ')' statement
-// 	| IF '(' expression ')' statement ELSE statement
-// 	| SWITCH '(' expression ')' statement //no translation for switch
+// 	: IF '(' expression ')' statement    {$$ = new selection_statement(0, $3, $5);std::cerr << "selection_statement 0" << std::endl;}
+// 	| IF '(' expression ')' statement ELSE statement   {$$ = new selection_statement(1, $3, $5, $7);std::cerr << "selection_statement 1" << std::endl;}
+// 	| SWITCH '(' expression ')' statement    {$$ = new selection_statement(2, $3, $5);std::cerr << "selection_statement 2" << std::endl;}
 // 	;
 
 class selection_statement : public statement

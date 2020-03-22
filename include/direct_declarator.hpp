@@ -33,6 +33,7 @@ private:
 
 // void direct_declarator::compile(mips& mp)const
 // {
+      // mips another_mp;
 //   switch(type)
 //   {
 //     case 0:
@@ -52,7 +53,7 @@ private:
 //     break;
 //     case 4:
 //     one->compile(mp); // eg:  f()
-//     mips another_mp;
+//     //mips another_mp;
 //     two->compile(another_mp);//parameter!
 //     break;
 //
