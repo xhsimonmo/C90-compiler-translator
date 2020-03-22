@@ -36,12 +36,13 @@ public:
   struct temp_result
   {
     string func_name; // name of variable
-    string result; //TODO shouldn't it be stored in $2 as return value?
+    string result; //store number passed from primary expression 
     string func_type;
     //note: var_index need to be negative
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
-
+    string new_array_name;
+    string call_array_name;
   };
 
   temp_result info;

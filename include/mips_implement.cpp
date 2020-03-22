@@ -103,7 +103,7 @@ void init_declarator::compile(mips& mp)const{
 // 	;
 void direct_declarator::compile(mips& mp)const
 {
-    mips another_mp;
+  mips another_mp;
   switch(type)
   {
     case 0:
@@ -117,9 +117,12 @@ void direct_declarator::compile(mips& mp)const
     case 2:
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
-    //everytime create a new array
-    // array_struct a;
-    // array_collection[current_frame].push_back(a);
+    one->compile(another_mp);//this should fill in the array name;
+    string array_name = another_mp.info.array_name;
+    //create a new array
+    array_struct a;
+    a.name = array_name;
+    array_collection[current_frame].push_back(a);
     break;
 
     case 3:
@@ -678,14 +681,18 @@ void postfix_expression::compile(mips& mp)const{
   mips another_mp;
 
   switch (type) {
-    case 0://array?
-    ptr->compile(another_mp);//fill index of array (in all frame arrays)
-    opt->compile(mp);//should store index in $2
-    mp.sll(2, 2, 2);//x4
+    case 0://read from array
+    ptr->compile(another_mp);//fill array name (in all frame arrays)
+    string name = another_mp.info.call_array_name;
+    int array_index = find_array(name);//index of array in all arrays of current frame
+
+    opt->compile(mp);//should store index in $2; store index in info.result
+    int index = stoi(mp.info.result);//array element index
+    // mp.sll(2, 2, 2);//x4 to get byte increment
     int offset = array_collection[current_frame][array_index].array_add[0];
-    mp.addi(2, 2, to_string(offset));
-    mp.sw(2, 2, 30);
-    //store the result in $2
+    int increment = stoi(offset) + index * 4;
+    // mp.addi(2, 2, to_string(offset));
+    mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
     break;
     case 1:
     ptr->compile(mp);
