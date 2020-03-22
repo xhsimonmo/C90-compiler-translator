@@ -30,7 +30,7 @@ private:
 };
 
 // void compound_statement::compile(mips& mp)const{
-//   debug(name);
+//   debug(cname);
 //   //dont do things yet;
 //   switch (type) {
 //     case 0:

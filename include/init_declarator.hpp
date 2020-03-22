@@ -25,17 +25,17 @@ private:
 // void init_declarator::compile(mips& mp)const{
 //   if(two == NULL)
 //    {
-//      left -> compile(mp);
+//      one -> compile(mp);
 //      string init_name = mp.info.func_name;
 //      int offset = -4 * (stack_collection[current_frame].size());
 //      stack_collection[current_frame].push_back(init_name,offset);
 //    }
 //    else{
-//      left -> compile(mp);
+//      one -> compile(mp);
 //      string init_name = mp.info.func_name;
 //      int offset = -4 * (stack_collection[current_frame].size());
 //      stack_collection[current_frame].push_back(init_name,offset);
-//      right -> compile(mp);
+//      two -> compile(mp);
 //      mp.sw(2,offset,30);
 //    }
 // }
