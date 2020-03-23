@@ -829,6 +829,24 @@ void initializer_list::compile(mips& mp) const
     right->compile(mp);
   }
 }
+void type_name::compile(mips& mp)const{
+  left ->compile(mp);
+  mips another_mp;
+  right ->compile(another_mp);
+}
+
+void translation_unit::compile(mips& mp)const{
+  p_yi->compile(mp);
+  mips another_mp;
+  p_er->compile(another_mp);
+}
+
+
+void storage_class_specifier::compile(mips& mp)const{
+   debug(cname);
+   if(type == 0){
+     std::cerr << "TYDEF!" << '\n';
+   }
 
 void statement_list::compile(mips& mp)const{
   l -> compile(mp);
@@ -840,6 +858,7 @@ void specifier_qualifier_list::compile(mips& mp)const{
   spec->compile(mp);
   mips another_mp;
   list ->compile(another_mp);
+>>>>>>> 650badd1190c1755cd4756e388af26d990459557
 }
 
 void type_name::compile(mips& mp)const{

@@ -31,5 +31,10 @@ private:
 //     NotImplemented();
 // }
 
+// void abstract_declarator::compile(mips& mp)
+// {
+//   NotImplemented();
+// }
+
 
 #endif
