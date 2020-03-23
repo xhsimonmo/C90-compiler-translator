@@ -298,117 +298,102 @@ void cast_expression::compile(mips& mp)const
 void multiplicative_expression::compile(mips& mp)const
 {
   mips another_mp;
-  int l_index;
-  int r_index;
-
   switch (type) {
 
   case 1://"*"
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  r_index = result_offset();
-  //mp.move(3, 2);
+  mp.move(3, 2);
   mul->compile(mp);
-  l_index = result_offset();
-  mp.lw(2,r_index,30);
-  mp.lw(3,l_index,30);
   mp.nop();
-
   mp.mult(2, 3);
   mp.mflo(2);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 2:
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  r_index = result_offset();
+  mp.move(3, 2);
   mul->compile(mp);
-  l_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
   mp.nop();
-
   mp.div(2, 3);
   mp.mflo(2);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 3:
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  r_index = result_offset();
+  mp.move(3, 2);
   mul->compile(mp);
-  l_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
   mp.nop();
-
   mp.div(2, 3);
   mp.mfhi(2);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 }
 }
 
 void additive_expression::compile(mips& mp)const
 {
-  int l_index;
-  int r_index;
-  add->compile(mp);
-  l_index = result_offset();
   mips another_mp;
-  mul->compile(another_mp);
-  r_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
   switch (type) {
 
   case 1://"+"
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  mul->compile(another_mp);
+  mp.move(3, 2);
+  add->compile(mp);
+  mp.nop();
   mp.add(2, 2, 3);
-  result_count = result_count - 4;
-  mp.sw(2,result_offset(),30);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 2://"-"
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  mul->compile(another_mp);
+  mp.move(3, 2);
+  add->compile(mp);
+  mp.nop();
   mp.sub(2, 2, 3);
-  result_count = result_count - 4;
-  mp.sw(2,result_offset(),30);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 }
 }
 
- void shift_expression::compile(mips& mp)const
+void shift_expression::compile(mips& mp)const
 {
-  int l_index;
-  int r_index;
-  l->compile(mp);
-  l_index = result_offset();
+
   mips another_mp;
-  r->compile(another_mp);
-  r_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
   switch (type) {
   case 1://"<<"
-
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  r->compile(another_mp);
+  mp.move(3, 2);
+  l->compile(mp);
+  mp.nop();
   mp.sll(2, 2, 3);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 2://">>"
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  r->compile(another_mp);
+  mp.move(3, 2);
+  l->compile(mp);
+  mp.nop();
   mp.sra(2, 2, 3);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
- }
+}
 }
 
 void unary_expression::compile(mips& mp)const
@@ -826,7 +811,6 @@ void initializer::compile(mips& mp) const
       mp.nop();
       mp.sw(2, element[i], 30);
     }
-  }
 }
 
 void initializer_list::compile(mips& mp) const
@@ -841,7 +825,6 @@ void initializer_list::compile(mips& mp) const
     case 1:
     left->compile(another_mp);
     right->compile(mp);
-    break;
   }
 }
 
@@ -915,51 +898,7 @@ void declarator::compile(mips&mp)const
     direct_decla -> compile(another_mp);
 }
 
-void direct_abstract_declarator :: compile(mips& mp)const
-{
-  debug(cname);
-  NotImplemented();
-}
-
-void relational_expression::compile(mips& mp)const{
-  mips another_mp;
-  switch (type) {
-    case 0:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,3,2);
-    break;
-    case 1:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,2,3);//simply swap 2 and 3 registers
-    break;
-    case 2: //<=
-    break;
-    case 3:
-    break;
-
-  }
-}
-
-void base_expression::compile(mips& mp)const
-{
-  debug(cname);
-  mips another_mp;
-  p_one->compile(mp);
-  p_five->compile(another_mp);
-}
-
-void abstract_declarator::compile(mips& mp)const
-{
-  left ->compile(mp);
-  mips another_mp;
-  right -> compile(another_mp);
-}
-
-void conditional_expression::compile(mips& mp)const
+void direct_abstract_declarator :: compile(mips& mp)
 {
   debug(cname);
   NotImplemented();
@@ -967,11 +906,12 @@ void conditional_expression::compile(mips& mp)const
 
 void expression_statement::compile(mips& mp)const
 {
-  ptr_expr->compile(mp);
+  ptr_expr->compile(mips& mp);
 }
 
-void identifier_list::compile(mips& mp)const
+void indentifier_list::compile(mips& mp)const // should never be called ,KR style?
 {
+  debug(cname);
   NotImplemented();
 }
 
@@ -981,5 +921,4 @@ void init_declarator_list::compile(mips& mp)const
   one -> compile(mp);
   mips another_mp;
   two -> compile(another_mp);
-
 }
