@@ -981,4 +981,8 @@ void init_declarator_list::compile(mips& mp)const
   one -> compile(mp);
   mips another_mp;
   two -> compile(another_mp);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 210b5cfab3aeaf9d23d9972c5e674779e76d8529
 }
