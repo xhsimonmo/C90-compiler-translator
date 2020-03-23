@@ -67,35 +67,44 @@ private:
 //   }
 // }
 
-// void direct_declarator::translate(string& pyout) const{
-//   debug(cname);
-//   string ls, rs;
-//   switch (type) {
+// void direct_declarator::compile(mips& mp)const
+// {
+//   mips another_mp;
+//   switch(type)
+//   {
 //     case 0:
-//     pyout = id; // directly output IDENTIFIER, as python doesn't have type
+//     mp.info.func_name = id;
 //     break;
+//
 //     case 1:
-//     one->translate(pyout); // parenthsis does not matter in IDENTIFIER
+//     one->compile(mp);
 //     break;
+//
 //     case 2:
-//     NotImplemented(); // no array
+//     //it uses const expression so size is constant
+//     two->compile(mp);//this should store result to $2
+//     one->compile(another_mp);//this should fill in the array name;
+//     string array_name = another_mp.info.array_name;
+//     //create a new array
+//     array_struct a;
+//     a.name = array_name;
+//     array_collection[current_frame].push_back(a);
 //     break;
+//
 //     case 3:
-//     NotImplemented();
+//     NotImplemented();// no Implement for array[]
 //     break;
 //     case 4:
-//     one -> translate(ls);
-//     two -> translate(rs);
-//     pyout = ls + "(" + rs + ")" ;//+ '\n';
+//     one->compile(mp); // eg:  f()
+//     two->compile(another_mp);//parameter!
 //     break;
+//
 //     case 5:
-//     one -> translate(ls);
-//     two -> translate(rs);
-//     pyout = ls + "(" + rs + ")" ;//+ '\n';
+//     NotImplemented(); //never reach, KR style.
 //     break;
+//
 //     case 6:
-//     one -> translate(ls);
-//     pyout = ls + "("  + ")";// + '\n';
+//     one->compile(mp);
 //     break;
 //   }
 // }

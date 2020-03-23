@@ -749,11 +749,7 @@ void argument_expression_list::compile(mips& mp)const{
   }
 }
 
-// initializer
-// 	: assignment_expression                  {$$ = $1;}
-// 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
-// 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
-// 	;
+
 void initializer::compile(mips& mp) const
 {
   switch(type)
@@ -800,6 +796,21 @@ void initializer::compile(mips& mp) const
       mp.nop();
       mp.sw(2, element[i], 30);
     }
+  }
+}
+
+void initializer_list::compile(mips& mp) const
+{
+  mips another_mp;
+  switch(type)
+  {
+    case 0:
+    left->compile(mp);
+    break;
+
+    case 1:
+    left->compile(another_mp);
+    right->compile(mp);
   }
 
 
