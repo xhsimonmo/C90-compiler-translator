@@ -22,6 +22,13 @@ private:
   string cname = "declarator";
 };
 
+// void declarator::compile(mips&mp)const
+// {
+//     ptr ->compile(mp);
+//     mips another_mp;
+//     direct_decla -> compile(another_mp);
+// }
+
 // void declarator :: translate(string& pyout) const{
 //   debug(cname);
 //   //std::cout << "declarator translate" << '\n';

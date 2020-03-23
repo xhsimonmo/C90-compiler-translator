@@ -30,6 +30,12 @@ private:
   string cname = "direct_abstract_declarator";
 };
 
+// void direct_abstract_declarator :: compile(mips& mp)
+// {
+//   debug(cname);
+//   NotImplemented();
+// }
+
 // void direct_abstract_declarator::translate(string& pyout) const{
 //   debug(cname);
 //   NotImplemented();

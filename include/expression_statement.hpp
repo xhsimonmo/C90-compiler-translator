@@ -3,8 +3,8 @@
 #include "ast.hpp"
 
 // expression_statement
-// 	: ';'
-// 	| expression ';'
+// 	: ';'    {$$ = new expression_statement(0);std::cerr << "expression_statement 0" << std::endl;}
+// 	| expression ';'   {$$ = new expression_statement($1);std::cerr << "expression_statement 1" << std::endl;}
 // 	;
 
 class expression_statement : public statement{
@@ -21,6 +21,8 @@ class expression_statement : public statement{
   treeptr ptr_expr = NULL;
   string cname = "express_statement";
 };
+
+
 
 // void expression_statement::translate(string& pyout) const{
 //   debug(cname);
