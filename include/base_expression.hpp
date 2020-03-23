@@ -3,6 +3,12 @@
 
 #include "ast.hpp"
 
+// expression
+// 	: assignment_expression                  {$$ = $1; std::cerr << "expression 1" << std::endl;}
+// 	| expression ',' assignment_expression   {$$ = new base_expression($1, $3); std::cerr << "expression 2" << std::endl;}
+// 	;
+
+
 class base_expression : public expression{
 public:
   base_expression(treeptr o, treeptr f){p_one = o; p_five = f;}
@@ -16,6 +22,12 @@ private:
   string cname = "base_expression";
 };
 
+// void base_expression::compile(mips& mp)const
+// {
+//   p_one -> compile(mp);
+//   mips another_mp;
+//   p_five ->compile(another_mp);
+// }
 // void base_expression::translate(string& pyout){
 //   debug(cname);
 //   string one;

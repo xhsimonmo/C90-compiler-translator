@@ -884,3 +884,50 @@ void relational_expression::compile(mips& mp)const{
 
   }
 }
+
+void abstract_declarator::compile(mips& mp)const
+{
+  left ->compile(mp);
+  mips another_mp;
+  right -> compile(another_mp);
+}
+
+void base_expression::compile(mips& mp)const
+{
+  p_one -> compile(mp);
+  mips another_mp;
+  p_five ->compile(another_mp);
+}
+
+void conditional_expression::compile(mips& mp)const
+{
+  debug(cname);
+  NotImplemented();
+}
+
+void declaration_list::compile(mips& mp)const{
+  p_o -> compile(mp);
+  mips another_mp;
+  p_t ->compile(another_mp);
+}
+
+void declaration_specifiers::compile(mips& mp)const
+{
+  one ->compile(mp);
+  mips another_mp;
+  two ->compile(another_mp);
+}
+
+
+void declaration::compile(mips& mp)const
+{
+  if(lt == NULL)
+   {
+     spec -> compile(mp);
+   }
+   else{
+     spec -> compile(mp);
+     mips another_mp;
+     list->compile(another_mp);
+   }
+}

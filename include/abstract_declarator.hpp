@@ -20,7 +20,12 @@ private:
   treeptr right;
   string cname = "abstract_declarator";
 };
-
+// void abstract_declarator::compile(mips& mp)const
+// {
+//   left ->compile(mp);
+//   mips another_mp;
+//   right -> compile(another_mp);
+// }
 // void abstract_declarator::translate(string& pyout){
 //     debug(cname);
 //     NotImplemented();

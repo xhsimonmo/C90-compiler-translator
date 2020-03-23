@@ -23,6 +23,13 @@ private:
   string cname = "declaration_specifiers";
 };
 
+// void declaration_specifiers::compile(mips& mp)const
+// {
+//   one ->compile(mp);
+//   mips another_mp;
+//   two ->compile(another_mp);
+// }
+
 // void declaration_specifiers::translate(string& pyout)const{
 //   debug(cname);
 //

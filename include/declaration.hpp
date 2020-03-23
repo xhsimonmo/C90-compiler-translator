@@ -20,7 +20,19 @@ private:
   treeptr lt = NULL;
   string cname = "declaration";
 };
-
+// 
+// void declaration::compile(mips& mp)const
+// {
+//   if(lt == NULL)
+//    {
+//      spec -> compile(mp);
+//    }
+//    else{
+//      spec -> compile(mp);
+//      mips another_mp;
+//      list->compile(another_mp);
+//    }
+// }
 
 // void declaration::translate(string& pyout) const
 // {
