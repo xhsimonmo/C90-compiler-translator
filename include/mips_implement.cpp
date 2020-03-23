@@ -903,3 +903,4 @@ void direct_abstract_declarator :: compile(mips& mp)
   debug(cname);
   NotImplemented();
 }
+}
