@@ -813,7 +813,6 @@ void initializer::compile(mips& mp) const
     }
 }
 
-<<<<<<< HEAD
 void initializer_list::compile(mips& mp) const
 {
   mips another_mp;
@@ -829,7 +828,6 @@ void initializer_list::compile(mips& mp) const
   }
 }
 
-=======
 void type_name::compile(mips& mp)const{
   left ->compile(mp);
   mips another_mp;
@@ -848,7 +846,6 @@ void storage_class_specifier::compile(mips& mp)const{
      std::cerr << "TYDEF!" << '\n';
    }
 }
->>>>>>> 5ee41cf5b8509e1add9f2383bae674d4878c3043
 
 void statement_list::compile(mips& mp)const{
   l -> compile(mp);
@@ -867,7 +864,6 @@ void pointer::compile(mips& mp)const
   NotImplemented();
 }
 
-<<<<<<< HEAD
 void declaration_list::compile(mips& mp)const{
   p_o -> compile(mp);
   mips another_mp;
@@ -893,8 +889,6 @@ void declaration::compile(mips& mp)const
      mips another_mp;
      lt->compile(another_mp);
    }
-=======
->>>>>>> 5ee41cf5b8509e1add9f2383bae674d4878c3043
 }
 
 void declarator::compile(mips&mp)const
