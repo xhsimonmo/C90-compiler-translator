@@ -6,6 +6,15 @@
 #include <string>
 #include <string.h>
 
+int current_frame;
+int labelcounter;
+vector<vector<stack_content>>stack_collection;
+vector<vector<string>> mpcode_collection;
+vector<int> arg_count_collection;
+bool arg_reg[4];
+int arg_overflow;
+int caller_arg_count;
+
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;
 

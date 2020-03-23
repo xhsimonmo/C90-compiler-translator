@@ -24,6 +24,30 @@ private:
   string cname = "relational_expression";
 };
 
+void relational_expression::compile(mips& mp)constant{
+  mips another_mp;
+  switch (type) {
+    case 0:
+    left->compile(mp);
+    mp.move(3,2);
+    right -> compile(another_mp);
+    mp.slt(2,3,2);
+    break;
+    case 1:
+    left->compile(mp);
+    mp.move(3,2);
+    right -> compile(another_mp);
+    mp.slt(2,2,3);//simply swap 2 and 3 registers
+    break;
+    case 2: //<=
+    left->compile(mp);
+    mp.move(3,2);
+    right -> compile(another_mp);
+
+
+  }
+}
+
 // void relational_expression::translate(string& pyout) const{
 //   debug(cname);
 //   std::string one,op;

@@ -21,6 +21,12 @@ private:
   string cname = "translation_unit";
 };
 
+// void translation_unit::compile(mips& mp)const{
+//   p_yi->compile(mp);
+//   mips another_mp;
+//   p_er->compile(another_mp);
+// }
+
 // void translation_unit::translate(string& pyout) const{
 //   debug(cname);
 //   string unit;

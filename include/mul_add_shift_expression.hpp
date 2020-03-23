@@ -53,43 +53,58 @@ class multiplicative_expression : public expression{
 //   }
 // }
 
-// void multiplicative_expression::compile(mips& mp)
-// {
-//   mul->compile(mp);
-//   mips another_mp;
-//   cast->compile(another_mp);
-//
-//   case 1://"*"
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
-//   nop();
-//   mult(2, 3);
-//   mflo(2);
-//   sw(2, sp+4, 30);
-//   mp.temp_result.var_index = sp + 4;
-//   break;
-//
-//   case 2:
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
-//   nop();
-//   mult(2, 3);
-//   mflo(2);
-//   sw(2, sp+4, 30);
-//   mp.temp_result.var_index = sp + 4;
-//   break;
-//
-//   case 3:
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
-//   nop();
-//   mult(2, 3);
-//   mfhi(2);
-//   sw(2, sp+4, 30);
-//   mp.temp_result.var_index = sp + 4;
-//   break;
-//
-// }
+void multiplicative_expression::compile(mips& mp)const
+{
+  mips another_mp;
+  int l_index;
+  int r_index;
+
+  switch (type) {
+
+  case 1://"*"
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  cast->compile(another_mp);
+  r_index = result_offset();
+  //mp.move(3, 2);
+  mul->compile(mp);
+  l_index = result_offset();
+  lw(2,r_index,30);
+  lw(2,l_index,30)
+  mp.nop();
+
+  mp.mult(2, 3);
+  mp.mflo(2);
+  result_count = result_count -4;
+  mp.sw(2, result_offset(), 30);//load to a's stack position
+  break;
+
+  case 2:
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  cast->compile(another_mp);
+  mp.move(3, 2);
+  mul->compile(mp);
+  mp.nop();
+  mp.div(2, 3);
+  mp.mflo(2);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  break;
+
+  case 3:
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  cast->compile(another_mp);
+  mp.move(3, 2);
+  mul->compile(mp);
+  mp.nop();
+  mp.div(2, 3);
+  mp.mfhi(2);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  break;
+}
+}
+
 
 
 /////////////////////////////////////additive_expression///////////////////////////////////////////////////
