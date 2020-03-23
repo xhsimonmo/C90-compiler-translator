@@ -30,7 +30,7 @@ private:
   string cname = "direct_abstract_declarator";
 };
 
-// void direct_abstract_declarator :: compile(mips& mp)
+// void direct_abstract_declarator :: compile(mips& mp)const
 // {
 //   debug(cname);
 //   NotImplemented();

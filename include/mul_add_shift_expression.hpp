@@ -238,7 +238,7 @@ class shift_expression : public expression{
 //   }
 // }
 
-// void shift_expression::compile(mips& mp)
+// void shift_expression::compile(mips& mp)const
 // {
 //   int l_index;
 //   int r_index;
