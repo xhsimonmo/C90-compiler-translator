@@ -595,11 +595,7 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
     }
-
   }
-
-
-
 
 void jump_statement::compile(mips& mp) const {
   mips mp_tmp;
