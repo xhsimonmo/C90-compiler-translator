@@ -903,3 +903,22 @@ void direct_abstract_declarator :: compile(mips& mp)
   debug(cname);
   NotImplemented();
 }
+
+void expression_statement::compile(mips& mp)const
+{
+  ptr_expr->compile(mips& mp);
+}
+
+void indentifier_list::compile(mips& mp)const // should never be called ,KR style?
+{
+  debug(cname);
+  NotImplemented();
+}
+
+void init_declarator_list::compile(mips& mp)const
+{
+  debug(cname);
+  one -> compile(mp);
+  mips another_mp;
+  two -> compile(another_mp);
+}

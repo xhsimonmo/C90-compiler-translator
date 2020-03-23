@@ -22,7 +22,10 @@ class expression_statement : public statement{
   string cname = "express_statement";
 };
 
-
+// void expression_statement::compile(mips& mp)const
+// {
+//   ptr_expr->compile(mips& mp);
+// }
 
 // void expression_statement::translate(string& pyout) const{
 //   debug(cname);
