@@ -105,6 +105,9 @@ void init_declarator::compile(mips& mp)const{
 void direct_declarator::compile(mips& mp)const
 {
   mips another_mp;
+  string array_name;
+  //create a new array
+  array_struct a;
   switch(type)
   {
     case 0:
@@ -119,9 +122,7 @@ void direct_declarator::compile(mips& mp)const
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     one->compile(another_mp);//this should fill in the array name;
-    string array_name = another_mp.info.new_array_name;
-    //create a new array
-    array_struct a;
+    array_name = another_mp.info.new_array_name;
     a.name = array_name;
     array_collection[current_frame].push_back(a);
     break;
@@ -129,6 +130,7 @@ void direct_declarator::compile(mips& mp)const
     case 3:
     NotImplemented();// no Implement for array[]
     break;
+
     case 4:
     one->compile(mp); // eg:  f()
     two->compile(another_mp);//parameter!
@@ -621,13 +623,13 @@ void primary_expression :: compile(mips& mp) const{
       mp.lw(2,var_index,30);//load value to $2
     }
     result_count = result_count -4;
-    sw(2,result_offset(),30);
+    mp.sw(2,result_offset(),30);
     break;
     case 1:
     mp.info.result = element;
     mp.li(2,element);
     result_count = result_count -4;
-    sw(2,result_offset(),30);
+    mp.sw(2,result_offset(),30);
 
     break;
 
@@ -683,20 +685,19 @@ void postfix_expression::compile(mips& mp)const{
   string name;
   int array_index;
   int index;
-  int offset;
   int increment;
 
   switch (type) {
     case 0://read from array
     ptr->compile(another_mp);//fill array name (in all frame arrays)
     name = another_mp.info.call_array_name;
-    array_index = find_array(name);//index of array in all arrays of current frame
+    array_index = mp.find_array(name);//index of array in all arrays of current frame
 
     opt->compile(mp);//should store index in $2; store index in info.result
     index = stoi(mp.info.result);//array element index
     // mp.sll(2, 2, 2);//x4 to get byte increment
     offset = array_collection[current_frame][array_index].array_add[0];
-    increment = stoi(offset) + index * 4;
+    increment = offset + index * 4;
     // mp.addi(2, 2, to_string(offset));
     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
     break;

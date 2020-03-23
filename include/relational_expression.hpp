@@ -24,31 +24,28 @@ private:
   string cname = "relational_expression";
 };
 
-<<<<<<< HEAD
-void relational_expression::compile(mips& mp)const{
-  mips another_mp;
-  switch (type) {
-    case 0:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,3,2);
-    break;
-    case 1:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,2,3);//simply swap 2 and 3 registers
-    break;
-    case 2: //<=
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-
-
-  }
-}
-=======
+// void relational_expression::compile(mips& mp)const{
+//   mips another_mp;
+//   switch (type) {
+//     case 0:
+//     left->compile(mp);
+//     mp.move(3,2);
+//     right -> compile(another_mp);
+//     mp.slt(2,3,2);
+//     break;
+//     case 1:
+//     left->compile(mp);
+//     mp.move(3,2);
+//     right -> compile(another_mp);
+//     mp.slt(2,2,3);//simply swap 2 and 3 registers
+//     break;
+//     case 2: //<=
+//     left->compile(mp);
+//     mp.move(3,2);
+//     right -> compile(another_mp);
+//
+//   }
+// }
 // void relational_expression::compile(mips& mp)const{
 //   mips another_mp;
 //   switch (type) {
@@ -71,7 +68,6 @@ void relational_expression::compile(mips& mp)const{
 //
 //   }
 // }
->>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 
 // void relational_expression::translate(string& pyout) const{
 //   debug(cname);

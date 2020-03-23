@@ -141,6 +141,17 @@ public:
     return -1;//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
+  int find_array(string name)
+  {
+    for(int i = 0; i < array_collection.size(); i++)
+    {
+      if(name == array_collection[current_frame][i].name)
+      {
+        return i;
+      }
+    }
+  }
+
 
   //make function call
   void function_call(string func_name, vector<string> func_param, int ret_add)
