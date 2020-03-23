@@ -37,4 +37,12 @@ private:
 //   pyout = one + "," + five;
 // }
 
+void base_expression::compile(mips& mp)const
+{
+  debug(cname);
+  mips another_mp;
+  p_one->compile(mp);
+  p_five->compile(another_mp);
+}
+
 #endif

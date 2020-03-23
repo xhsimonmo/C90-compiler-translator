@@ -119,7 +119,7 @@ void direct_declarator::compile(mips& mp)const
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     one->compile(another_mp);//this should fill in the array name;
-    string array_name = another_mp.info.array_name;
+    string array_name = another_mp.info.new_array_name;
     //create a new array
     array_struct a;
     a.name = array_name;
@@ -296,121 +296,102 @@ void cast_expression::compile(mips& mp)const
 void multiplicative_expression::compile(mips& mp)const
 {
   mips another_mp;
-  int l_index;
-  int r_index;
-
   switch (type) {
 
   case 1://"*"
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  r_index = result_offset();
-  //mp.move(3, 2);
+  mp.move(3, 2);
   mul->compile(mp);
-  l_index = result_offset();
-  mp.lw(2,r_index,30);
-  mp.lw(3,l_index,30)
   mp.nop();
-
   mp.mult(2, 3);
   mp.mflo(2);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 2:
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  r_index = result_offset();
+  mp.move(3, 2);
   mul->compile(mp);
-  l_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
   mp.nop();
-
   mp.div(2, 3);
   mp.mflo(2);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 3:
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  r_index = result_offset();
+  mp.move(3, 2);
   mul->compile(mp);
-  l_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
   mp.nop();
-
   mp.div(2, 3);
   mp.mfhi(2);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 }
 }
 
-
-void additive_expression::compile(mips& mp)
+void additive_expression::compile(mips& mp)const
 {
-  int l_index;
-  int r_index;
-  add->compile(mp);
-  l_index = result_offset();
   mips another_mp;
-  mul->compile(another_mp);
-  r_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
+  switch (type) {
 
   case 1://"+"
-  // lw(2, mp.temp_result.var_index, 30);
-  // lw(3, another_mp.temp_result.var_index, 30);
-  nop();
-  add(2, 2, 3);
-  result_count = result_count - 4;
-  mp.sw(2,result_offset(),30);
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  mul->compile(another_mp);
+  mp.move(3, 2);
+  add->compile(mp);
+  mp.nop();
+  mp.add(2, 2, 3);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 2://"-"
-  nop();
-  sub(2, 2, 3);
-  result_count = result_count - 4;
-  mp.sw(2,result_offset(),30);
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  mul->compile(another_mp);
+  mp.move(3, 2);
+  add->compile(mp);
+  mp.nop();
+  mp.sub(2, 2, 3);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
-
+}
 }
 
-void shift_expression::compile(mips& mp)
+void shift_expression::compile(mips& mp)const
 {
-  int l_index;
-  int r_index;
-  l->compile(mp);
-  l_index = result_offset();
+
   mips another_mp;
-  r->compile(another_mp);
-  r_index = result_offset();
-  mp.lw(3,r_index,30);
-  mp.lw(2,l_index,30);
-
+  switch (type) {
   case 1://"<<"
-
-  sll(2, 2, 3);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  r->compile(another_mp);
+  mp.move(3, 2);
+  l->compile(mp);
+  mp.nop();
+  mp.sll(2, 2, 3);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
 
   case 2://">>"
-  sra(2, 2, 3);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  // mp.lw(2, mp.info.var_index, 30);
+  // mp.lw(3, another_mp.info.var_index, 30);
+  r->compile(another_mp);
+  mp.move(3, 2);
+  l->compile(mp);
+  mp.nop();
+  mp.sra(2, 2, 3);
+  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
   break;
-
+}
 }
 
 void unary_expression::compile(mips& mp)const
@@ -698,17 +679,24 @@ void postfix_expression::compile(mips& mp)const{
   string variable_name;
   string function_name;
   int offset;
+
+  string name;
+  int array_index;
+  int index;
+  int offset;
+  int increment;
+
   switch (type) {
     case 0://read from array
     ptr->compile(another_mp);//fill array name (in all frame arrays)
-    string name = another_mp.info.call_array_name;
-    int array_index = find_array(name);//index of array in all arrays of current frame
+    name = another_mp.info.call_array_name;
+    array_index = find_array(name);//index of array in all arrays of current frame
 
     opt->compile(mp);//should store index in $2; store index in info.result
-    int index = stoi(mp.info.result);//array element index
+    index = stoi(mp.info.result);//array element index
     // mp.sll(2, 2, 2);//x4 to get byte increment
-    int offset = array_collection[current_frame][array_index].array_add[0];
-    int increment = stoi(offset) + index * 4;
+    offset = array_collection[current_frame][array_index].array_add[0];
+    increment = stoi(offset) + index * 4;
     // mp.addi(2, 2, to_string(offset));
     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
     break;
@@ -731,7 +719,7 @@ void postfix_expression::compile(mips& mp)const{
     case 4:
     NotImplemented();
     break;
-    case 5: // a++
+    case 5:
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     variable_name = another_mp.info.func_name;
@@ -765,18 +753,27 @@ void argument_expression_list::compile(mips& mp)const{
   }
 }
 
-
+// initializer
+// 	: assignment_expression                  {$$ = $1;}
+// 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
+// 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
+// 	;
 void initializer::compile(mips& mp) const
 {
+  int size;
+  int element[size];
+  int index;
+  int offset;
+  int last_index;
   switch(type)
   {
-    // array_collection[current_frame][array_index].array_add
     case 0:
     p->compile(mp);//this should store all identifier address in mp;
-    int size = stoi(mp.info.result);//size of the array
-    int element[size];
+    size = stoi(mp.info.result);//size of the array
+    last_index = array_collection[current_frame].size() - 1;
+    offset = array_collection[current_frame][last_index].array_add[0];
     //allocate space for array elements
-    for(int i = 0; i < size(); i++)
+    for(int i = 0; i < size; i++)
     {
       mp.sw(0, offset, 30);//TODO:offset???
       element[i] = offset;
@@ -784,7 +781,7 @@ void initializer::compile(mips& mp) const
     }
     //TODO: unsure about numbers: li instead of lw?
     //it's the last array in frame
-    int index = array_collection[current_frame].size()-1;
+    index = array_collection[current_frame].size()-1;
     for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
     {
       mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
@@ -794,10 +791,11 @@ void initializer::compile(mips& mp) const
     case 1:
     //same as above
     p->compile(mp);//this should store all identifier address in mp;
-    int size = stoi(mp.info.result);//size of the array
-    int element[size];
+    size = stoi(mp.info.result);//size of the array
+    last_index = array_collection[current_frame].size() - 1;
+    offset = array_collection[current_frame][last_index].array_add[0];
     //allocate space for array elements
-    for(int i = 0; i < size(); i++)
+    for(int i = 0; i < size; i++)
     {
       mp.sw(0, offset, 30);//TODO:offset???
       element[i] = offset;
@@ -805,16 +803,16 @@ void initializer::compile(mips& mp) const
     }
     //TODO: unsure about numbers: li instead of lw?
     //it's the last array in frame
-    int index = array_collection[current_frame].size()-1;
+    index = array_collection[current_frame].size()-1;
     for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
     {
       mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
       mp.nop();
       mp.sw(2, element[i], 30);
     }
-  }
 }
 
+<<<<<<< HEAD
 void initializer_list::compile(mips& mp) const
 {
   mips another_mp;
@@ -830,6 +828,26 @@ void initializer_list::compile(mips& mp) const
   }
 }
 
+=======
+void type_name::compile(mips& mp)const{
+  left ->compile(mp);
+  mips another_mp;
+  right ->compile(another_mp);
+}
+
+void translation_unit::compile(mips& mp)const{
+  p_yi->compile(mp);
+  mips another_mp;
+  p_er->compile(another_mp);
+}
+
+void storage_class_specifier::compile(mips& mp)const{
+   debug(cname);
+   if(type == 0){
+     std::cerr << "TYDEF!" << '\n';
+   }
+}
+>>>>>>> 5ee41cf5b8509e1add9f2383bae674d4878c3043
 
 void statement_list::compile(mips& mp)const{
   l -> compile(mp);
@@ -843,69 +861,12 @@ void specifier_qualifier_list::compile(mips& mp)const{
   list ->compile(another_mp);
 }
 
-void type_name::compile(mips& mp)const{
-  left ->compile(mp);
-  mips another_mp;
-  right ->compile(another_mp);
-}
-
-void translation_unit::compile(mips& mp)const{
-  p_yi->compile(mp);
-  mips another_mp;
-  p_er->compile(another_mp);
-}
-
-
-void storage_class_specifier::compile(mips& mp)const{
-   debug(cname);
-   if(type == 0){
-     std::cerr << "TYDEF!" << '\n';
-   }
-}
-
-void relational_expression::compile(mips& mp)const{
-  mips another_mp;
-  switch (type) {
-    case 0:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,3,2);
-    break;
-    case 1:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,2,3);//simply swap 2 and 3 registers
-    break;
-    case 2: //<=
-    break;
-    case 3:
-    break;
-
-  }
-}
-
-void abstract_declarator::compile(mips& mp)const
+void pointer::compile(mips& mp)const
 {
-  left ->compile(mp);
-  mips another_mp;
-  right -> compile(another_mp);
-}
-
-void base_expression::compile(mips& mp)const
-{
-  p_one -> compile(mp);
-  mips another_mp;
-  p_five ->compile(another_mp);
-}
-
-void conditional_expression::compile(mips& mp)const
-{
-  debug(cname);
   NotImplemented();
 }
 
+<<<<<<< HEAD
 void declaration_list::compile(mips& mp)const{
   p_o -> compile(mp);
   mips another_mp;
@@ -931,6 +892,8 @@ void declaration::compile(mips& mp)const
      mips another_mp;
      lt->compile(another_mp);
    }
+=======
+>>>>>>> 5ee41cf5b8509e1add9f2383bae674d4878c3043
 }
 
 void declarator::compile(mips&mp)const

@@ -56,15 +56,26 @@ class multiplicative_expression : public expression{
 // void multiplicative_expression::compile(mips& mp)const
 // {
 //   mips another_mp;
+<<<<<<< HEAD
+=======
 //   int l_index;
 //   int r_index;
 //
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   switch (type) {
 //
 //   case 1://"*"
 //   // mp.lw(2, mp.info.var_index, 30);
 //   // mp.lw(3, another_mp.info.var_index, 30);
 //   cast->compile(another_mp);
+<<<<<<< HEAD
+//   mp.move(3, 2);
+//   mul->compile(mp);
+//   mp.nop();
+//   mp.mult(2, 3);
+//   mp.mflo(2);
+//   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+=======
 //   r_index = result_offset();
 //   //mp.move(3, 2);
 //   mul->compile(mp);
@@ -77,12 +88,21 @@ class multiplicative_expression : public expression{
 //   mp.mflo(2);
 //   result_count = result_count -4;
 //   mp.sw(2, result_offset(), 30);//save the result in
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   break;
 //
 //   case 2:
 //   // mp.lw(2, mp.info.var_index, 30);
 //   // mp.lw(3, another_mp.info.var_index, 30);
 //   cast->compile(another_mp);
+<<<<<<< HEAD
+//   mp.move(3, 2);
+//   mul->compile(mp);
+//   mp.nop();
+//   mp.div(2, 3);
+//   mp.mflo(2);
+//   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+=======
 //   r_index = result_offset();
 //   mul->compile(mp);
 //   l_index = result_offset();
@@ -94,12 +114,21 @@ class multiplicative_expression : public expression{
 //   mp.mflo(2);
 //   result_count = result_count -4;
 //   mp.sw(2, result_offset(), 30);//save the result in
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   break;
 //
 //   case 3:
 //   // mp.lw(2, mp.info.var_index, 30);
 //   // mp.lw(3, another_mp.info.var_index, 30);
 //   cast->compile(another_mp);
+<<<<<<< HEAD
+//   mp.move(3, 2);
+//   mul->compile(mp);
+//   mp.nop();
+//   mp.div(2, 3);
+//   mp.mfhi(2);
+//   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+=======
 //   r_index = result_offset();
 //   mul->compile(mp);
 //   l_index = result_offset();
@@ -111,6 +140,7 @@ class multiplicative_expression : public expression{
 //   mp.mfhi(2);
 //   result_count = result_count -4;
 //   mp.sw(2, result_offset(), 30);//save the result in
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   break;
 // }
 // }

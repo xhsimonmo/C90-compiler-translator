@@ -27,8 +27,14 @@ extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<int> arg_count_collection;//this is the counter of arguments callee function
 //extern vector<string>mpcode;//final mips code collection
 
-//extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
-//extern int array_index;//current array index in current frame
+struct array_struct
+{
+  string name;
+  string size;
+  vector<int>array_add;//store array initializer address;
+};
+extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
+extern int array_index;//current array index in current frame
 inline int result_offset(){
   int offset = result_count + (-4)*stack_collection[current_frame].size();
   return offset;
@@ -54,13 +60,6 @@ public:
   };
 
   temp_result info;
-
-  struct array_struct
-  {
-    string name;
-    string size;
-    vector<int>array_add;//store array initializer address;
-  };
 
   mips()//initialisation
   {
