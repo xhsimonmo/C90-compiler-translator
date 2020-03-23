@@ -812,6 +812,9 @@ void initializer_list::compile(mips& mp) const
     left->compile(another_mp);
     right->compile(mp);
   }
+}
 
-
+void abstract_declarator::compile(mips& mp)
+{
+  NotImplemented();
 }
