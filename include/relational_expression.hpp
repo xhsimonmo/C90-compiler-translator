@@ -24,7 +24,7 @@ private:
   string cname = "relational_expression";
 };
 
-void relational_expression::compile(mips& mp)constant{
+void relational_expression::compile(mips& mp)const{
   mips another_mp;
   switch (type) {
     case 0:

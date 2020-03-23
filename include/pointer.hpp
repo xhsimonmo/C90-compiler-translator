@@ -26,4 +26,9 @@ private:
 //   NotImplemented();
 // }
 
+// void pointer::compile(mips& mp)const
+// {
+//   NotImplemented();
+// }
+
 #endif

@@ -119,7 +119,7 @@ void direct_declarator::compile(mips& mp)const
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     one->compile(another_mp);//this should fill in the array name;
-    string array_name = another_mp.info.array_name;
+    string array_name = another_mp.info.new_array_name;
     //create a new array
     array_struct a;
     a.name = array_name;
@@ -679,17 +679,24 @@ void postfix_expression::compile(mips& mp)const{
   string variable_name;
   string function_name;
   int offset;
+
+  string name;
+  int array_index;
+  int index;
+  int offset;
+  int increment;
+
   switch (type) {
     case 0://read from array
     ptr->compile(another_mp);//fill array name (in all frame arrays)
-    string name = another_mp.info.call_array_name;
-    int array_index = find_array(name);//index of array in all arrays of current frame
+    name = another_mp.info.call_array_name;
+    array_index = find_array(name);//index of array in all arrays of current frame
 
     opt->compile(mp);//should store index in $2; store index in info.result
-    int index = stoi(mp.info.result);//array element index
+    index = stoi(mp.info.result);//array element index
     // mp.sll(2, 2, 2);//x4 to get byte increment
-    int offset = array_collection[current_frame][array_index].array_add[0];
-    int increment = stoi(offset) + index * 4;
+    offset = array_collection[current_frame][array_index].array_add[0];
+    increment = stoi(offset) + index * 4;
     // mp.addi(2, 2, to_string(offset));
     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
     break;
@@ -712,7 +719,7 @@ void postfix_expression::compile(mips& mp)const{
     case 4:
     NotImplemented();
     break;
-    case 5: // a++
+    case 5:
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     variable_name = another_mp.info.func_name;
@@ -751,54 +758,59 @@ void argument_expression_list::compile(mips& mp)const{
 // 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
 // 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
 // 	;
-// void initializer::compile(mips& mp) const
-// {
-//   switch(type)
-//   {
-//     // array_collection[current_frame][array_index].array_add
-//     case 0:
-//     p->compile(mp);//this should store all identifier address in mp;
-//     int size = stoi(mp.info.result);//size of the array
-//     int element[size];
-//     //allocate space for array elements
-//     for(int i = 0; i < size(); i++)
-//     {
-//       mp.sw(0, offset, 30);//TODO:offset???
-//       element[i] = offset;
-//       offset = offset + 4;
-//     }
-//     //TODO: unsure about numbers: li instead of lw?
-//     //it's the last array in frame
-//     int index = array_collection[current_frame].size()-1;
-//     for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
-//     {
-//       mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
-//       mp.nop();
-//       mp.sw(2, element[i], 30);
-//     }
-//     case 1:
-//     //same as above
-//     p->compile(mp);//this should store all identifier address in mp;
-//     int size = stoi(mp.info.result);//size of the array
-//     int element[size];
-//     //allocate space for array elements
-//     for(int i = 0; i < size(); i++)
-//     {
-//       mp.sw(0, offset, 30);//TODO:offset???
-//       element[i] = offset;
-//       offset = offset + 4;
-//     }
-//     //TODO: unsure about numbers: li instead of lw?
-//     //it's the last array in frame
-//     int index = array_collection[current_frame].size()-1;
-//     for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
-//     {
-//       mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
-//       mp.nop();
-//       mp.sw(2, element[i], 30);
-//     }
-//   }
-// }
+void initializer::compile(mips& mp) const
+{
+  int size;
+  int element[size];
+  int index;
+  int offset;
+  int last_index;
+  switch(type)
+  {
+    case 0:
+    p->compile(mp);//this should store all identifier address in mp;
+    size = stoi(mp.info.result);//size of the array
+    last_index = array_collection[current_frame].size() - 1;
+    offset = array_collection[current_frame][last_index].array_add[0];
+    //allocate space for array elements
+    for(int i = 0; i < size; i++)
+    {
+      mp.sw(0, offset, 30);//TODO:offset???
+      element[i] = offset;
+      offset = offset + 4;
+    }
+    //TODO: unsure about numbers: li instead of lw?
+    //it's the last array in frame
+    index = array_collection[current_frame].size()-1;
+    for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+    {
+      mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+      mp.nop();
+      mp.sw(2, element[i], 30);
+    }
+    case 1:
+    //same as above
+    p->compile(mp);//this should store all identifier address in mp;
+    size = stoi(mp.info.result);//size of the array
+    last_index = array_collection[current_frame].size() - 1;
+    offset = array_collection[current_frame][last_index].array_add[0];
+    //allocate space for array elements
+    for(int i = 0; i < size; i++)
+    {
+      mp.sw(0, offset, 30);//TODO:offset???
+      element[i] = offset;
+      offset = offset + 4;
+    }
+    //TODO: unsure about numbers: li instead of lw?
+    //it's the last array in frame
+    index = array_collection[current_frame].size()-1;
+    for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+    {
+      mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+      mp.nop();
+      mp.sw(2, element[i], 30);
+    }
+}
 
 void type_name::compile(mips& mp)const{
   left ->compile(mp);
@@ -811,7 +823,6 @@ void translation_unit::compile(mips& mp)const{
   mips another_mp;
   p_er->compile(another_mp);
 }
-
 
 void storage_class_specifier::compile(mips& mp)const{
    debug(cname);
@@ -830,5 +841,11 @@ void specifier_qualifier_list::compile(mips& mp)const{
   spec->compile(mp);
   mips another_mp;
   list ->compile(another_mp);
->>>>>>> 650badd1190c1755cd4756e388af26d990459557
+}
+
+void pointer::compile(mips& mp)const
+{
+  NotImplemented();
+}
+
 }
