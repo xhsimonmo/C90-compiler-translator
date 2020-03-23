@@ -20,7 +20,7 @@ private:
   treeptr lt = NULL;
   string cname = "declaration";
 };
-// 
+//
 // void declaration::compile(mips& mp)const
 // {
 //   if(lt == NULL)
@@ -30,7 +30,7 @@ private:
 //    else{
 //      spec -> compile(mp);
 //      mips another_mp;
-//      list->compile(another_mp);
+//      lt->compile(another_mp);
 //    }
 // }
 
