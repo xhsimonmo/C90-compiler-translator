@@ -14,6 +14,8 @@ extern int labelcounter;//make unique label by number
 // extern int frame_counter;//make unique number for frame: as the stack index!
 // //remember the locations of each variable (offset relative to the frame pointer, which is a register)
 
+extern int result_count;
+
 struct stack_content
 {
   string name;//variable name: i
@@ -27,6 +29,12 @@ extern vector<int> arg_count_collection;//this is the counter of arguments calle
 
 //extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
 //extern int array_index;//current array index in current frame
+inline int result_offset(){
+  int offset = result_count + (-4)*stack_collection[current_frame].size();
+  return offset;
+}
+
+
 inline void initilise_arg(bool b);
 class mips{
 public:
@@ -86,7 +94,7 @@ public:
     sw(31,8,29);
     // this instruction is added at the end_frame: addiu(29,29,offset)
     move(29,30);
-
+    result_count = 0;
     //frame counter +1
     //frame_counter++;
   }
@@ -109,6 +117,7 @@ public:
     string function_header = "addiu $29,$29,"+str_memory_allocate;
     mpcode_collection[current_frame].insert(it+3, function_header);//add function header back
     initilise_arg(true);;//release the argument registers; actually not necessay, let it be there
+    result_count=0;//set it back
     //current_frame--;
   }
 

@@ -1,5 +1,6 @@
 #include "menu.hpp"
 #include "ast.hpp"
+#include"mips.hpp"
 
 void function_definition::compile(mips& mp)const
 {
@@ -612,9 +613,6 @@ void primary_expression :: compile(mips& mp) const{
   int var_index;
   switch (type) {
     case 0: // got IDENTIFIER
-    // mp.var_index = mp.var_index + 4;
-    // mp.func_variables.push_back(element,mp.var_index );
-    //mp.var_index = mp.var_index + 4;
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
@@ -622,16 +620,15 @@ void primary_expression :: compile(mips& mp) const{
     {
       mp.lw(2,var_index,30);//load value to $2
     }
-
+    result_count = result_count -4;
+    sw(2,result_offset(),30);
     break;
-
     case 1:
-
     mp.info.result = element;
     mp.li(2,element);
-    //mp.li(2,element);//element is the value to stored
-    //mp.sw(2,mp.var_index,30)
-    //mp.var_index = mp.var_index + 4;
+    result_count = result_count -4;
+    sw(2,result_offset(),30);
+
     break;
 
     case 2:
@@ -683,6 +680,16 @@ void postfix_expression::compile(mips& mp)const{
   string function_name;
   int offset;
   switch (type) {
+<<<<<<< HEAD
+    case 0://array?
+    // ptr->compile(another_mp);//fill index of array (in all frame arrays)
+    // opt->compile(mp);//should store index in $2
+    // mp.sll(2, 2, 2);//x4
+    // offset = array_collection[current_frame][array_index].array_add[0];
+    // mp.addi(2, 2, to_string(offset));
+    // mp.sw(2, 2, fp);
+    //store the result in $2
+=======
     case 0://read from array
     ptr->compile(another_mp);//fill array name (in all frame arrays)
     string name = another_mp.info.call_array_name;
@@ -695,6 +702,7 @@ void postfix_expression::compile(mips& mp)const{
     int increment = stoi(offset) + index * 4;
     // mp.addi(2, 2, to_string(offset));
     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
+>>>>>>> dc145afce0dd58bfc4e8b940574a4a00496b9d07
     break;
     case 1:
     ptr->compile(mp);
@@ -721,14 +729,14 @@ void postfix_expression::compile(mips& mp)const{
     variable_name = another_mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,"1");
-    mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
+    mp.sw(2,mp.find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
     ptr -> compile(mp);
     variable_name = another_mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,"-1");
-    mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
+    mp.sw(2,mp.find_variable(variable_name, stack_collection[current_frame]),30);
     break;
   }
 }
@@ -749,6 +757,81 @@ void argument_expression_list::compile(mips& mp)const{
   }
 }
 
+<<<<<<< HEAD
+// initializer
+// 	: assignment_expression                  {$$ = $1;}
+// 	| '{' initializer_list '}'               {$$ = new initializer(0, $2);}
+// 	| '{' initializer_list ',' '}'           {$$ = new initializer(1, $2);}
+// 	;
+// void initializer::compile(mips& mp) const
+// {
+//   switch(type)
+//   {
+//     // array_collection[current_frame][array_index].array_add
+//     case 0:
+//     p->compile(mp);//this should store all identifier address in mp;
+//     int size = stoi(mp.info.result);//size of the array
+//     int element[size];
+//     //allocate space for array elements
+//     for(int i = 0; i < size(); i++)
+//     {
+//       mp.sw(0, offset, 30);//TODO:offset???
+//       element[i] = offset;
+//       offset = offset + 4;
+//     }
+//     //TODO: unsure about numbers: li instead of lw?
+//     //it's the last array in frame
+//     int index = array_collection[current_frame].size()-1;
+//     for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+//     {
+//       mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+//       mp.nop();
+//       mp.sw(2, element[i], 30);
+//     }
+//     case 1:
+//     //same as above
+//     p->compile(mp);//this should store all identifier address in mp;
+//     int size = stoi(mp.info.result);//size of the array
+//     int element[size];
+//     //allocate space for array elements
+//     for(int i = 0; i < size(); i++)
+//     {
+//       mp.sw(0, offset, 30);//TODO:offset???
+//       element[i] = offset;
+//       offset = offset + 4;
+//     }
+//     //TODO: unsure about numbers: li instead of lw?
+//     //it's the last array in frame
+//     int index = array_collection[current_frame].size()-1;
+//     for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+//     {
+//       mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+//       mp.nop();
+//       mp.sw(2, element[i], 30);
+//     }
+//   }
+// }
+
+void type_name::compile(mips& mp)const{
+  left ->compile(mp);
+  mips another_mp;
+  right ->compile(another_mp);
+}
+
+void translation_unit::compile(mips& mp)const{
+  p_yi->compile(mp);
+  mips another_mp;
+  p_er->compile(another_mp);
+}
+
+
+void storage_class_specifier::compile(mips& mp)const{
+   debug(cname);
+   if(type == 0){
+     std::cerr << "TYDEF!" << '\n';
+   }
+}
+=======
 
 void initializer::compile(mips& mp) const
 {
@@ -812,9 +895,24 @@ void initializer_list::compile(mips& mp) const
     left->compile(another_mp);
     right->compile(mp);
   }
+<<<<<<< HEAD
 }
 
 void abstract_declarator::compile(mips& mp)
 {
   NotImplemented();
+=======
+>>>>>>> dc145afce0dd58bfc4e8b940574a4a00496b9d07
+
+void statement_list::compile(mips& mp)const{
+  l -> compile(mp);
+  mips another_mp;
+  r -> compile (another_mp);
+}
+
+void specifier_qualifier_list::compile(mips& mp)const{
+  spec->compile(mp);
+  mips another_mp;
+  list ->compile(another_mp);
+>>>>>>> 650badd1190c1755cd4756e388af26d990459557
 }

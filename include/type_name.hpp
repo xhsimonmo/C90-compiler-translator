@@ -19,6 +19,12 @@ private:
   treeptr right;
   string cname = "type_name";
 };
+// 
+// void type_name::compile(mips& mp)const{
+//   left ->compile(mp);
+//   mips another_mp;
+//   right ->compile(another_mp);
+// }
 
 // void type_name::translate(string& pyout) const{
 //     debug(cname);

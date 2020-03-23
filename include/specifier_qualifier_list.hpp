@@ -21,6 +21,12 @@ private:
   string cname = "specifier_qualifier_list";
 };
 
+// void specifier_qualifier_list::compile(mips& mp)const{
+//   spec->compile(mp);
+//   mips another_mp;
+//   list ->compile(another_mp);
+// }
+
 // void specifier_qualifier_list::translate(string& pyout) const
 // {
 //   debug(cname);
