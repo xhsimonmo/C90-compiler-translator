@@ -21,6 +21,12 @@ private:
   string cname = "identifier_list";
 };
 
+// void indentifier_list::compile(mips& mp)const
+// {
+//   debug(cname);
+//   NotImplemented();
+// }
+
 // void identifier_list::translate(string& pyout) const{
 //   debug(cname);
 //     NotImplemented();
