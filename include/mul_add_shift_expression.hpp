@@ -22,8 +22,8 @@ class multiplicative_expression : public expression{
     }
   private:
     int type;
-    treeptr mul;
-    treeptr cast;
+    treeptr mul = NULL;
+    treeptr cast = NULL;
     string cname = "multiplicative_expression";
 };
 
@@ -56,42 +56,91 @@ class multiplicative_expression : public expression{
 // void multiplicative_expression::compile(mips& mp)const
 // {
 //   mips another_mp;
+<<<<<<< HEAD
+=======
+//   int l_index;
+//   int r_index;
+//
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   switch (type) {
 //
 //   case 1://"*"
 //   // mp.lw(2, mp.info.var_index, 30);
 //   // mp.lw(3, another_mp.info.var_index, 30);
 //   cast->compile(another_mp);
+<<<<<<< HEAD
 //   mp.move(3, 2);
 //   mul->compile(mp);
 //   mp.nop();
 //   mp.mult(2, 3);
 //   mp.mflo(2);
 //   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+=======
+//   r_index = result_offset();
+//   //mp.move(3, 2);
+//   mul->compile(mp);
+//   l_index = result_offset();
+//   lw(2,r_index,30);
+//   lw(3,l_index,30);
+//   mp.nop();
+//
+//   mp.mult(2, 3);
+//   mp.mflo(2);
+//   result_count = result_count -4;
+//   mp.sw(2, result_offset(), 30);//save the result in
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   break;
 //
 //   case 2:
 //   // mp.lw(2, mp.info.var_index, 30);
 //   // mp.lw(3, another_mp.info.var_index, 30);
 //   cast->compile(another_mp);
+<<<<<<< HEAD
 //   mp.move(3, 2);
 //   mul->compile(mp);
 //   mp.nop();
 //   mp.div(2, 3);
 //   mp.mflo(2);
 //   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+=======
+//   r_index = result_offset();
+//   mul->compile(mp);
+//   l_index = result_offset();
+//   lw(3,r_index,30);
+//   lw(2,l_index,30)
+//   mp.nop();
+//
+//   mp.div(2, 3);
+//   mp.mflo(2);
+//   result_count = result_count -4;
+//   mp.sw(2, result_offset(), 30);//save the result in
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   break;
 //
 //   case 3:
 //   // mp.lw(2, mp.info.var_index, 30);
 //   // mp.lw(3, another_mp.info.var_index, 30);
 //   cast->compile(another_mp);
+<<<<<<< HEAD
 //   mp.move(3, 2);
 //   mul->compile(mp);
 //   mp.nop();
 //   mp.div(2, 3);
 //   mp.mfhi(2);
 //   // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+=======
+//   r_index = result_offset();
+//   mul->compile(mp);
+//   l_index = result_offset();
+//   lw(3,r_index,30);
+//   lw(2,l_index,30)
+//   mp.nop();
+//
+//   mp.div(2, 3);
+//   mp.mfhi(2);
+//   result_count = result_count -4;
+//   mp.sw(2, result_offset(), 30);//save the result in
+>>>>>>> 164926091fc102c411f88cb32c24f0e26fb6da47
 //   break;
 // }
 // }
@@ -117,7 +166,8 @@ class additive_expression : public expression{
     };
   private:
     int type;
-    treeptr add, mul;
+    treeptr add = NULL;
+    treeptr mul = NULL;
     string cname = "additive_expression";
 };
 
@@ -144,26 +194,30 @@ class additive_expression : public expression{
 
 // void additive_expression::compile(mips& mp)
 // {
+//   int l_index;
+//   int r_index;
 //   add->compile(mp);
+//   l_index = result_offset();
 //   mips another_mp;
 //   mul->compile(another_mp);
+//   r_index = result_offset();
+//   lw(3,r_index,30);
+//   lw(2,l_index,30);
 //
 //   case 1://"+"
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
+//   // lw(2, mp.temp_result.var_index, 30);
+//   // lw(3, another_mp.temp_result.var_index, 30);
 //   nop();
 //   add(2, 2, 3);
-//   sw(2, sp+4, 30);
-//   mp.temp_result.var_index = sp + 4;
+//   result_count = result_count - 4;
+//   mp.sw(2,result_offset(),30);
 //   break;
 //
 //   case 2://"-"
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
 //   nop();
 //   sub(2, 2, 3);
-//   sw(2, sp+4, 30);
-//   mp.temp_result.var_index = sp + 4;
+//   result_count = result_count - 4;
+//   mp.sw(2,result_offset(),30);
 //   break;
 //
 // }
@@ -216,26 +270,27 @@ class shift_expression : public expression{
 
 // void shift_expression::compile(mips& mp)
 // {
+//   int l_index;
+//   int r_index;
 //   l->compile(mp);
+//   l_index = result_offset();
 //   mips another_mp;
 //   r->compile(another_mp);
+//   r_index = result_offset();
+//   lw(3,r_index,30);
+//   lw(2,l_index,30);
 //
 //   case 1://"<<"
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
-//   nop();
+//
 //   sll(2, 2, 3);
-//   sw(2, sp+4, 30);
-//   mp.temp_result.var_index = sp + 4;
+//   result_count = result_count -4;
+//   mp.sw(2, result_offset(), 30);//save the result in
 //   break;
 //
 //   case 2://">>"
-//   lw(2, mp.temp_result.var_index, 30);
-//   lw(3, another_mp.temp_result.var_index, 30);
-//   nop();
 //   sra(2, 2, 3);
-//   sw(2, sp+4, 30);
-//   mp.var_index = sp + 4;
+//   result_count = result_count -4;
+//   mp.sw(2, result_offset(), 30);//save the result in
 //   break;
 //
 // }

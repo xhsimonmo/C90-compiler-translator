@@ -21,6 +21,11 @@ private:
   string cname = "conditional_expression";
 };
 
+// void conditional_expression::compile(mips& mp)const
+// {
+//   debug(cname);
+//   NotImplemented();
+// }
 // void conditional_expression::translate(string& pyout) const{
 //   debug(cname);
 //   NotImplemented();

@@ -14,6 +14,7 @@ vector<int> arg_count_collection;
 bool arg_reg[4];
 int arg_overflow;
 int caller_arg_count;
+int result_count;
 
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;

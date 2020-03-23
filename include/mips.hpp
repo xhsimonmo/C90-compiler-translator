@@ -110,7 +110,7 @@ public:
 
     auto it = mpcode_collection[current_frame].begin();
     //info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
-    int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + 4; // 4 is compulsory but nor necessary,just to be safe
+    int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + -1*result_count+ 4; // 4 is compulsory but nor necessary,just to be safe
     memory_allocate = -4*memory_allocate;
     string str_memory_allocate = to_string(memory_allocate);
     string function_header = "addiu $29,$29,"+str_memory_allocate;
