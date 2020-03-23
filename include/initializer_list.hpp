@@ -41,4 +41,19 @@ private:
 //   }
 // }
 
+// void initializer_list::compile(mips& mp) const
+// {
+//   mips another_mp;
+//   switch(type)
+//   {
+//     case 0:
+//     left->compile(mp);
+//     break;
+//
+//     case 1:
+//     left->compile(another_mp);
+//     right->compile(mp);
+//   }
+// }
+
 #endif

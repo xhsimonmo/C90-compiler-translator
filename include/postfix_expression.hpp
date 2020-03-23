@@ -81,52 +81,61 @@ private:
 
 
 
-// void postfix_expression::translate(string& pyout) const{
+// void postfix_expression::compile(mips& mp)const{
 //   debug(cname);
-// std::string op;
-// switch (type)
-// {
-//   case 0:
-//   ptr->translate(pyout);
-//   pyout = pyout + "()";
-//   break;
+//   mips another_mp;
+//   string variable_name;
+//   string function_name;
+//   int offset;
+//   switch (type) {
+//     case 0://read from array
+//     ptr->compile(another_mp);//fill array name (in all frame arrays)
+//     string name = another_mp.info.call_array_name;
+//     int array_index = find_array(name);//index of array in all arrays of current frame
 //
-//   case 1:
-//   ptr->translate(pyout);
-//   pyout = pyout + "()";
-//   break;
-//
-//   case 2:
-//   ptr->translate(pyout);
-//   opt->translate(op);
-//   pyout = pyout + "(" + op + ")";
-//   break;
-//
-//   case 3:
-//   ptr->translate(pyout);
-//   opt->translate(op);
-//   pyout = pyout + "." + op;
-//   break;
-//
-//   // case 4:
-//   // ptr->translate(pyout);
-//   // pyout = pyout + "->7" + element;
-//   // break;
-//
-//
-//   case 5:
-//   ptr->translate(pyout);
-//   pyout = pyout + "+=1";
-//   break;
-//
-//   case 6:
-//   ptr->translate(pyout);
-//   pyout = pyout + "-=1";
-//   break;
-//
-//   default:
-//   NotImplemented();
-//  }
+//     opt->compile(mp);//should store index in $2; store index in info.result
+//     int index = stoi(mp.info.result);//array element index
+//     // mp.sll(2, 2, 2);//x4 to get byte increment
+//     int offset = array_collection[current_frame][array_index].array_add[0];
+//     int increment = stoi(offset) + index * 4;
+//     // mp.addi(2, 2, to_string(offset));
+//     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
+//     break;
+//     case 1:
+//     ptr->compile(mp);
+//     mp.jal(mp.info.func_name ); //maybe need to add f()?
+//     mp.nop();
+//     break;
+//     case 2: //postfix_expression '(' argument_expression_list ')'
+//     ptr->compile(mp);
+//     function_name = mp.info.func_name;
+//     // mips another_mp;
+//     opt -> compile(another_mp);
+//     mp.jal(function_name);
+//     mp.nop();
+//     break;
+//     case 3:
+//     NotImplemented();
+//     break;
+//     case 4:
+//     NotImplemented();
+//     break;
+//     case 5: // a++
+//     //mips another_mp; //start a new mips class so info.result is empty at first
+//     ptr -> compile(mp);
+//     variable_name = another_mp.info.func_name;
+//     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+//     mp.addiu(2,2,"1");
+//     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
+//     break;
+//     case 6: // a--
+//     ptr -> compile(mp);
+//     variable_name = another_mp.info.func_name;
+//     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
+//     mp.addiu(2,2,"-1");
+//     mp.sw(2,find_variable(variable_name, stack_collection[current_frame]),30);
+//     break;
+//   }
 // }
 
 #endif
