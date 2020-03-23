@@ -903,4 +903,12 @@ void direct_abstract_declarator :: compile(mips& mp)
   debug(cname);
   NotImplemented();
 }
+
+void labeled_statement::compile(mips& mp)
+{
+  debug(cname);
+  
+}
+
+
 }
