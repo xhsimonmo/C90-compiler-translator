@@ -903,6 +903,7 @@ void direct_abstract_declarator :: compile(mips& mp)
   debug(cname);
   NotImplemented();
 }
+<<<<<<< HEAD
 
 void expression_statement::compile(mips& mp)const
 {
@@ -921,4 +922,6 @@ void init_declarator_list::compile(mips& mp)const
   one -> compile(mp);
   mips another_mp;
   two -> compile(another_mp);
+=======
+>>>>>>> a6c6d3e4cc64d6ccbdfcbecf0e11d480088437e2
 }
