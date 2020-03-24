@@ -68,13 +68,18 @@ public:
     labelcounter = 0;
   }
 
+  string add_prefix(string name){
+    string prefix = "\t.set noreorder\n\t.text\n\t.align 2\n\t.globl " + name + '\n' + name + ":";
+    return prefix;
+  }
+
   //add new frame for function
   void add_frame()//string func_name, vector<string>mips_code)
   {
-    std::cerr << "add frame enter" << '\n';
+    //std::cerr << "add frame enter" << '\n';
     //indicate the current frame index; it should be the same index for mips_code
     current_frame = stack_collection.size();
-    std::cerr << "size of current frame in addframe is : " << current_frame <<'\n';
+    //std::cerr << "size of current frame in addframe is : " << current_frame <<'\n';
     //everytime start a new frame, add a stack(vector) for it
     vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
     stack_collection.push_back(frame_stack);
@@ -95,8 +100,9 @@ public:
     sw(30, 4,29);
     sw(31,8,29);
     // this instruction is added at the end_frame: addiu(29,29,offset)
-    move(29,30);
+    move(30,29);
     result_count = 0;
+    nop();
     //frame counter +1
     //frame_counter++;
   }
@@ -117,7 +123,8 @@ public:
     memory_allocate = -4*memory_allocate;
     string str_memory_allocate = to_string(memory_allocate);
     string function_header = "addiu $29,$29,"+str_memory_allocate;
-    mpcode_collection[current_frame].insert(it+3, function_header);//add function header back
+    int where_to_insert_sp_move_down = 5;
+    mpcode_collection[current_frame].insert(it+where_to_insert_sp_move_down, function_header);//add function header back
     initilise_arg(true);;//release the argument registers; actually not necessay, let it be there
     result_count=0;//set it back
     //current_frame--;

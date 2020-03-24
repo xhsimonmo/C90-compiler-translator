@@ -7,7 +7,7 @@ CC = g++
 
 all : clean bin/c_compiler
 
-test :all m
+test : clean bin/c_compiler m
 
 t:
 	bin/c_compiler --translate b.c -o b.py

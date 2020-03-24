@@ -9,9 +9,12 @@ void function_definition::compile(mips& mp)const
   if(p_f == NULL){ // only two parts
       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
       string declarator = mp.info.func_name;
-      declarator = declarator + ":";
+      //declarator = declarator + ":";
+      declarator = mp.add_prefix(declarator);
       //std::cerr << "name of function:" << '\n';
-      mpcode_collection[current_frame].push_back(declarator);
+      vector<string> current_stack;
+      current_stack.push_back(declarator);
+      mpcode_collection.push_back(current_stack);
 
       //start function
       mp.add_frame();
@@ -28,23 +31,17 @@ void function_definition::compile(mips& mp)const
     //add label
     string declarator = mp.info.func_name;
     //std::cerr << "name of function:" << declarator <<'\n';
-    declarator = declarator + ":";
+    declarator = mp.add_prefix(declarator);
     vector<string> current_stack;
     current_stack.push_back(declarator);
     mpcode_collection.push_back(current_stack);
-
     //start function
     mp.add_frame();
-
     //compound statement
-    std::cerr << "finish add frame" << '\n';
     p_f->compile(mp);
-
     //finish function
     mp.finish_frame();
-
   }
-
 }
 
 void type_specifier::compile(mips& mp)const
@@ -448,7 +445,8 @@ void unary_expression::compile(mips& mp)const
     mp.sw(2,mp.info.var_index,30);
     break;
     case 9: // !
-    NotImplemented();
+    ptr->compile(mp);
+  //  mp._o()
     break;
 
   }

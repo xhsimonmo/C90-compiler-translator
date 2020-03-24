@@ -1,3 +1,5 @@
+int f(){}
+
 int main(){
 
 }
