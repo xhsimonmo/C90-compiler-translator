@@ -2,11 +2,12 @@ CPPFLAGS += -std=c++11 -g #-W -Wall #-g -Wno-unused-parameter
 CPPFLAGS += -I include
 CFLAGS += -g
 #CPPFLAGS = -W -Wall
+CC = g++
 
 
 all : clean bin/c_compiler
 
-test : all m
+test :all m
 
 t:
 	bin/c_compiler --translate b.c -o b.py
@@ -23,7 +24,10 @@ src/lexer.yy.cpp : src/lexer.flex src/parser.tab.hpp
 
 bin/c_compiler : src/c_compiler.o src/parser.tab.o src/lexer.yy.o src/parser.tab.o include/ast_implement.o include/mips_implement.o
 	mkdir -p bin
-	g++ $(CPPFLAGS) -o bin/c_compiler $^
+	$(CC) $(CPPFLAGS) -o bin/c_compiler $^
+
+include/%.o : include/%.cpp
+		$(CC) $(CPPFLAGS) -c $< -o $@
 
 
 #src/c_compiler.o : src/c_compiler.cpp

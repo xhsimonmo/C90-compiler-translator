@@ -50,6 +50,7 @@ void type_specifier::compile(mips& mp)const
 void external_declaration::compile(mips& mp)const
 {
   debug(cname);
+  ptr->compile(mp);
   //don't do anything yet
 };
 
@@ -978,4 +979,8 @@ void init_declarator_list::compile(mips& mp)const
   mips another_mp;
   two -> compile(another_mp);
 
+}
+
+void labeled_statement::compile(mips& mp)const{
+  NotImplemented();
 }

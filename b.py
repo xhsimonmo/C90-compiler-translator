@@ -5,9 +5,6 @@ def main():
 		else:
 			return 4
 		
-	
-	return 11
-	
 
 
 if __name__ == "__main__":

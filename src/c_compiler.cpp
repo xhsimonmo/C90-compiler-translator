@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
     outfile << pyout;
 
   }
-  else if(argv[1] == "-S"){
+  else if(strcmp(argv[1], "-S") == 0 ){
      std::cerr << "compiler begin" << std::endl;
      mips mp;
      root -> compile(mp);
@@ -69,6 +69,7 @@ int main(int argc, char *argv[]){
     std::exit(-1);
   }
   outfile.close();
+  std::cerr << "////operation end.///////" << '\n';
   return 0;
 
 }

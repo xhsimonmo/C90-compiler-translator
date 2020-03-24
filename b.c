@@ -6,5 +6,4 @@ int main()
         else
             return 4;
 
-    return 11;
 }
