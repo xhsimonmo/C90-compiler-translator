@@ -5,10 +5,12 @@
 void function_definition::compile(mips& mp)const
 {
   // declarator;
+  debug(cname);
   if(p_f == NULL){ // only two parts
       p_o->compile(mp);//compiler type specifier part; doesn't do anything yet? then add label, which is only known until compile direc_declarator
       string declarator = mp.info.func_name;
       declarator = declarator + ":";
+      //std::cerr << "name of function:" << '\n';
       mpcode_collection[current_frame].push_back(declarator);
 
       //start function
@@ -22,16 +24,20 @@ void function_definition::compile(mips& mp)const
   }
   else{
     p_o -> compile(mp);// type_specifier
-    p_t-> compile(mp);
+    p_t-> compile(mp); //function name
     //add label
     string declarator = mp.info.func_name;
+    //std::cerr << "name of function:" << declarator <<'\n';
     declarator = declarator + ":";
-    mpcode_collection[current_frame].push_back(declarator);
+    vector<string> current_stack;
+    current_stack.push_back(declarator);
+    mpcode_collection.push_back(current_stack);
 
     //start function
     mp.add_frame();
 
     //compound statement
+    std::cerr << "finish add frame" << '\n';
     p_f->compile(mp);
 
     //finish function
@@ -105,6 +111,7 @@ void init_declarator::compile(mips& mp)const{
 // 	;
 void direct_declarator::compile(mips& mp)const
 {
+  debug(cname);
   mips another_mp;
   string array_name;
   //create a new array

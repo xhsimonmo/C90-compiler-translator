@@ -6,7 +6,7 @@
 #include <string>
 #include <string.h>
 
-int current_frame;
+int current_frame = 0;
 int labelcounter;
 vector<vector<stack_content>>stack_collection;
 vector<vector<string>> mpcode_collection;

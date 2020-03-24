@@ -67,47 +67,7 @@ private:
 //   }
 // }
 
-// void direct_declarator::compile(mips& mp)const
-// {
-//   mips another_mp;
-//   switch(type)
-//   {
-//     case 0:
-//     mp.info.func_name = id;
-//     break;
-//
-//     case 1:
-//     one->compile(mp);
-//     break;
-//
-//     case 2:
-//     //it uses const expression so size is constant
-//     two->compile(mp);//this should store result to $2
-//     one->compile(another_mp);//this should fill in the array name;
-//     string array_name = another_mp.info.array_name;
-//     //create a new array
-//     array_struct a;
-//     a.name = array_name;
-//     array_collection[current_frame].push_back(a);
-//     break;
-//
-//     case 3:
-//     NotImplemented();// no Implement for array[]
-//     break;
-//     case 4:
-//     one->compile(mp); // eg:  f()
-//     two->compile(another_mp);//parameter!
-//     break;
-//
-//     case 5:
-//     NotImplemented(); //never reach, KR style.
-//     break;
-//
-//     case 6:
-//     one->compile(mp);
-//     break;
-//   }
-// }
+
 
 
 

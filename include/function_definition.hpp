@@ -5,10 +5,8 @@
 
 
 // function_definition
-// 	/*: declaration_specifiers declarator declaration_list compound_statement  喵喵喵*/
 // 	: declaration_specifiers declarator compound_statement                   {std::cout << "function definition 1" << std::endl;$$ = new function_definition($1, $2, $3);}
 //   | declarator compound_statement                                          {std::cout << "function definition 2" << std::endl;$$ = new function_definition($1, $2);}
-// 	/*| declarator declaration_list compound_statement                      喵喵喵*/
 // 	;
 
 class function_definition : public definition{

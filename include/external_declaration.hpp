@@ -2,8 +2,8 @@
 #define external_declaration_h
 #include "ast.hpp"
 // external_declaration
-// 	: function_definition        {$$ = new external_declaration($1);std::cout << "external declaration 1" << std::endl;}
-// 	| declaration                {$$ =  new external_declaration($1);std::cout << "external declaration 2" << std::endl;}/*global variable???*/
+// 	: function_definition        {$$ = new external_declaration(0,$1);std::cerr << "external declaration 1" << std::endl;}
+// 	| declaration                {$$ =  new external_declaration(1,$1);std::cerr << "external declaration 2" << std::endl;}/*global variable???*/
 // 	;
 
 class external_declaration: public astnode{
@@ -39,6 +39,7 @@ private:
 // void external_declaration::compile(mips& mp)const
 // {
 //   debug(cname);
+  // ptr->compile(mp);
 //   //don't do anything yet
 // };
 

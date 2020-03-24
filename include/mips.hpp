@@ -5,6 +5,7 @@
 #include "function_parameter.hpp"
 #include <string>
 #include <vector>
+#include<iostream>
 using std::string;
 using std::vector;
 using std::to_string;
@@ -70,8 +71,10 @@ public:
   //add new frame for function
   void add_frame()//string func_name, vector<string>mips_code)
   {
+    std::cerr << "add frame enter" << '\n';
     //indicate the current frame index; it should be the same index for mips_code
     current_frame = stack_collection.size();
+    std::cerr << "size of current frame in addframe is : " << current_frame <<'\n';
     //everytime start a new frame, add a stack(vector) for it
     vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
     stack_collection.push_back(frame_stack);
