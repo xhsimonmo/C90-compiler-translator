@@ -808,7 +808,9 @@ void initializer::compile(mips& mp) const
       mp.nop();
       mp.sw(2, element[i], 30);
     }
+  }
 }
+
 
 void initializer_list::compile(mips& mp) const
 {
@@ -895,7 +897,7 @@ void declarator::compile(mips&mp)const
     direct_decla -> compile(another_mp);
 }
 
-void direct_abstract_declarator :: compile(mips& mp)
+void direct_abstract_declarator :: compile(mips& mp)const
 {
   debug(cname);
   NotImplemented();
@@ -903,12 +905,11 @@ void direct_abstract_declarator :: compile(mips& mp)
 
 void expression_statement::compile(mips& mp)const
 {
-  ptr_expr->compile(mips& mp);
+  ptr_expr->compile(mp);
 }
 
-void indentifier_list::compile(mips& mp)const // should never be called ,KR style?
+void identifier_list::compile(mips& mp)const // should never be called ,KR style?
 {
-  debug(cname);
   NotImplemented();
 }
 
@@ -918,6 +919,49 @@ void init_declarator_list::compile(mips& mp)const
   one -> compile(mp);
   mips another_mp;
   two -> compile(another_mp);
+}
+
+void relational_expression::compile(mips& mp)const{
+  mips another_mp;
+  switch (type) {
+    case 0:
+    left->compile(mp);
+    mp.move(3,2);
+    right -> compile(another_mp);
+    mp.slt(2,3,2);
+    break;
+    case 1:
+    left->compile(mp);
+    mp.move(3,2);
+    right -> compile(another_mp);
+    mp.slt(2,2,3);//simply swap 2 and 3 registers
+    break;
+    case 2: //<=
+    break;
+    case 3:
+    break;
+
+  }
+}
+
+void conditional_expression::compile(mips& mp)const
+{
+  debug(cname);
+  NotImplemented();
+}
+
+void base_expression::compile(mips& mp)const
+{
+  p_one -> compile(mp);
+  mips another_mp;
+  p_five ->compile(another_mp);
+}
+
+void abstract_declarator::compile(mips& mp)const
+{
+  left ->compile(mp);
+  mips another_mp;
+  right -> compile(another_mp);
 }
 
 void labeled_statement::compile(mips& mp)const{
