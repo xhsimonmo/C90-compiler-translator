@@ -36,6 +36,8 @@ struct array_struct
 };
 extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
 extern int array_index;//current array index in current frame
+
+
 inline int result_offset(){
   int offset = result_count + (-4)*stack_collection[current_frame].size();
   return offset;
@@ -109,6 +111,7 @@ public:
   //frame ended
   void finish_frame()
   {
+    comment("////////ending current frame//////");
     move(29,30);//move sp up to same location as fp
     lw(31, 8, 29);
     lw(30, 4, 29);//4=8-4
@@ -163,22 +166,22 @@ public:
   }
 
 
-  //make function call
-  void function_call(string func_name, vector<string> func_param, int ret_add)
-  {
-    //load function parameter from stack first;
-    for(int i = 0; i < func_param.size(); i++)
-    {
-      int r = 4;//register for arguments
-      lw(r, find_variable(func_param[i], stack_collection[current_frame]), 30);
-      r++;//change register for next argument
-    }
-
-    jal(func_name);
-    nop();
-    //return value
-    sw(2, 4, 29);//TODO:sp???
-  }
+  //make function call  // 这是啥
+  // void function_call(string func_name, vector<string> func_param, int ret_add)
+  // {
+  //   //load function parameter from stack first;
+  //   for(int i = 0; i < func_param.size(); i++)
+  //   {
+  //     int r = 4;//register for arguments
+  //     lw(r, find_variable(func_param[i], stack_collection[current_frame]), 30);
+  //     r++;//change register for next argument
+  //   }
+  //
+  //   jal(func_name);
+  //   nop();
+  //   //return value
+  //   sw(2, 4, 29);//TODO:sp???
+  // }
 
 
   void add_label(string label)
@@ -190,6 +193,11 @@ public:
   void nop()
   {
     string nop = "nop";
+    mpcode_collection[current_frame].push_back(nop);
+  }
+  void comment(string name)
+  {
+    string nop = "#" + name;
     mpcode_collection[current_frame].push_back(nop);
   }
 

@@ -76,19 +76,24 @@ void compound_statement::compile(mips& mp)const{
   }
 }
 
+
 void init_declarator::compile(mips& mp)const{
+  debug(cname);
   if(two == NULL)
    {
      one -> compile(mp);
      string init_name = mp.info.func_name;
-     int offset = -4 * (stack_collection[current_frame].size());
+     //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
+     int offset = result_offset();
      stack_content tmp = {init_name,offset};
      stack_collection[current_frame].push_back(tmp);
    }
    else{
      one -> compile(mp);
      string init_name = mp.info.func_name;
-     int offset = -4 * (stack_collection[current_frame].size());
+     //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
+     int offset = result_offset();
+     mp.comment("result_offset in init_declarator: " + to_string(offset));
      stack_content tmp = {init_name,offset};
      stack_collection[current_frame].push_back(tmp);
      two -> compile(mp);
@@ -372,11 +377,14 @@ void additive_expression::compile(mips& mp)const
   mips another_mp;
   mul->compile(another_mp);
   r_index = result_offset();
+  mp.comment("load right index from memory");
   mp.lw(3,r_index,30);
+  mp.comment("load left index from memory");
   mp.lw(2,l_index,30);
   switch (type) {
 
   case 1://"+"
+  mp.comment("additive expression");
   mp.add(2, 2, 3);
   result_count = result_count - 4;
   mp.sw(2,result_offset(),30);
@@ -636,19 +644,21 @@ void primary_expression :: compile(mips& mp) const{
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
-    if(var_index != -1) //this variable indeed has been saved
+    if(var_index != -1) //this variable indeed has been saved,not a funciton name and stuff like that
     {
       mp.lw(2,var_index,30);//load value to $2
+      result_count = result_count -4;
+      mp.sw(2,result_offset(),30);
     }
-    result_count = result_count -4;
-    mp.sw(2,result_offset(),30);
+    // result_count = result_count -4;
+    // mp.sw(2,result_offset(),30);
     break;
     case 1:
     mp.info.result = element;
+    mp.comment("get a primary expression as number : "+element);
     mp.li(2,element);
     result_count = result_count -4;
     mp.sw(2,result_offset(),30);
-
     break;
 
     case 2:

@@ -21,20 +21,26 @@ private:
   treeptr two = NULL;
   string cname = "init_declarator";
 };
-
+// 
 // void init_declarator::compile(mips& mp)const{
+//   debug(cname);
 //   if(two == NULL)
 //    {
 //      one -> compile(mp);
 //      string init_name = mp.info.func_name;
-//      int offset = -4 * (stack_collection[current_frame].size());
-//      stack_collection[current_frame].push_back(init_name,offset);
+//      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
+//      int offset = result_offset();
+//      stack_content tmp = {init_name,offset};
+//      stack_collection[current_frame].push_back(tmp);
 //    }
 //    else{
 //      one -> compile(mp);
 //      string init_name = mp.info.func_name;
-//      int offset = -4 * (stack_collection[current_frame].size());
-//      stack_collection[current_frame].push_back(init_name,offset);
+//      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
+//      int offset = result_offset();
+//      mp.comment("result_offset in init_declarator: " + to_string(offset));
+//      stack_content tmp = {init_name,offset};
+//      stack_collection[current_frame].push_back(tmp);
 //      two -> compile(mp);
 //      mp.sw(2,offset,30);
 //    }

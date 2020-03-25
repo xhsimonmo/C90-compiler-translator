@@ -4,17 +4,14 @@ CPPFLAGS += -I include
 #CFLAGS += -g
 #CPPFLAGS = -W -Wall
 CC = g++
-all : clean bin/c_compiler m
+run : clean bin/c_compiler m
 
-test : all t
+all : clean bin/c_compiler
 
 t:
 	bin/c_compiler --translate b.c -o b.py
-
-
 m:
 	./bin/c_compiler -S test.c -o result.s
-
 
 src/parser.tab.cpp src/parser.tab.hpp : src/parser.y
 	bison -v -d src/parser.y -o src/parser.tab.cpp
@@ -26,27 +23,24 @@ bin/c_compiler : src/c_compiler.o src/parser.tab.o src/lexer.yy.o src/parser.tab
 	mkdir -p bin
 	g++ $(CPPFLAGS) -o bin/c_compiler $^
 
-
 #include/%.o : include/%.cpp
 #		$(CC) $(CPPFLAGS) -c $< -o $@
 
-mtest :
+mtest : run
 	rm -f test_program.o
 	rm -f test_program
 	mips-linux-gnu-gcc -mfp32 -o test_program.o -c result.s
 	mips-linux-gnu-gcc -mfp32 -static -o test_program test_program.o
-	qemu-mips test_program
+	#qemu-mips test_program
+
 mips:
 	rm -f test_program.o
 	rm -f test_program
 	mips-linux-gnu-gcc -mfp32 -o test_program.o -c result.s
 	mips-linux-gnu-gcc -mfp32 -static -o test_program test_program.o test_program_driver.c
 
-a: mips b
 b:
 	qemu-mips test_program
-
-
 
 clean :
 	rm -f src/*.tab.cpp
