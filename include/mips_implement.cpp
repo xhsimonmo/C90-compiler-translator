@@ -303,104 +303,120 @@ void cast_expression::compile(mips& mp)const
 void multiplicative_expression::compile(mips& mp)const
 {
   mips another_mp;
+  int l_index;
+  int r_index;
+
   switch (type) {
 
   case 1://"*"
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  mp.move(3, 2);
+  r_index = result_offset();
+  //mp.move(3, 2);
   mul->compile(mp);
+  l_index = result_offset();
+  mp.lw(2,r_index,30);
+  mp.lw(3,l_index,30);
   mp.nop();
+
   mp.mult(2, 3);
   mp.mflo(2);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count -4;
+  mp.sw(2, result_offset(), 30);//save the result in
   break;
 
   case 2:
-  // mp.lw(2, mp.info.var_index, 30);
+  // mp.mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  mp.move(3, 2);
+  r_index = result_offset();
   mul->compile(mp);
+  l_index = result_offset();
+  mp.lw(3,r_index,30);
+  mp.lw(2,l_index,30);
   mp.nop();
+
   mp.div(2, 3);
   mp.mflo(2);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count -4;
+  mp.sw(2, result_offset(), 30);//save the result in
   break;
 
   case 3:
   // mp.lw(2, mp.info.var_index, 30);
   // mp.lw(3, another_mp.info.var_index, 30);
   cast->compile(another_mp);
-  mp.move(3, 2);
+  r_index = result_offset();
   mul->compile(mp);
+  l_index = result_offset();
+  mp.lw(3,r_index,30);
+  mp.lw(2,l_index,30);
   mp.nop();
+
   mp.div(2, 3);
   mp.mfhi(2);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count -4;
+  mp.sw(2, result_offset(), 30);//save the result in
   break;
+  }
 }
-}
+
 
 void additive_expression::compile(mips& mp)const
 {
+  int l_index;
+  int r_index;
+  add->compile(mp);
+  l_index = result_offset();
   mips another_mp;
+  mul->compile(another_mp);
+  r_index = result_offset();
+  mp.lw(3,r_index,30);
+  mp.lw(2,l_index,30);
   switch (type) {
 
   case 1://"+"
-  // mp.lw(2, mp.info.var_index, 30);
-  // mp.lw(3, another_mp.info.var_index, 30);
-  mul->compile(another_mp);
-  mp.move(3, 2);
-  add->compile(mp);
-  mp.nop();
   mp.add(2, 2, 3);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count - 4;
+  mp.sw(2,result_offset(),30);
   break;
 
   case 2://"-"
-  // mp.lw(2, mp.info.var_index, 30);
-  // mp.lw(3, another_mp.info.var_index, 30);
-  mul->compile(another_mp);
-  mp.move(3, 2);
-  add->compile(mp);
-  mp.nop();
   mp.sub(2, 2, 3);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count - 4;
+  mp.sw(2,result_offset(),30);
   break;
 }
 }
+
 
 void shift_expression::compile(mips& mp)const
 {
-
+  int l_index;
+  int r_index;
+  l->compile(mp);
+  l_index = result_offset();
   mips another_mp;
+  r->compile(another_mp);
+  r_index = result_offset();
+  mp.lw(3,r_index,30);
+  mp.lw(2,l_index,30);
   switch (type) {
   case 1://"<<"
-  // mp.lw(2, mp.info.var_index, 30);
-  // mp.lw(3, another_mp.info.var_index, 30);
-  r->compile(another_mp);
-  mp.move(3, 2);
-  l->compile(mp);
-  mp.nop();
+
   mp.sll(2, 2, 3);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count -4;
+  mp.sw(2, result_offset(), 30);//save the result in
   break;
 
   case 2://">>"
-  // mp.lw(2, mp.info.var_index, 30);
-  // mp.lw(3, another_mp.info.var_index, 30);
-  r->compile(another_mp);
-  mp.move(3, 2);
-  l->compile(mp);
-  mp.nop();
   mp.sra(2, 2, 3);
-  // mp.sw(2, mp.info.var_index, 30);//load to a's stack position
+  result_count = result_count -4;
+  mp.sw(2, result_offset(), 30);//save the result in
   break;
+ }
 }
-}
-
 void unary_expression::compile(mips& mp)const
 {
   switch(type)
