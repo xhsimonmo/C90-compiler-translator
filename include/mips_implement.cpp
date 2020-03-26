@@ -395,7 +395,7 @@ void additive_expression::compile(mips& mp)const
   result_count = result_count - 4;
   mp.sw(2,result_offset(),30);
   break;
-}
+ }
 }
 
 
@@ -413,20 +413,24 @@ void shift_expression::compile(mips& mp)const
   switch (type) {
   case 1://"<<"
 
-  mp.sll(2, 2, 3);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  mp.sllv(2, 2, 3);
+  mp.sw(2, mp.info.var_index, 30);
+  // result_count = result_count -4;
+  // mp.sw(2, result_offset(), 30);//save the result in
   break;
 
   case 2://">>"
-  mp.sra(2, 2, 3);
-  result_count = result_count -4;
-  mp.sw(2, result_offset(), 30);//save the result in
+  mp.srav(2, 2, 3);
+  mp.sw(2, mp.info.var_index, 30);
+  // result_count = result_count -4;
+  // mp.sw(2, result_offset(), 30);//save the result in
   break;
  }
 }
+
 void unary_expression::compile(mips& mp)const
 {
+  debug(cname);
   switch(type)
   {
     case 0:
@@ -455,24 +459,32 @@ void unary_expression::compile(mips& mp)const
     break;
     case 6: // +
     ptr->compile(mp);
+    // result_count = result_count - 4;
+    // mp.sw(2,result_offset(),30);
     break;
     case 7: // -
     ptr -> compile(mp);
     mp.li(3,"-1");
     mp.mult(2,3);
     mp.mflo(2);
-    mp.sw(2,mp.info.var_index,30);
+    //mp.sw(2,mp.info.var_index,30);
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
     case 8: // ~ bit wise NOT
     mp.li(3,"-1"); // -1 is 111111 for xor
     mp._xor(2,2,3);
-    mp.sw(2,mp.info.var_index,30);
+    //mp.sw(2,mp.info.var_index,30);
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
     case 9: // !
     ptr->compile(mp);
-  //  mp._o()
+    mp.li(3, "0");
+    mp.seq(2,2,3);//set to 1 if equal to 0; otherwise 0
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
-
   }
 }
 
@@ -647,7 +659,7 @@ void primary_expression :: compile(mips& mp) const{
     if(var_index != -1) //this variable indeed has been saved,not a funciton name and stuff like that
     {
       mp.lw(2,var_index,30);//load value to $2
-      result_count = result_count -4;
+      result_count = result_count - 4;
       mp.sw(2,result_offset(),30);
     }
     // result_count = result_count -4;
@@ -953,26 +965,63 @@ void init_declarator_list::compile(mips& mp)const
 }
 
 void relational_expression::compile(mips& mp)const{
+  int l_index;
+  int r_index;
+  left->compile(mp);
+  l_index = result_offset();
   mips another_mp;
+  right->compile(another_mp);
+  r_index = result_offset();
+  mp.comment("load right index from memory");
+  mp.lw(3,r_index,30);
+  mp.comment("load left index from memory");
+  mp.lw(2,l_index,30);
   switch (type) {
     case 0:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,3,2);
+    mp.slt(2,2,3);
     break;
     case 1:
-    left->compile(mp);
-    mp.move(3,2);
-    right -> compile(another_mp);
-    mp.slt(2,2,3);//simply swap 2 and 3 registers
+    mp.slt(2,3,2);//simply swap 2 and 3 registers
     break;
     case 2: //<=
+    mp.sle(2,2,3);
     break;
-    case 3:
+    case 3: //>=
+    mp.sge(2,2,3);
+    break;
+    case 4: // ==
+    mp.seq(2,2,3);
+    break;
+    case 5: //!=
+    mp.sne(2,2,3);
+    break;
+    case 6: //& (pointer dereference)
+    mp._and(2,2,3);
+    break;
+    case 7:
+    mp._xor(2,2,3);
+    break;
+    case 8:
+    mp._or(2,2,3);
+    break;
+    case 9:// and
+    mp._and(3,2,3);//if eitehr $2,$3 is zero, will be evaluated as zero
+    mp.li(8,"2");
+    mp.li(9,"0");
+    mp.sne(2,2,9);
+    mp.sne(3,3,9);
+    mp.add(2,2,3);//if $2 add up to 2, then both unequal to 0
+    mp.seq(2,2,8);
     break;
 
+    case 10: // or
+    mp._or(3,2,3);//only both $2,$3 is zero, will be evaluated as zero
+    mp.li(2,"0");
+    mp.sne(2,2,3);
+    break;
   }
+  result_count = result_count - 4;
+  mp.sw(2,result_offset(),30);
 }
 
 void conditional_expression::compile(mips& mp)const
