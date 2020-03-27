@@ -12,7 +12,6 @@
 // 	| SIZEOF '(' type_name ')'         {$$ = new unary_expression(3, $2);}
 // 	;
 
-
 // unary_operator
 // 	: '&'      {$$ = 4; std::cerr << "unary operator 1" << std::endl;}
 // 	| '*'      {$$ = 5; std::cerr << "unary operator 2" << std::endl;}

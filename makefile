@@ -38,9 +38,8 @@ mips:  run
 	rm -f test_program
 	mips-linux-gnu-gcc -mfp32 -o test_program.o -c result.s
 	mips-linux-gnu-gcc -mfp32 -static -o test_program test_program.o test_program_driver.c
+	#qemu-mips test_program
 
-b:
-	qemu-mips test_program
 
 clean :
 	rm -f src/*.tab.cpp

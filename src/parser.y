@@ -231,8 +231,8 @@ type_specifier
 	| SIGNED   {$$ = new type_specifier(7); std::cerr << "type_specifier signed 8" << std::endl;}
 	| UNSIGNED   {$$ = new type_specifier(8); std::cerr << "type_specifier signed unsigned 9" << std::endl;}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
-//	| enum_specifier   {$$ = new type_specifier("ENUM");}
-	| TYPE_NAME   {$$ = new type_specifier(9); std::cerr << "type_name" << std::endl;}
+	| ENUM   {$$ = new type_specifier(9); std::cerr << "enum" << std::endl;}
+	| TYPE_NAME   {$$ = new type_specifier(10); std::cerr << "type_name" << std::endl;}
 	;
 /////////////////////////////////struct ////////////////////////////////////////////////
 /* struct_or_union_specifier
