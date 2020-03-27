@@ -515,6 +515,10 @@ void selection_statement::compile(mips& mp)const
   labelcounter++;
   mips sta_mp;
   mips s_mp;
+
+  string switch_label = "end_switch" + to_string(labelcounter);
+  int case_number;
+
   switch(type)
   {
     case 0:
@@ -545,13 +549,37 @@ void selection_statement::compile(mips& mp)const
 
     case 2:
     //switch statement
-    mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
-    mp.beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
-    mp.nop();
-    //then make the if statement(if is true)
-    //mips sta_mp;
-    ifsta->compile(sta_mp);
-    mp.add_label(below_if);
+
+    //initialise vector
+    vector<mp.switch_content>switch_temp;
+    mp.switch_info = switch_temp;
+
+    //add label to be the first element
+    mp.switch_content info;
+    info.label = switch_label;
+    mp.switch_info.push_back(info);
+
+    mp.lw(2, expre_mp.info.result_index, 30);//store switch variable's value in $2
+    ifsta->compile(mp);//obtain all case information!
+
+    //start from 1 to avoid the label (index 0)
+    for(int i = 1; i < mp.switch_info.size(); i++)
+    {
+      if(mp.switch_info[i].case_num != "defalut")
+      {
+        case_number = stoi(mp.switch_info[i].case_num);
+        addi(3, 3, case_number);//load case number into $3
+        beq(2, 3, mp.switch_info[i].label);//if same jump to the corresponding label
+        nop();
+      }
+      else
+      {
+        //find default case
+        //TODO: may not work: default doesn't have to be at the end
+        beq(0, 0, mp.switch_info[i].label);
+      }
+    }
+    add_label(switch_label);
     break;
 
   }
@@ -1067,6 +1095,56 @@ void abstract_declarator::compile(mips& mp)const
   right -> compile(another_mp);
 }
 
+// labeled_statement
+// 	: IDENTIFIER ':' statement
+// 	| CASE constant_expression ':' statement
+// 	| DEFAULT ':' statement
+// 	;
 void labeled_statement::compile(mips& mp)const{
-  NotImplemented();
+  int case_number;
+  mips another_mp;
+  string case_label = "Label " + to_string(labelcounter);
+  string end_label;
+
+  switch(type)
+  {
+    case 0:
+    NotImplemented();//goto statement
+    break;
+
+    case 1:
+    //get switch finish label
+    end_label = mp.switch_info[0].case_num;
+
+    mp.add_label(case_label);
+    one->compile(another_mp);//obtain case number(in $2)
+    case_number = another_mp.info.result;
+    two->compile(mp);//evaluate statement
+
+    b(end_label);
+    nop();
+
+    //store info for this case
+    mp.switch_content info;
+    info.case_num = to_string(case_number);
+    info.label = case_label;
+    mp.switch_info.push_back(info);
+
+    labelcounter++;
+
+    case 2:
+    mp.add_label(case_label);
+    one->compile(mp);//evaluate statement
+    b(end_label);
+    nop();
+
+    //store info for this case
+    mp.switch_content info;
+    info.case_num = "default";
+    info.label = case_label;
+    mp.switch_info.push_back(info);
+
+    labelcounter++;
+
+  }
 }
