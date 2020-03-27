@@ -1,4 +1,6 @@
-int f(int a, int b)
+int main()
 {
-    return a+b;
+    double x = 2;
+    int a = sizeof(x);
+    return a;
 }

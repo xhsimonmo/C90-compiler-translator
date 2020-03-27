@@ -62,7 +62,43 @@ void function_definition::compile(mips& mp)const
 void type_specifier::compile(mips& mp)const
 {
   debug(cname);
-  //don't do anything yet for type specifier, assume INT?
+  //don't do anything yet?
+  switch(type)
+  {
+    case 0:
+    mp.info.func_type = "void";
+    break;
+    case 1:
+    mp.info.func_type = "char";
+    break;
+    case 2:
+    mp.info.func_type = "short";
+    break;
+    case 3:
+    mp.info.func_type = "int";
+    break;
+    case 4:
+    mp.info.func_type = "long";
+    break;
+    case 5:
+    mp.info.func_type = "float";
+    break;
+    case 6:
+    mp.info.func_type = "double";
+    break;
+    case 7:
+    mp.info.func_type = "signed";
+    break;
+    case 8:
+    mp.info.func_type = "unsigned";
+    break;
+    case 9:
+    mp.info.func_type = "enum";
+    break;
+    case 10:
+    mp.info.func_type = "type_name";
+    break;
+  }
 };
 
 void external_declaration::compile(mips& mp)const
@@ -100,7 +136,7 @@ void init_declarator::compile(mips& mp)const{
      string init_name = mp.info.func_name;
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      int offset = result_offset();
-     stack_content tmp = {init_name,offset};
+     stack_content tmp = {init_name,offset, "int"};
      stack_collection[current_frame].push_back(tmp);
    }
    else{
@@ -109,7 +145,7 @@ void init_declarator::compile(mips& mp)const{
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      int offset = result_offset();
      mp.comment("result_offset in init_declarator: " + to_string(offset));
-     stack_content tmp = {init_name,offset};
+     stack_content tmp = {init_name,offset,"int"};
      stack_collection[current_frame].push_back(tmp);
      two -> compile(mp);
      mp.sw(2,offset,30);
@@ -462,10 +498,12 @@ void unary_expression::compile(mips& mp)const
     break;
 
     case 2: //sizeof
-    NotImplemented();
+    ptr ->compile(mp);
+    sizeof_process(mp);
     break;
     case 3: //sizeof ()
-    NotImplemented();
+    ptr ->compile(mp);
+    sizeof_process(mp);
     break;
     case 4:// &
     NotImplemented();
@@ -700,6 +738,7 @@ void primary_expression :: compile(mips& mp) const{
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
+    mp.info.func_type = mp.find_variable_type(element,stack_collection[current_frame]);
     if(var_index != -1) //this variable indeed has been saved,not a funciton name and stuff like that
     {
       mp.lw(2,var_index,30);//load value to $2
@@ -753,12 +792,12 @@ void parameter_declaration :: compile(mips& mp) const{
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
       std::cerr << "end sw" << '\n';
-      stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
+      stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
       stack_collection[current_frame].push_back(stack);
 
     }
     else{ //case when more than 4 arguments
-      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12)};
+      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12) ,"int"};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }
@@ -978,9 +1017,12 @@ void declaration::compile(mips& mp)const
      spec -> compile(mp);
    }
    else{
-     spec -> compile(mp);
+     spec -> compile(mp); // declaration_spec
      mips another_mp;
-     lt->compile(another_mp);
+     lt->compile(another_mp); // eg. a = 1;
+     // std::cerr << "type subsstitute in: " <<  mp.info.func_type<<'\n';
+     // std::cerr << "current type at back: " <<stack_collection[current_frame].back().type  << '\n';
+     stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
    }
 }
 

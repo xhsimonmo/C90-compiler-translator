@@ -21,6 +21,7 @@ struct stack_content
 {
   string name;//variable name: i
   int address;//variable (relative)locations: add 0, 4(0/4+fp)
+  string type;
 };
 //collection of stack vector for each frame(two-dimension);
 extern vector<vector<stack_content>>stack_collection;
@@ -84,7 +85,6 @@ public:
   //add new frame for function
   void add_frame()//string func_name, vector<string>mips_code)
   {
-    std::cerr << "size of mips code collection: " << mpcode_collection.size() <<'\n';
     //std::cerr << "add frame enter" << '\n';
     //indicate the current frame index; it should be the same index for mips_code
     // current_frame = stack_collection.size();
@@ -160,6 +160,26 @@ public:
       }
     }
     return -1;//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
+  }
+
+  string find_variable_type(string var_name, vector<stack_content>variables)
+  {
+    bool find = false;
+    string var_type;
+    while(find == false)
+    {
+      for (int i = 0; i < variables.size(); i++)
+      {
+        if(variables[i].name == var_name)
+        {
+          find = true;
+          var_type = variables[i].type;
+          //std::cerr << "get type:" <<var_type << '\n';
+          return var_type;
+        }
+      }
+    }
+    return "int";//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
   int find_array(string name)
@@ -473,6 +493,34 @@ inline void callee_value_process(mips& mp){
     mp.sw(2,caller_arg_count*4,29);//SP at the bottom, store things up
   }
   caller_arg_count++;
+}
+
+inline void sizeof_process(mips& mp){
+  string rvalue = mp.info.func_type;
+  int size;
+  if(rvalue == "char"){
+    size = 1;
+  }else if(rvalue == "short"){
+    size = 2;
+  }else if(rvalue == "int"){
+    size = 4;
+  }else if(rvalue == "long"){
+    size = 8;
+  }else if(rvalue == "float"){
+    size = 4;
+  }else if(rvalue == "double"){
+    size = 8;
+  }else if(rvalue == "signed"){
+    size = 4;
+  }else if(rvalue == "unsigned"){
+    size = 4;
+  }
+  // else if(rvalue == ""){
+  //   size =
+  // }
+  mp.li(2,to_string(size));
+  result_count = result_count - 4;
+  mp.sw(2,result_offset(),30);
 }
 
 #endif
