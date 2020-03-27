@@ -37,6 +37,12 @@ struct array_struct
 extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
 extern int array_index;//current array index in current frame
 
+//contain the case number and its corresponding statement label
+struct switch_content
+{
+  string case_num;//in case it needs to store default
+  string label;
+};
 
 inline int result_offset(){
   int offset = result_count + (-4)*stack_collection[current_frame].size();
@@ -162,13 +168,6 @@ public:
       }
     }
   }
-
-  //contain the case number and its corresponding statement label
-  struct switch_content
-  {
-    string case_num;//in case it needs to store default
-    string label;
-  };
 
   //requires initialisation everytime before use
   vector<switch_content>switch_info;

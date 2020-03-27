@@ -501,7 +501,7 @@ void selection_statement::compile(mips& mp)const
   mips s_mp;
 
   string switch_label = "end_switch" + to_string(labelcounter);
-  int case_number;
+  string case_number;
 
   switch(type)
   {
@@ -535,11 +535,11 @@ void selection_statement::compile(mips& mp)const
     //switch statement
 
     //initialise vector
-    vector<mp.switch_content>switch_temp;
+    vector<switch_content>switch_temp;
     mp.switch_info = switch_temp;
 
     //add label to be the first element
-    mp.switch_content info;
+    switch_content info;
     info.label = switch_label;
     mp.switch_info.push_back(info);
 
@@ -551,19 +551,19 @@ void selection_statement::compile(mips& mp)const
     {
       if(mp.switch_info[i].case_num != "defalut")
       {
-        case_number = stoi(mp.switch_info[i].case_num);
-        addi(3, 3, case_number);//load case number into $3
-        beq(2, 3, mp.switch_info[i].label);//if same jump to the corresponding label
-        nop();
+        case_number = mp.switch_info[i].case_num;
+        mp.addi(3, 3, case_number);//load case number into $3
+        mp.beq(2, 3, mp.switch_info[i].label);//if same jump to the corresponding label
+        mp.nop();
       }
       else
       {
         //find default case
         //TODO: may not work: default doesn't have to be at the end
-        beq(0, 0, mp.switch_info[i].label);
+        mp.beq(0, 0, mp.switch_info[i].label);
       }
     }
-    add_label(switch_label);
+    mp.add_label(switch_label);
     break;
 
   }
@@ -1078,10 +1078,11 @@ void abstract_declarator::compile(mips& mp)const
 // 	| DEFAULT ':' statement
 // 	;
 void labeled_statement::compile(mips& mp)const{
-  int case_number;
+  string case_number;
   mips another_mp;
   string case_label = "Label " + to_string(labelcounter);
   string end_label;
+  switch_content info;
 
   switch(type)
   {
@@ -1098,12 +1099,11 @@ void labeled_statement::compile(mips& mp)const{
     case_number = another_mp.info.result;
     two->compile(mp);//evaluate statement
 
-    b(end_label);
-    nop();
+    mp.b(end_label);
+    mp.nop();
 
     //store info for this case
-    mp.switch_content info;
-    info.case_num = to_string(case_number);
+    info.case_num = case_number;
     info.label = case_label;
     mp.switch_info.push_back(info);
 
@@ -1112,11 +1112,10 @@ void labeled_statement::compile(mips& mp)const{
     case 2:
     mp.add_label(case_label);
     one->compile(mp);//evaluate statement
-    b(end_label);
-    nop();
+    mp.b(end_label);
+    mp.nop();
 
     //store info for this case
-    mp.switch_content info;
     info.case_num = "default";
     info.label = case_label;
     mp.switch_info.push_back(info);
