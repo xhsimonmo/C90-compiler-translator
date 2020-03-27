@@ -67,7 +67,7 @@ public:
   mips()//initialisation
   {
     //registers[32] = { 0 }; // TODO something not right about indent
-    labelcounter = 0;
+    // labelcounter = 0;
   }
 
   string add_prefix(string name){
@@ -164,6 +164,16 @@ public:
       }
     }
   }
+
+  //contain the case number and its corresponding statement label
+  struct switch_content
+  {
+    string case_num;//in case it needs to store default
+    string label;
+  };
+
+  //requires initialisation everytime before use
+  vector<switch_content>switch_info;
 
 
   //make function call  // 这是啥
