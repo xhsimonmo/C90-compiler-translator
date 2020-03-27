@@ -27,14 +27,29 @@ void function_definition::compile(mips& mp)const
   }
   else{
     p_o -> compile(mp);// type_specifier
-    p_t-> compile(mp); //function name
+
+    current_frame = stack_collection.size();
+    vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
+    stack_collection.push_back(frame_stack);
+    initilise_arg(true);//all argument available at the beginning
+    arg_overflow = 0;
+    vector<string> current_stack;
+    mpcode_collection.push_back(current_stack);
+    string imm = "-12";
+    mp.addiu(29,29,imm);
+    mp.sw(30, 4,29);
+    mp.sw(31,8,29);
+    // this instruction is added at the end_frame: addiu(29,29,offset)
+    mp.move(30,29);
+    mp.nop();
+    // initilise it before entering parameter
+    p_t-> compile(mp); //function name + parameter
     //add label
     string declarator = mp.info.func_name;
     //std::cerr << "name of function:" << declarator <<'\n';
     declarator = mp.add_prefix(declarator);
-    vector<string> current_stack;
-    current_stack.push_back(declarator);
-    mpcode_collection.push_back(current_stack);
+    auto it = mpcode_collection[current_frame].begin();
+    mpcode_collection[current_frame].insert(it, declarator);
     //start function
     mp.add_frame();
     //compound statement
@@ -143,6 +158,7 @@ void direct_declarator::compile(mips& mp)const
 
     case 4:
     one->compile(mp); // eg:  f()
+    //std::cerr << "to compile parameter" << '\n';
     two->compile(another_mp);//parameter!
     break;
 
@@ -241,7 +257,7 @@ void assignment_expression::compile(mips& mp)const
       mp.move(3, 2);
       p_one->compile(mp);
       mp.nop();
-      mp.sll(2, 2, 3);
+      mp.sllv(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -252,7 +268,7 @@ void assignment_expression::compile(mips& mp)const
       mp.move(3, 2);
       p_one->compile(mp);
       mp.nop();
-      mp.sra(2, 2, 3);
+      mp.srav(2, 2, 3);
       mp.sw(2, mp.info.var_index, 30);
       break;
 
@@ -719,6 +735,7 @@ void parameter_list::compile(mips& mp)const{
 }
 
 void parameter_declaration :: compile(mips& mp) const{
+  debug(cname);
   if(right == NULL){
     left -> compile(mp); // e,g int
   }
@@ -729,13 +746,19 @@ void parameter_declaration :: compile(mips& mp) const{
     string variable_name = another_mp.info.func_name;//get name of variable, like a;
     int availability = arg_check();
     int arg_reg = availability + 4;
+    std::cerr << "current register in parameter:" << arg_reg<<'\n';
+    std::cerr << "current frame in parameter:" << current_frame<<'\n';
+    std::cerr << "stack_collection size: " <<stack_collection.size() <<'\n';
     if(arg_reg >= 4){
-      mp.sw(arg_reg, ((arg_reg-4)*4+12) , 30);//point upwards add 12 because we have ra and sp stored in beginning
+      int offset = (arg_reg-4)*4+12;
+      mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
+      std::cerr << "end sw" << '\n';
       stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
       stack_collection[current_frame].push_back(stack);
+
     }
     else{ //case when more than 4 arguments
-      stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
+      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12)};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }

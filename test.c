@@ -1,7 +1,4 @@
-int main()
+int f(int a, int b)
 {
-    int a = 2;
-    int b = 0;
-    a = a | b;
-    return  a*2;
+    return a+b;
 }

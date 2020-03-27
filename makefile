@@ -33,7 +33,7 @@ mtest : run
 	mips-linux-gnu-gcc -mfp32 -static -o test_program test_program.o
 	#qemu-mips test_program
 
-mips:
+mips:  run
 	rm -f test_program.o
 	rm -f test_program
 	mips-linux-gnu-gcc -mfp32 -o test_program.o -c result.s

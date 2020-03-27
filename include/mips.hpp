@@ -16,7 +16,7 @@ extern int labelcounter;//make unique label by number
 // //remember the locations of each variable (offset relative to the frame pointer, which is a register)
 
 extern int result_count;
-
+extern int arg_overflow; //record the number of argumnets exceed obove 4
 struct stack_content
 {
   string name;//variable name: i
@@ -84,13 +84,14 @@ public:
   //add new frame for function
   void add_frame()//string func_name, vector<string>mips_code)
   {
+    std::cerr << "size of mips code collection: " << mpcode_collection.size() <<'\n';
     //std::cerr << "add frame enter" << '\n';
     //indicate the current frame index; it should be the same index for mips_code
-    current_frame = stack_collection.size();
+    // current_frame = stack_collection.size();
     //std::cerr << "size of current frame in addframe is : " << current_frame <<'\n';
     //everytime start a new frame, add a stack(vector) for it
-    vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
-    stack_collection.push_back(frame_stack);
+    // vector<stack_content> frame_stack; //with reference to FP at the top, variables arguments has positive address, local have negative
+    // stack_collection.push_back(frame_stack);
     arg_count_collection.push_back(0);//initially the number of arguments in callee functions; index same as current_frame
 
     //make an array stac for each frame
@@ -102,15 +103,18 @@ public:
    //make a new vector for mips code when start a new frame_stack
     // vector<string>mips_code;
     // mpcode_collection[current_frame]_collection.push_back(mips_code);
-    initilise_arg(true);//all argument available at the beginning
-    string imm = "-12";
-    addiu(29,29,imm);
-    sw(30, 4,29);
-    sw(31,8,29);
-    // this instruction is added at the end_frame: addiu(29,29,offset)
-    move(30,29);
+    // initilise_arg(true);//all argument available at the beginning
+    // arg_overflow = 0;
+    // string imm = "-12";
+    // addiu(29,29,imm);
+    // sw(30, 4,29);
+    // sw(31,8,29);
+    // // this instruction is added at the end_frame: addiu(29,29,offset)
+    // move(30,29);
+    // nop();
     result_count = 0;
     nop();
+
   }
   //frame ended
   void finish_frame()
@@ -171,24 +175,6 @@ public:
 
   //requires initialisation everytime before use
   vector<switch_content>switch_info;
-
-
-  //make function call  // 这是啥
-  // void function_call(string func_name, vector<string> func_param, int ret_add)
-  // {
-  //   //load function parameter from stack first;
-  //   for(int i = 0; i < func_param.size(); i++)
-  //   {
-  //     int r = 4;//register for arguments
-  //     lw(r, find_variable(func_param[i], stack_collection[current_frame]), 30);
-  //     r++;//change register for next argument
-  //   }
-  //
-  //   jal(func_name);
-  //   nop();
-  //   //return value
-  //   sw(2, 4, 29);//TODO:sp???
-  // }
 
 
   void add_label(string label)
@@ -452,7 +438,7 @@ public:
 };
 
 extern bool arg_reg[4];//to register the availability of $4 - $7 registers in argument
-extern int arg_overflow; //record the number of argumnets exceed obove 4
+// extern int arg_overflow; //record the number of argumnets exceed obove 4
 extern int caller_arg_count;//used to record the arguments of callee functions
 inline int arg_check(){
   for(int i = 0 ; i < 4; i++)
@@ -480,7 +466,7 @@ inline void callee_value_process(mips& mp){
 
   if(caller_arg_count < 4){
     //mp.lw(2,variable_index,30);
-    mp.move((caller_arg_count+4),2); //directly load const to reg 2
+    mp.move(2,(caller_arg_count+4)); //directly load const to reg 2
   }
   else{
     //mp.lw(2,variable_index,30);
