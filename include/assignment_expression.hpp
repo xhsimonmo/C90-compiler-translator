@@ -4,23 +4,22 @@
 #include "ast.hpp"
 
 // assignment_expression
-// 	: conditional_expression                                             {$$ = $1;}
-// 	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3);}
+// 	: conditional_expression                                             {$$ = new assignment_expression($1); std::cerr << "assignment expression 1" << std::endl;}
+// 	| unary_expression assignment_operator assignment_expression         {$$ = new assignment_expression($1, $2, $3); std::cerr << "assignment expression 2" << std::endl;}
 // 	;
 //
 // assignment_operator
-// 	: '='                {$$ = "ASSIGN";}
-// 	| MUL_ASSIGN         {$$ = "MUL";}
-// 	| DIV_ASSIGN         {$$ = "DIV";}
-// 	| MOD_ASSIGN         {$$ = "MOD";}
-// 	| ADD_ASSIGN         {$$ = "ADD";}
-// 	| SUB_ASSIGN         {$$ = "SUB";}
-// 	| LEFT_ASSIGN        {$$ = "LEFT";}
-// 	| RIGHT_ASSIGN       {$$ = "RIGHT";}
-// 	| AND_ASSIGN         {$$ = "AND";}
-// 	| XOR_ASSIGN         {$$ = "XOR";}
-// 	| OR_ASSIGN          {$$ = "OR";}
-// 	;
+// 	: '='                {$$ = 0; std::cerr << "assignment operator 1" << std::endl;}
+// 	| MUL_ASSIGN         {$$ = 1; std::cerr << "assignment operator 2" << std::endl;}
+// 	| DIV_ASSIGN         {$$ = 2; std::cerr << "assignment operator 3" << std::endl;}
+// 	| MOD_ASSIGN         {$$ = 3; std::cerr << "assignment operator 4" << std::endl;}
+// 	| ADD_ASSIGN         {$$ = 4; std::cerr << "assignment operator 5" << std::endl;}
+// 	| SUB_ASSIGN         {$$ = 5; std::cerr << "assignment operator 6" << std::endl;}
+// 	| LEFT_ASSIGN        {$$ = 6; std::cerr << "assignment operator 7" << std::endl;}
+// 	| RIGHT_ASSIGN       {$$ = 7; std::cerr << "assignment operator 8" << std::endl;}
+// 	| AND_ASSIGN         {$$ = 8; std::cerr << "assignment operator 9" << std::endl;}
+// 	| XOR_ASSIGN         {$$ = 9; std::cerr << "assignment operator 10" << std::endl;}
+// 	| OR_ASSIGN          {$$ = 10; std::cerr << "assignment operator 11" << std::endl;}
 
 class assignment_expression : public expression{
 public:

@@ -7,29 +7,52 @@ addiu $29,$29,-12
 sw $30,4($29)
 sw $31,8($29)
 move $30,$29
-addiu $29,$29,-20
-addiu $29,$29,-100
+addiu $29,$29,-24
+addiu $29,$29,-168
 nop
 #result_offset in init_declarator: 0
-#get a primary expression as number : 1
-li $2,1
-sw $2,-8($30)
-sw $2,0($30)
-lw $2,0($30)
-nop
-sw $2,-12($30)
 #get a primary expression as number : 2
 li $2,2
+sw $2,-8($30)
+sw $2,0($30)
+#result_offset in init_declarator: -8
+#get a primary expression as number : 0
+li $2,0
 sw $2,-16($30)
-lw $3,-16($30)
+sw $2,-8($30)
+lw $2,0($30)
 nop
-lw $2,-12($30)
-nop
-sll $2,$2,3
 sw $2,-20($30)
 lw $2,0($30)
 nop
 sw $2,-24($30)
+lw $2,-8($30)
+nop
+sw $2,-28($30)
+#load right index from memory
+lw $3,-28($30)
+nop
+#load left index from memory
+lw $2,-24($30)
+nop
+or $2,$2,$3
+sw $2,-32($30)
+nop
+sw $2,0($30)
+#get a primary expression as number : 2
+li $2,2
+sw $2,-36($30)
+lw $2,0($30)
+nop
+sw $2,-40($30)
+lw $2,-36($30)
+nop
+lw $3,-40($30)
+nop
+nop
+mult $2,$3
+mflo $2
+sw $2,-44($30)
 #////////ending current frame//////
 move $29,$30
 lw $31,8($29)

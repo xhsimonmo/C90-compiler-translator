@@ -105,8 +105,6 @@ public:
     move(30,29);
     result_count = 0;
     nop();
-    //frame counter +1
-    //frame_counter++;
   }
   //frame ended
   void finish_frame()
@@ -322,6 +320,18 @@ public:
     mpcode_collection[current_frame].push_back(mp);
   }
 
+  void sllv(int rd, int rt, int rs) // SLL rd <- rt<<rs
+  {
+    string mp = "sllv $" + to_string(rd) + ",$" + to_string(rt) + ",$" + to_string(rs);
+    mpcode_collection[current_frame].push_back(mp);
+  }
+
+  void srav(int rd, int rt, int rs) // SLL rd <- rt>>rs
+  {
+    string mp = "srav $" + to_string(rd) + ",$" + to_string(rt) + ",$" + to_string(rs);
+    mpcode_collection[current_frame].push_back(mp);
+  }
+
   void sra(int rd, int rt, int sa) // arithmetic shift; signed extend
   {
     string mp = "sra $" + to_string(rd) + ",$" + to_string(rt) + "," + to_string(sa);
@@ -343,6 +353,28 @@ public:
   void slt(int rd, int rs, int rt)
   {
     string mp = "slt $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
+    mpcode_collection[current_frame].push_back(mp);
+  }
+
+  void sge(int rd, int rs, int rt)
+  {
+    string mp = "sge $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
+    mpcode_collection[current_frame].push_back(mp);
+  }
+
+  void sle(int rd, int rs, int rt)
+  {
+    string mp = "sle $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
+    mpcode_collection[current_frame].push_back(mp);
+  }
+  void sne(int rd, int rs, int rt)
+  {
+    string mp = "sne $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
+    mpcode_collection[current_frame].push_back(mp);
+  }
+  void seq(int rd, int rs, int rt)
+  {
+    string mp = "seq $" + to_string(rd) + ",$" + to_string(rs) + ",$" + to_string(rt);
     mpcode_collection[current_frame].push_back(mp);
   }
 
