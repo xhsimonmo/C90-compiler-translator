@@ -152,8 +152,7 @@ public:
   {
     bool find = false;
     int var_add;
-    while(find == false) // infinite loop?if not find
-    {
+
       for (int i = 0; i < variables.size(); i++)
       {
         if(variables[i].name == var_name)
@@ -163,7 +162,7 @@ public:
           return var_add;
         }
       }
-    }
+
     return -1;//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
@@ -171,8 +170,7 @@ public:
   {
     bool find = false;
     string var_type;
-    while(find == false)
-    {
+
       for (int i = 0; i < variables.size(); i++)
       {
         if(variables[i].name == var_name)
@@ -182,7 +180,7 @@ public:
           //std::cerr << "get type:" <<var_type << '\n';
           return var_type;
         }
-      }
+
     }
     return "int";//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }

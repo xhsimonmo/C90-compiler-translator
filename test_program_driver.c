@@ -1,7 +1,12 @@
 
 int f();
 
+int g()
+{
+    return 10;
+}
+
 int main()
 {
-    return !(f()==1234);
+    return !( 10==f() );
 }

@@ -104,8 +104,14 @@ void type_specifier::compile(mips& mp)const
 void external_declaration::compile(mips& mp)const
 {
   debug(cname);
-  ptr->compile(mp);
-  //don't do anything yet
+  switch(type){
+    case 0:
+    ptr->compile(mp);
+    break;
+    case 1:
+    NotImplemented();
+    break;
+  }
 };
 
 void compound_statement::compile(mips& mp)const{
@@ -711,6 +717,7 @@ void iteration_statement::compile(mips& mp)const{
   }
 
 void jump_statement::compile(mips& mp) const {
+  debug(cname);
   mips mp_tmp;
   switch (type) {
     case 0:
@@ -739,6 +746,7 @@ void primary_expression :: compile(mips& mp) const{
   int var_index;
   switch (type) {
     case 0: // got IDENTIFIER
+    std::cerr << "IDENTIFIER:" << element << '\n';
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
@@ -772,6 +780,7 @@ void primary_expression :: compile(mips& mp) const{
 }
 
 void parameter_list::compile(mips& mp)const{
+  debug(cname);
   left -> compile(mp);
   mips another_mp;
   right -> compile(another_mp);
@@ -841,6 +850,7 @@ void postfix_expression::compile(mips& mp)const{
     break;
     case 1:
     ptr->compile(mp);
+    //std::cerr << "function_name:" <<mp.info.func_name  <<'\n';
     mp.jal(mp.info.func_name ); //maybe need to add f()?
     mp.nop();
     break;
@@ -899,6 +909,7 @@ void argument_expression_list::compile(mips& mp)const{
 // 	;
 void initializer::compile(mips& mp) const
 {
+  debug(cname);
   int size;
   int element[size];
   int index;
@@ -959,6 +970,7 @@ void initializer::compile(mips& mp) const
 
 void initializer_list::compile(mips& mp) const
 {
+  debug(cname);
   mips another_mp;
   switch(type)
   {
@@ -973,12 +985,14 @@ void initializer_list::compile(mips& mp) const
 }
 
 void type_name::compile(mips& mp)const{
+  debug(cname);
   left ->compile(mp);
   mips another_mp;
   right ->compile(another_mp);
 }
 
 void translation_unit::compile(mips& mp)const{
+  debug(cname);
   p_yi->compile(mp);
   mips another_mp;
   p_er->compile(another_mp);
@@ -1024,6 +1038,7 @@ void declaration_specifiers::compile(mips& mp)const
 
 void declaration::compile(mips& mp)const
 {
+  debug(cname);
   if(lt == NULL)
    {
      spec -> compile(mp);
@@ -1040,6 +1055,7 @@ void declaration::compile(mips& mp)const
 
 void declarator::compile(mips&mp)const
 {
+    debug(cname);
     ptr ->compile(mp);
     mips another_mp;
     direct_decla -> compile(another_mp);
@@ -1053,6 +1069,7 @@ void direct_abstract_declarator :: compile(mips& mp)const
 
 void expression_statement::compile(mips& mp)const
 {
+  debug(cname);
   ptr_expr->compile(mp);
 }
 
@@ -1070,6 +1087,7 @@ void init_declarator_list::compile(mips& mp)const
 }
 
 void relational_expression::compile(mips& mp)const{
+  debug(cname);
   int l_index;
   int r_index;
   left->compile(mp);
@@ -1077,9 +1095,9 @@ void relational_expression::compile(mips& mp)const{
   mips another_mp;
   right->compile(another_mp);
   r_index = result_offset();
-  mp.comment("load right index from memory");
+  //mp.comment("load right index from memory");
   mp.lw(3,r_index,30);
-  mp.comment("load left index from memory");
+  //mp.comment("load left index from memory");
   mp.lw(2,l_index,30);
   switch (type) {
     case 0:
@@ -1137,6 +1155,7 @@ void conditional_expression::compile(mips& mp)const
 
 void base_expression::compile(mips& mp)const
 {
+  debug(cname);
   p_one -> compile(mp);
   mips another_mp;
   p_five ->compile(another_mp);
@@ -1144,6 +1163,7 @@ void base_expression::compile(mips& mp)const
 
 void abstract_declarator::compile(mips& mp)const
 {
+  debug(cname);
   left ->compile(mp);
   mips another_mp;
   right -> compile(another_mp);
@@ -1155,6 +1175,7 @@ void abstract_declarator::compile(mips& mp)const
 // 	| DEFAULT ':' statement
 // 	;
 void labeled_statement::compile(mips& mp)const{
+  debug(cname);
   string case_number;
   mips another_mp;
   string case_label = "Label " + to_string(labelcounter);

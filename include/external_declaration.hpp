@@ -39,8 +39,14 @@ private:
 // void external_declaration::compile(mips& mp)const
 // {
 //   debug(cname);
-  // ptr->compile(mp);
-//   //don't do anything yet
+//   switch(type){
+//     case 0:
+//     ptr->compile(mp);
+//     break;
+//     case 1:
+//     NotImplemented();
+//     break;
+//   }
 // };
 
 #endif

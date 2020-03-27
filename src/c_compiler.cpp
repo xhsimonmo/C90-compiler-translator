@@ -13,7 +13,7 @@ vector<vector<string>> mpcode_collection;
 vector<int> arg_count_collection;
 vector<vector<array_struct>> array_collection;
 vector<array_struct>global_array;
-array_collection.push_back(global_array);//0 index of array_collection is global arrays
+// array_collection.push_back(global_array);//0 index of array_collection is global arrays
 
 bool arg_reg[4];
 int arg_overflow;
@@ -21,6 +21,7 @@ int caller_arg_count;
 int result_count;
 int array_index;
 
+bool in_frame;
 
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]){
   }
   else if(strcmp(argv[1], "-S") == 0 ){
      std::cerr << "compiler begin" << std::endl;
+     array_collection.push_back(global_array);//0 index of array_collection is global arrays
      mips mp;
      root -> compile(mp);
      string generated_mips;
