@@ -672,6 +672,13 @@ void iteration_statement::compile(mips& mp)const{
     }
   }
 
+// jump_statement
+// 	 //GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}  // no need to Implement this
+// 	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");std::cout << "jump_statement 1 " << std::endl;}
+// 	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");std::cout << "jump_statement 2 " << std::endl;}
+// 	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");std::cout << "jump_statement 3 " << std::endl;}
+// 	| RETURN expression ';'    {$$ = new jump_statement(4, $2);std::cout << "jump_statement 4 " << std::endl;}
+// 	;
 void jump_statement::compile(mips& mp) const {
   mips mp_tmp;
   switch (type) {
