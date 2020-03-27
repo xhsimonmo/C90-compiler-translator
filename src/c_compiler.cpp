@@ -12,11 +12,15 @@ vector<vector<stack_content>>stack_collection;
 vector<vector<string>> mpcode_collection;
 vector<int> arg_count_collection;
 vector<vector<array_struct>> array_collection;
+vector<array_struct>global_array;
+array_collection.push_back(global_array);//0 index of array_collection is global arrays
+
 bool arg_reg[4];
 int arg_overflow;
 int caller_arg_count;
 int result_count;
 int array_index;
+
 
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;

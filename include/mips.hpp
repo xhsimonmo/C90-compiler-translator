@@ -11,6 +11,7 @@ using std::vector;
 using std::to_string;
 
 extern int current_frame;//indicate current frame index;
+extern bool in_frame;//whether in frame or not; if false it's global
 extern int labelcounter;//make unique label by number
 // extern int frame_counter;//make unique number for frame: as the stack index!
 // //remember the locations of each variable (offset relative to the frame pointer, which is a register)
@@ -27,7 +28,6 @@ struct stack_content
 extern vector<vector<stack_content>>stack_collection;
 extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<int> arg_count_collection;//this is the counter of arguments callee function
-//extern vector<string>mpcode;//final mips code collection
 
 struct array_struct
 {
@@ -36,6 +36,8 @@ struct array_struct
   vector<int>array_add;//store array initializer address;
 };
 extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
+// vector<array_struct>global_array;
+// array_collection.push_back(global_array);//0 index of array_collection is global arrays
 extern int array_index;//current array index in current frame
 
 //contain the case number and its corresponding statement label
@@ -85,6 +87,8 @@ public:
   //add new frame for function
   void add_frame()//string func_name, vector<string>mips_code)
   {
+    in_frame = true;
+    //std::cerr << "size of mips code collection: " << mpcode_collection.size() <<'\n';
     //std::cerr << "add frame enter" << '\n';
     //indicate the current frame index; it should be the same index for mips_code
     // current_frame = stack_collection.size();
@@ -119,6 +123,7 @@ public:
   //frame ended
   void finish_frame()
   {
+    in_frame = false;
     comment("////////ending current frame//////");
     move(29,30);//move sp up to same location as fp
     lw(31, 8, 29);
