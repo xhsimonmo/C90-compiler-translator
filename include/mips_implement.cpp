@@ -144,6 +144,10 @@ void direct_declarator::compile(mips& mp)const
     break;
 
     case 2:
+    if(in_frame == false)//if global
+    {
+      current_frame = 0;
+    }
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     one->compile(another_mp);//this should fill in the array name;
@@ -780,6 +784,10 @@ void postfix_expression::compile(mips& mp)const{
 
   switch (type) {
     case 0://read from array
+    if(in_frame == false)//if global
+    {
+      current_frame = 0;
+    }
     ptr->compile(another_mp);//fill array name (in all frame arrays)
     name = another_mp.info.call_array_name;
     array_index = mp.find_array(name);//index of array in all arrays of current frame
@@ -857,6 +865,10 @@ void initializer::compile(mips& mp) const
   int index;
   int offset;
   int last_index;
+  if(in_frame == false)//if global
+  {
+    current_frame = 0;
+  }
   switch(type)
   {
     case 0:
