@@ -1,13 +1,6 @@
-int f(int a, int b){
-    return a + b ;
-}
+int g(int a, int b, int c, int d, int e);
 
-int g(int a) {
-    return a;
-}
-
-int main(){
-    int a = 1;
-    int b = 2;
-    return f(g(a), b);
+int f()
+{
+    return g(1,2,3,4,5);
 }

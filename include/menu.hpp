@@ -3,7 +3,7 @@
 
 #include "mips.hpp"
 #include "function_parameter.hpp"
-
+#include "enum_specifier.hpp"
 #include "ast.hpp"
 #include "abstract_declarator.hpp"
 #include "initializer_list.hpp"
@@ -46,6 +46,8 @@
 #include "declaration_list.hpp"
 
 #include "external_declaration.hpp"
+
+
 
 extern const astnode * parseAST();
 // extern FILE *yyin; // pointer to input stream
