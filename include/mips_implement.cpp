@@ -23,7 +23,9 @@ void function_definition::compile(mips& mp)const
       p_t->compile(mp);
 
       //finish function
-      mp.finish_frame();
+      if(end_frame == true){
+        mp.finish_frame();
+      }
   }
   else{
     p_o -> compile(mp);// type_specifier
@@ -55,7 +57,9 @@ void function_definition::compile(mips& mp)const
     //compound statement
     p_f->compile(mp);
     //finish function
-    mp.finish_frame();
+    if(end_frame == true){
+      mp.finish_frame();
+    }
   }
 }
 
@@ -746,7 +750,7 @@ void primary_expression :: compile(mips& mp) const{
   int var_index;
   switch (type) {
     case 0: // got IDENTIFIER
-    std::cerr << "IDENTIFIER:" << element << '\n';
+    std::cerr << "IDENTIFIER in primary expression: " << element << '\n';
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
@@ -798,13 +802,12 @@ void parameter_declaration :: compile(mips& mp) const{
     string variable_name = another_mp.info.func_name;//get name of variable, like a;
     int availability = arg_check();
     int arg_reg = availability + 4;
-    std::cerr << "current register in parameter:" << arg_reg<<'\n';
-    std::cerr << "current frame in parameter:" << current_frame<<'\n';
-    std::cerr << "stack_collection size: " <<stack_collection.size() <<'\n';
+    // std::cerr << "current register in parameter:" << arg_reg<<'\n';
+    // std::cerr << "current frame in parameter:" << current_frame<<'\n';
+    // std::cerr << "stack_collection size: " <<stack_collection.size() <<'\n';
     if(arg_reg >= 4){
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
-      std::cerr << "end sw" << '\n';
       stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
       stack_collection[current_frame].push_back(stack);
 

@@ -22,6 +22,7 @@ int result_count;
 int array_index;
 
 bool in_frame;
+bool end_frame;
 
 extern FILE *yyin; // pointer to input stream
 vector<string> global_variables;

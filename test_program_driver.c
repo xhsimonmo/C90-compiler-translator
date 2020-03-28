@@ -1,12 +1,7 @@
 
-int f();
-
-int g()
-{
-    return 10;
-}
+int f(int x, int y);
 
 int main()
 {
-    return !( 10==f() );
+    return !(f(10,20)==30);
 }

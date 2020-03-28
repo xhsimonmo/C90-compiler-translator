@@ -1,6 +1,4 @@
-int g();
-
-int f()
+int f(int x, int y)
 {
-    return g();
+    return x+y;
 }

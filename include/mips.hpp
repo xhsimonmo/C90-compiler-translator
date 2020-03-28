@@ -10,6 +10,7 @@ using std::string;
 using std::vector;
 using std::to_string;
 
+extern bool end_frame;
 extern int current_frame;//indicate current frame index;
 extern bool in_frame;//whether in frame or not; if false it's global
 extern int labelcounter;//make unique label by number
@@ -118,11 +119,13 @@ public:
     // nop();
     result_count = 0;
     nop();
+    end_frame = true;//hasn't met finish_frame yet
 
   }
   //frame ended
   void finish_frame()
   {
+    std::cerr << "end frame" << '\n';
     in_frame = false;
     comment("////////ending current frame//////");
     move(29,30);//move sp up to same location as fp
@@ -143,7 +146,7 @@ public:
     mpcode_collection[current_frame].insert(it+where_to_insert_sp_move_down, function_header);//add function header back
     initilise_arg(true);;//release the argument registers; actually not necessay, let it be there
     result_count=0;//set it back
-    //current_frame--;
+    end_frame = false;
   }
 
 
