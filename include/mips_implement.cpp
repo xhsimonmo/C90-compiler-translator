@@ -976,6 +976,10 @@ void postfix_expression::compile(mips& mp)const{
     caller_arg_count = 0;
     opt -> compile(another_mp);
     mp.jal(function_name);
+    if(arg_count_collection[current_frame] < caller_arg_count)
+    {
+      arg_count_collection[current_frame] = caller_arg_count;
+    }
     caller_arg_count = 0; // reset
     mp.nop();
     break;
@@ -985,7 +989,7 @@ void postfix_expression::compile(mips& mp)const{
     case 4:
     NotImplemented();
     break;
-    case 5:
+    case 5: // a++
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     variable_name = another_mp.info.func_name;
