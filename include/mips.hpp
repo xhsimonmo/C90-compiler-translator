@@ -71,8 +71,8 @@ public:
     string new_array_name;
     string call_array_name;
 
-    string continue_jump_label;
     string break_jump_label;
+    string continue_jump_label;
   };
 
   temp_result info;
@@ -128,7 +128,7 @@ public:
   //frame ended
   void finish_frame()
   {
-    std::cerr << "end frame" << '\n';
+
     in_frame = false;
     comment("////////ending current frame//////");
     move(29,30);//move sp up to same location as fp
@@ -191,45 +191,21 @@ public:
     return "int";//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
-  int find_array(string name, bool global)
+  int find_array(string name, bool global_array)
   {
-    bool find = false;
-    int index;
-    for(int i = 0; i < array_collection[current_frame].size(); i++)
+    for(int i = 0; i < array_collection.size(); i++)
     {
       if(name == array_collection[current_frame][i].name)
       {
-        index = i;
-        find = true;
+        return i;
       }
     }
-    if(find == false)//if can't find in frame arrays, then it should be global
-    {
-      global = true;
-      for(int i = 0; i < array_collection[0].size(); i++)
-      {
-        if(name == array_collection[0][i].name)
-        {
-          index = i;
-        }
-      }
-    }
-    return index;
   }
 
   //requires initialisation everytime before use
   vector<switch_content>switch_info;
 
-  void _word(string w)
-  {
-    string mp = ".word " + w;
-    mpcode_collection[current_frame].push_back(mp);
-  }
-  void global(string name)
-  {
-    string mp = name + ":";
-    mpcode_collection[current_frame].push_back(mp);
-  }
+
   void add_label(string label)
   {
     string mp = label + ":";
@@ -486,6 +462,10 @@ public:
   {
     string mp = "j $" + to_string(rd);
     mpcode_collection[current_frame].push_back(mp);
+  }
+
+  void _word(string name){
+
   }
 
 };

@@ -66,15 +66,57 @@ void function_definition::compile(mips& mp)const
 void type_specifier::compile(mips& mp)const
 {
   debug(cname);
+  switch(type)
+  {
+    case 0:
+    mp.info.func_type = "void";
+    break;
+    case 1:
+    mp.info.func_type = "char";
+    break;
+    case 2:
+    mp.info.func_type = "short";
+    break;
+    case 3:
+    mp.info.func_type = "int";
+    break;
+    case 4:
+    mp.info.func_type = "long";
+    break;
+    case 5:
+    mp.info.func_type = "float";
+    break;
+    case 6:
+    mp.info.func_type = "double";
+    break;
+    case 7:
+    mp.info.func_type = "signed";
+    break;
+    case 8:
+    mp.info.func_type = "unsigned";
+    break;
+    case 9:
+    mp.info.func_type = "enum";
+    break;
+    case 10:
+    mp.info.func_type = "type_name";
+    break;
+  }
   //don't do anything yet for type specifier, assume INT?
 };
 
 void external_declaration::compile(mips& mp)const
 {
   debug(cname);
-  ptr->compile(mp);
-  //don't do anything yet
-};
+  switch(type){
+    case 0:
+    ptr->compile(mp);
+    break;
+    case 1:
+    NotImplemented();
+    break;
+  }
+}
 
 void compound_statement::compile(mips& mp)const{
   debug(cname);
@@ -162,7 +204,7 @@ void direct_declarator::compile(mips& mp)const
     array_collection[current_frame].push_back(a);
     if(in_frame == false)//if global
     {
-      mp.global(array_name);
+      //mp.global(array_name);
     }
     current_frame = temp_current_frame;
     break;
@@ -477,10 +519,12 @@ void unary_expression::compile(mips& mp)const
     break;
 
     case 2: //sizeof
-    NotImplemented();
+    ptr ->compile(mp);
+    sizeof_process(mp);
     break;
     case 3: //sizeof ()
-    NotImplemented();
+    ptr ->compile(mp);
+    sizeof_process(mp);
     break;
     case 4:// &
     NotImplemented();
@@ -793,21 +837,17 @@ void primary_expression :: compile(mips& mp) const{
   int var_index;
   switch (type) {
     case 0: // got IDENTIFIER
-<<<<<<< HEAD
-    std::cerr << "IDENTIFIER in primary expression: " << element << '\n';
-=======
->>>>>>> 923fb23b72dbc68564ceea88cb58c89d1cef221a
+    std::cerr << "IDENTIFIER:" << element << '\n';
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
+    mp.info.func_type = mp.find_variable_type(element,stack_collection[current_frame]);
     if(var_index != -1) //this variable indeed has been saved,not a funciton name and stuff like that
     {
       mp.lw(2,var_index,30);//load value to $2
       result_count = result_count - 4;
       mp.sw(2,result_offset(),30);
     }
-    // result_count = result_count -4;
-    // mp.sw(2,result_offset(),30);
     break;
     case 1:
     mp.info.result = element;
@@ -852,17 +892,12 @@ void parameter_declaration :: compile(mips& mp) const{
     if(arg_reg >= 4){
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
-<<<<<<< HEAD
       stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
-=======
-      std::cerr << "end sw" << '\n';
-      stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
->>>>>>> 923fb23b72dbc68564ceea88cb58c89d1cef221a
       stack_collection[current_frame].push_back(stack);
 
     }
     else{ //case when more than 4 arguments
-      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12)};
+      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12), "int"};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }
@@ -965,6 +1000,7 @@ void argument_expression_list::compile(mips& mp)const{
 // 	;
 void initializer::compile(mips& mp) const
 {
+  debug(cname);
   int size;
   int element[size];
   int index;
@@ -1116,14 +1152,18 @@ void declaration_specifiers::compile(mips& mp)const
 
 void declaration::compile(mips& mp)const
 {
+  debug(cname);
   if(lt == NULL)
    {
      spec -> compile(mp);
    }
    else{
-     spec -> compile(mp);
+     spec -> compile(mp); // declaration_spec
      mips another_mp;
-     lt->compile(another_mp);
+     lt->compile(another_mp); // eg. a = 1;
+     // std::cerr << "type subsstitute in: " <<  mp.info.func_type<<'\n';
+     // std::cerr << "current type at back: " <<stack_collection[current_frame].back().type  << '\n';
+     stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
    }
 }
 
