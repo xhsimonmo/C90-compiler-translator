@@ -20,7 +20,6 @@ int caller_arg_count;
 int result_count;
 int array_index;
 
-bool in_frame;
 bool end_frame;
 
 extern FILE *yyin; // pointer to input stream
