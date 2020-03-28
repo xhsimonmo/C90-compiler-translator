@@ -12,8 +12,7 @@ vector<vector<stack_content>>stack_collection;
 vector<vector<string>> mpcode_collection;
 vector<int> arg_count_collection;
 vector<vector<array_struct>> array_collection;
-vector<array_struct>global_array;
-// array_collection.push_back(global_array);//0 index of array_collection is global arrays
+bool in_frame = false;
 
 bool arg_reg[4];
 int arg_overflow;
@@ -56,8 +55,11 @@ int main(int argc, char *argv[]){
   }
   else if(strcmp(argv[1], "-S") == 0 ){
      std::cerr << "compiler begin" << std::endl;
-     array_collection.push_back(global_array);//0 index of array_collection is global arrays
      mips mp;
+
+     vector<array_struct>global_array;
+     array_collection.push_back(global_array);//0 index of array_collection is global arrays
+
      root -> compile(mp);
      string generated_mips;
      for(int i = 0; i < mpcode_collection.size();i++)

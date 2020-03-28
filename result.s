@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 	.set noreorder
 	.text
 	.align 2
@@ -36,3 +37,5 @@ nop
 addiu $29,$29,12
 j $31
 nop
+=======
+>>>>>>> 923fb23b72dbc68564ceea88cb58c89d1cef221a

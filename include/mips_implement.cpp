@@ -66,56 +66,14 @@ void function_definition::compile(mips& mp)const
 void type_specifier::compile(mips& mp)const
 {
   debug(cname);
-  //don't do anything yet?
-  switch(type)
-  {
-    case 0:
-    mp.info.func_type = "void";
-    break;
-    case 1:
-    mp.info.func_type = "char";
-    break;
-    case 2:
-    mp.info.func_type = "short";
-    break;
-    case 3:
-    mp.info.func_type = "int";
-    break;
-    case 4:
-    mp.info.func_type = "long";
-    break;
-    case 5:
-    mp.info.func_type = "float";
-    break;
-    case 6:
-    mp.info.func_type = "double";
-    break;
-    case 7:
-    mp.info.func_type = "signed";
-    break;
-    case 8:
-    mp.info.func_type = "unsigned";
-    break;
-    case 9:
-    mp.info.func_type = "enum";
-    break;
-    case 10:
-    mp.info.func_type = "type_name";
-    break;
-  }
+  //don't do anything yet for type specifier, assume INT?
 };
 
 void external_declaration::compile(mips& mp)const
 {
   debug(cname);
-  switch(type){
-    case 0:
-    ptr->compile(mp);
-    break;
-    case 1:
-    NotImplemented();
-    break;
-  }
+  ptr->compile(mp);
+  //don't do anything yet
 };
 
 void compound_statement::compile(mips& mp)const{
@@ -146,7 +104,7 @@ void init_declarator::compile(mips& mp)const{
      string init_name = mp.info.func_name;
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      int offset = result_offset();
-     stack_content tmp = {init_name,offset, "int"};
+     stack_content tmp = {init_name,offset};
      stack_collection[current_frame].push_back(tmp);
    }
    else{
@@ -155,7 +113,7 @@ void init_declarator::compile(mips& mp)const{
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      int offset = result_offset();
      mp.comment("result_offset in init_declarator: " + to_string(offset));
-     stack_content tmp = {init_name,offset,"int"};
+     stack_content tmp = {init_name,offset};
      stack_collection[current_frame].push_back(tmp);
      two -> compile(mp);
      mp.sw(2,offset,30);
@@ -179,6 +137,8 @@ void direct_declarator::compile(mips& mp)const
   string array_name;
   //create a new array
   array_struct a;
+  int temp_current_frame = current_frame;
+
   switch(type)
   {
     case 0:
@@ -200,6 +160,11 @@ void direct_declarator::compile(mips& mp)const
     array_name = another_mp.info.new_array_name;
     a.name = array_name;
     array_collection[current_frame].push_back(a);
+    if(in_frame == false)//if global
+    {
+      mp.global(array_name);
+    }
+    current_frame = temp_current_frame;
     break;
 
     case 3:
@@ -512,12 +477,10 @@ void unary_expression::compile(mips& mp)const
     break;
 
     case 2: //sizeof
-    ptr ->compile(mp);
-    sizeof_process(mp);
+    NotImplemented();
     break;
     case 3: //sizeof ()
-    ptr ->compile(mp);
-    sizeof_process(mp);
+    NotImplemented();
     break;
     case 4:// &
     NotImplemented();
@@ -637,7 +600,12 @@ void selection_statement::compile(mips& mp)const
   }
 }
 
-
+// iteration_statement
+// 	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5); std::cerr << "iteration_statement 0 " << std::endl;}
+// 	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);std::cerr << "iteration_statement 1 " << std::endl;}
+// 	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);std::cerr << "iteration_statement 2 " << std::endl;}
+// 	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
+// 	;
 void iteration_statement::compile(mips& mp)const{
     string condition = "condition" + to_string(labelcounter);
     labelcounter++;
@@ -655,6 +623,23 @@ void iteration_statement::compile(mips& mp)const{
     labelcounter++;
     mips for_state2;//si
 
+    string for_increment = "for_increment" + to_string(labelcounter);
+    labelcounter++;
+
+    string for_end = "for_end" + to_string(labelcounter);
+    labelcounter++;
+
+    string for_start = "for_start" + to_string(labelcounter);
+    labelcounter++;
+
+    string third_part = "label" + to_string(labelcounter);
+    labelcounter++;
+
+    string while_end = "while_end" + to_string(labelcounter);
+    labelcounter++;
+
+
+
 
     switch(type)
     {
@@ -662,8 +647,14 @@ void iteration_statement::compile(mips& mp)const{
       mp.b(condition);
       mp.nop();
 
+      state_expr.info.continue_jump_label = third_part;//if meet continue jump to this
+      state_expr.info.break_jump_label = while_end;//if meet break jump to this
+
       mp.add_label(statement);
       er->compile(state_expr);//get statement
+
+      mp.add_label(third_part);
+      mp.b(condition);
 
       mp.add_label(condition);
       yi->compile(cond_expr);//get conidtion expression
@@ -671,12 +662,21 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, statement);//if true go to statement
       mp.nop();
 
+      //end of while looop
+      mp.add_label(while_end);
+
       case 1://same as case 0, but condition and statement are reversed.
       mp.b(statement);
       mp.nop();
 
+      cond_expr.info.continue_jump_label = third_part;//if meet continue jump to this
+      cond_expr.info.break_jump_label = while_end;//if meet break jump to this
+
       mp.add_label(condition);
       yi->compile(cond_expr);
+
+      mp.add_label(third_part);
+      mp.b(statement);
 
       mp.add_label(statement);
       er->compile(state_expr);
@@ -684,14 +684,25 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, condition);//if true go to statement
       mp.nop();
 
+      //end of while looop
+      mp.add_label(while_end);
+
       case 2:
-      yi->compile(cond_expr);//make init part
+      yi->compile(cond_expr);//make init part(int i = 0)
+      //start of for loop
+      mp.add_label(for_start);
+
       mp.b(statement);
       mp.nop();
 
       //for loop statement branch
       mp.add_label(for_s1);
+      for_state1.info.continue_jump_label = third_part;//if meet continue jump to this
+      for_state1.info.break_jump_label = for_end;//if meet break jump to this
       san->compile(for_state1);
+
+      mp.add_label(third_part);
+      mp.b(for_start);
 
       //for loop condition!!!not statement
       mp.add_label(statement);
@@ -700,16 +711,35 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, for_s1);//if true go to statement
       mp.nop();
 
+      //end of for loop
+      mp.add_label(for_end);
+
       case 3:
       yi->compile(cond_expr);//make init part
+      //start of for loop
+      mp.add_label(for_start);
+
       mp.b(statement);
       mp.nop();
 
       //for loop statement branch
       mp.add_label(for_s2);
+      for_state2.info.continue_jump_label = third_part;//if meet continue jump to this
+      for_state2.info.break_jump_label = for_end;//if meet break jump to this
       si->compile(for_state2);
-      //iteration expression
+      // if(for_state2.info._continue == true)
+      // {
+      //   mp.b(for_increment);
+      //   mp.nop();
+      //   mp.add_label(for_increment);
+      // }
+      mp.add_label(third_part);
       san->compile(for_state1);
+      mp.b(for_start);
+      // if(for_state2.info._break == true)
+      // {
+      //   mp.nop();
+      // }
 
       //for loop condition!!!not statement
       mp.add_label(statement);
@@ -717,21 +747,34 @@ void iteration_statement::compile(mips& mp)const{
       mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
+
+      //end of for loop
+      mp.add_label(for_end);
     }
   }
 
+// jump_statement
+// 	 //GOTO IDENTIFIER ';'   {$$ = new jump_statement(0, "GOTO");}  // no need to Implement this
+// 	: CONTINUE ';'   {$$ = new jump_statement(1, "CONTINUE");std::cout << "jump_statement 1 " << std::endl;}
+// 	| BREAK ';'    {$$ = new jump_statement(2, "BREAK");std::cout << "jump_statement 2 " << std::endl;}
+// 	| RETURN ';'   {$$ = new jump_statement(3, "RETURN");std::cout << "jump_statement 3 " << std::endl;}
+// 	| RETURN expression ';'    {$$ = new jump_statement(4, $2);std::cout << "jump_statement 4 " << std::endl;}
+// 	;
 void jump_statement::compile(mips& mp) const {
-  debug(cname);
   mips mp_tmp;
   switch (type) {
     case 0:
     NotImplemented();
     break;
     case 1:
-    NotImplemented();
+    //CONTINUE
+    mp.b(mp.info.continue_jump_label);//there is a continue waiting to be sloved!
+    mp.nop();
     break;
     case 2:
-    NotImplemented();
+    //BREAK
+    mp.b(mp.info.break_jump_label);//there is a break waiting to be sloved!
+    mp.nop();
     break;
     case 3: // simply "return; " gives error
     NotImplemented();
@@ -750,11 +793,13 @@ void primary_expression :: compile(mips& mp) const{
   int var_index;
   switch (type) {
     case 0: // got IDENTIFIER
+<<<<<<< HEAD
     std::cerr << "IDENTIFIER in primary expression: " << element << '\n';
+=======
+>>>>>>> 923fb23b72dbc68564ceea88cb58c89d1cef221a
     mp.info.func_name = element;//update func_name, name of a variable
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
-    mp.info.func_type = mp.find_variable_type(element,stack_collection[current_frame]);
     if(var_index != -1) //this variable indeed has been saved,not a funciton name and stuff like that
     {
       mp.lw(2,var_index,30);//load value to $2
@@ -784,7 +829,6 @@ void primary_expression :: compile(mips& mp) const{
 }
 
 void parameter_list::compile(mips& mp)const{
-  debug(cname);
   left -> compile(mp);
   mips another_mp;
   right -> compile(another_mp);
@@ -808,12 +852,17 @@ void parameter_declaration :: compile(mips& mp) const{
     if(arg_reg >= 4){
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
+<<<<<<< HEAD
       stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
+=======
+      std::cerr << "end sw" << '\n';
+      stack_content stack = {variable_name, ((arg_reg-4)*4+12)};
+>>>>>>> 923fb23b72dbc68564ceea88cb58c89d1cef221a
       stack_collection[current_frame].push_back(stack);
 
     }
     else{ //case when more than 4 arguments
-      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12) ,"int"};
+      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12)};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }
@@ -833,16 +882,18 @@ void postfix_expression::compile(mips& mp)const{
   int index;
   int increment;
 
+  int temp_current_frame = current_frame;
+  bool global_array = false;//to see if it is global array
+
   switch (type) {
     case 0://read from array
-    if(in_frame == false)//if global
+    ptr->compile(another_mp);//fill array name (in all frame arrays)
+    name = another_mp.info.call_array_name;
+    array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
+    if(global_array == true)//if it is reading from a global array
     {
       current_frame = 0;
     }
-    ptr->compile(another_mp);//fill array name (in all frame arrays)
-    name = another_mp.info.call_array_name;
-    array_index = mp.find_array(name);//index of array in all arrays of current frame
-
     opt->compile(mp);//should store index in $2; store index in info.result
     index = stoi(mp.info.result);//array element index
     // mp.sll(2, 2, 2);//x4 to get byte increment
@@ -850,10 +901,12 @@ void postfix_expression::compile(mips& mp)const{
     increment = offset + index * 4;
     // mp.addi(2, 2, to_string(offset));
     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
+
+    current_frame = temp_current_frame;
     break;
+
     case 1:
     ptr->compile(mp);
-    //std::cerr << "function_name:" <<mp.info.func_name  <<'\n';
     mp.jal(mp.info.func_name ); //maybe need to add f()?
     mp.nop();
     break;
@@ -912,68 +965,92 @@ void argument_expression_list::compile(mips& mp)const{
 // 	;
 void initializer::compile(mips& mp) const
 {
-  debug(cname);
   int size;
   int element[size];
   int index;
   int offset;
   int last_index;
-  if(in_frame == false)//if global
-  {
-    current_frame = 0;
-  }
+  int temp_current_frame = current_frame;
+
   switch(type)
   {
     case 0:
-    p->compile(mp);//this should store all identifier address in mp;
-    size = stoi(mp.info.result);//size of the array
-    last_index = array_collection[current_frame].size() - 1;
-    offset = array_collection[current_frame][last_index].array_add[0];
-    //allocate space for array elements
-    for(int i = 0; i < size; i++)
+    //array initialisation
+    if(in_frame == false)//if global
     {
-      mp.sw(0, offset, 30);//TODO:offset???
-      element[i] = offset;
-      offset = offset + 4;
+      current_frame = 0;
+      p->compile(mp);//this should store all identifier address in mp;
+      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+      {
+        mp._word("TO:unknown");
+      }
     }
-    //TODO: unsure about numbers: li instead of lw?
-    //it's the last array in frame
-    index = array_collection[current_frame].size()-1;
-    for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+    else
     {
-      mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
-      mp.nop();
-      mp.sw(2, element[i], 30);
+      p->compile(mp);//this should store all identifier address in mp;
+      size = stoi(mp.info.result);//size of the array
+      last_index = array_collection[current_frame].size() - 1;
+      offset = array_collection[current_frame][last_index].array_add[0];
+      //allocate space for array elements
+      for(int i = 0; i < size; i++)
+      {
+        mp.sw(0, offset, 30);
+        element[i] = offset;
+        offset = offset + 4;
+      }
+      //TODO: unsure about numbers: li instead of lw?
+      //it's the last array in frame
+      index = array_collection[current_frame].size()-1;
+      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+      {
+        mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+        mp.nop();
+        mp.sw(2, element[i], 30);
+      }
     }
+    current_frame = temp_current_frame;
+
     case 1:
     //same as above
-    p->compile(mp);//this should store all identifier address in mp;
-    size = stoi(mp.info.result);//size of the array
-    last_index = array_collection[current_frame].size() - 1;
-    offset = array_collection[current_frame][last_index].array_add[0];
-    //allocate space for array elements
-    for(int i = 0; i < size; i++)
+    if(in_frame == false)//if global
     {
-      mp.sw(0, offset, 30);//TODO:offset???
-      element[i] = offset;
-      offset = offset + 4;
+      current_frame = 0;
+      p->compile(mp);//this should store all identifier address in mp;
+      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+      {
+        mp._word("TO:unknown");
+      }
     }
-    //TODO: unsure about numbers: li instead of lw?
-    //it's the last array in frame
-    index = array_collection[current_frame].size()-1;
-    for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+    else
     {
-      mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
-      mp.nop();
-      mp.sw(2, element[i], 30);
+      p->compile(mp);//this should store all identifier address in mp;
+      size = stoi(mp.info.result);//size of the array
+      last_index = array_collection[current_frame].size() - 1;
+      offset = array_collection[current_frame][last_index].array_add[0];
+      //allocate space for array elements
+      for(int i = 0; i < size; i++)
+      {
+        mp.sw(0, offset, 30);
+        element[i] = offset;
+        offset = offset + 4;
+      }
+      //TODO: unsure about numbers: li instead of lw?
+      //it's the last array in frame
+      index = array_collection[current_frame].size()-1;
+      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+      {
+        mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+        mp.nop();
+        mp.sw(2, element[i], 30);
+      }
     }
+    current_frame = temp_current_frame;
   }
 }
 
 
 void initializer_list::compile(mips& mp) const
 {
-  debug(cname);
   mips another_mp;
   switch(type)
   {
@@ -988,14 +1065,12 @@ void initializer_list::compile(mips& mp) const
 }
 
 void type_name::compile(mips& mp)const{
-  debug(cname);
   left ->compile(mp);
   mips another_mp;
   right ->compile(another_mp);
 }
 
 void translation_unit::compile(mips& mp)const{
-  debug(cname);
   p_yi->compile(mp);
   mips another_mp;
   p_er->compile(another_mp);
@@ -1041,24 +1116,19 @@ void declaration_specifiers::compile(mips& mp)const
 
 void declaration::compile(mips& mp)const
 {
-  debug(cname);
   if(lt == NULL)
    {
      spec -> compile(mp);
    }
    else{
-     spec -> compile(mp); // declaration_spec
+     spec -> compile(mp);
      mips another_mp;
-     lt->compile(another_mp); // eg. a = 1;
-     // std::cerr << "type subsstitute in: " <<  mp.info.func_type<<'\n';
-     // std::cerr << "current type at back: " <<stack_collection[current_frame].back().type  << '\n';
-     stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
+     lt->compile(another_mp);
    }
 }
 
 void declarator::compile(mips&mp)const
 {
-    debug(cname);
     ptr ->compile(mp);
     mips another_mp;
     direct_decla -> compile(another_mp);
@@ -1072,7 +1142,6 @@ void direct_abstract_declarator :: compile(mips& mp)const
 
 void expression_statement::compile(mips& mp)const
 {
-  debug(cname);
   ptr_expr->compile(mp);
 }
 
@@ -1090,7 +1159,6 @@ void init_declarator_list::compile(mips& mp)const
 }
 
 void relational_expression::compile(mips& mp)const{
-  debug(cname);
   int l_index;
   int r_index;
   left->compile(mp);
@@ -1098,9 +1166,9 @@ void relational_expression::compile(mips& mp)const{
   mips another_mp;
   right->compile(another_mp);
   r_index = result_offset();
-  //mp.comment("load right index from memory");
+  mp.comment("load right index from memory");
   mp.lw(3,r_index,30);
-  //mp.comment("load left index from memory");
+  mp.comment("load left index from memory");
   mp.lw(2,l_index,30);
   switch (type) {
     case 0:
@@ -1158,7 +1226,6 @@ void conditional_expression::compile(mips& mp)const
 
 void base_expression::compile(mips& mp)const
 {
-  debug(cname);
   p_one -> compile(mp);
   mips another_mp;
   p_five ->compile(another_mp);
@@ -1166,7 +1233,6 @@ void base_expression::compile(mips& mp)const
 
 void abstract_declarator::compile(mips& mp)const
 {
-  debug(cname);
   left ->compile(mp);
   mips another_mp;
   right -> compile(another_mp);
@@ -1178,7 +1244,6 @@ void abstract_declarator::compile(mips& mp)const
 // 	| DEFAULT ':' statement
 // 	;
 void labeled_statement::compile(mips& mp)const{
-  debug(cname);
   string case_number;
   mips another_mp;
   string case_label = "Label " + to_string(labelcounter);
