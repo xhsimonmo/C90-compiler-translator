@@ -650,7 +650,7 @@ void iteration_statement::compile(mips& mp)const{
       er->compile(state_expr);//get statement
 
       mp.add_label(third_part);
-      b(condition);
+      mp.b(condition);
 
       mp.add_label(condition);
       yi->compile(cond_expr);//get conidtion expression
@@ -672,7 +672,7 @@ void iteration_statement::compile(mips& mp)const{
       yi->compile(cond_expr);
 
       mp.add_label(third_part);
-      b(statement);
+      mp.b(statement);
 
       mp.add_label(statement);
       er->compile(state_expr);
@@ -970,7 +970,7 @@ void initializer::compile(mips& mp) const
       p->compile(mp);//this should store all identifier address in mp;
       for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
       {
-        mp._word();
+        mp._word("TO:unknown");
       }
     }
     else
@@ -1006,7 +1006,7 @@ void initializer::compile(mips& mp) const
       p->compile(mp);//this should store all identifier address in mp;
       for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
       {
-        mp._word();
+        mp._word("TO:unknown");
       }
     }
     else
