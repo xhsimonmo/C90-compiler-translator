@@ -563,6 +563,11 @@ void unary_expression::compile(mips& mp)const
   }
 }
 
+// selection_statement
+// 	: IF '(' expression ')' statement    {$$ = new selection_statement(0, $3, $5);std::cerr << "selection_statement 0" << std::endl;}
+// 	| IF '(' expression ')' statement ELSE statement   {$$ = new selection_statement(1, $3, $5, $7);std::cerr << "selection_statement 1" << std::endl;}
+// 	| SWITCH '(' expression ')' statement    {$$ = new selection_statement(2, $3, $5);std::cerr << "selection_statement 2" << std::endl;}
+// 	;
 void selection_statement::compile(mips& mp)const
 {
   string below_if = "Selection" + to_string(labelcounter);//make label
@@ -581,7 +586,8 @@ void selection_statement::compile(mips& mp)const
   switch(type)
   {
     case 0:
-    mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
+    mp.comment("ifelse ssstart!");
+    // mp.lw(2, expre_mp.info.result, 30);//store expression result in r2
     mp.beq(2, 0, below_if);//if false, skip if statement, jump to the content below if statement;
     mp.nop();
     //then make the if statement(if is true)
@@ -591,7 +597,8 @@ void selection_statement::compile(mips& mp)const
     break;
 
     case 1:
-    mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
+    mp.comment("ifelse ssstart!");
+    // mp.lw(2, expre_mp.info.result_index, 30);//store expression result in r2
     mp.beq(2, 0, else_label);//if false f=go to else
     mp.nop();
     //then make the if statement(if is true)
