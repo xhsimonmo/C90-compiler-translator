@@ -499,11 +499,11 @@ inline void callee_value_process(mips& mp){
 
   if(caller_arg_count < 4){
     //mp.lw(2,variable_index,30);
-    mp.move(2,(caller_arg_count+4)); //directly load const to reg 2
+    mp.move((caller_arg_count+4),2); //directly load const to reg 2
   }
   else{
     //mp.lw(2,variable_index,30);
-    mp.sw(2,caller_arg_count*4,29);//SP at the bottom, store things up
+    mp.sw(2,caller_arg_count*4 ,29);//SP at the bottom, store things up
   }
   caller_arg_count++;
 }

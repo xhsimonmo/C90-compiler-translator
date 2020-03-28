@@ -821,7 +821,7 @@ void jump_statement::compile(mips& mp) const {
     mp.nop();
     break;
     case 3: // simply "return; " gives error
-    NotImplemented();
+    mp.finish_frame();
     break;
     case 4:
     //mips mp_tmp;
@@ -892,12 +892,14 @@ void parameter_declaration :: compile(mips& mp) const{
     if(arg_reg >= 4){
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
+      //std::cerr << "less than 4 parameters, current offset: " << offset<<  '\n';
       stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
       stack_collection[current_frame].push_back(stack);
 
     }
     else{ //case when more than 4 arguments
-      stack_content stack = {variable_name, ((arg_reg-4+arg_overflow)*4+12), "int"};
+      //std::cerr << "more than 4 parameter: current offset: " << (arg_reg+arg_overflow+1)*4+12 <<'\n';
+      stack_content stack = {variable_name, ((arg_reg+arg_overflow+1)*4+12), "int"};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }
@@ -949,6 +951,7 @@ void postfix_expression::compile(mips& mp)const{
     ptr->compile(mp);
     function_name = mp.info.func_name;
     // mips another_mp;
+    caller_arg_count = 0;
     opt -> compile(another_mp);
     mp.jal(function_name);
     mp.nop();
@@ -1239,7 +1242,7 @@ void relational_expression::compile(mips& mp)const{
     mp._or(2,2,3);
     break;
     case 9:// and
-    mp._and(3,2,3);//if eitehr $2,$3 is zero, will be evaluated as zero
+    //mp._and(3,2,3);//if eitehr $2,$3 is zero, will be evaluated as zero
     mp.li(8,"2");
     mp.li(9,"0");
     mp.sne(2,2,9);
