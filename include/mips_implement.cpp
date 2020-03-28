@@ -596,7 +596,12 @@ void selection_statement::compile(mips& mp)const
   }
 }
 
-
+// iteration_statement
+// 	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5); std::cerr << "iteration_statement 0 " << std::endl;}
+// 	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);std::cerr << "iteration_statement 1 " << std::endl;}
+// 	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);std::cerr << "iteration_statement 2 " << std::endl;}
+// 	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
+// 	;
 void iteration_statement::compile(mips& mp)const{
     string condition = "condition" + to_string(labelcounter);
     labelcounter++;
@@ -614,6 +619,23 @@ void iteration_statement::compile(mips& mp)const{
     labelcounter++;
     mips for_state2;//si
 
+    string for_increment = "for_increment" + to_string(labelcounter);
+    labelcounter++;
+
+    string for_end = "for_end" + to_string(labelcounter);
+    labelcounter++;
+
+    string for_start = "for_start" + to_string(labelcounter);
+    labelcounter++;
+
+    string third_part = "label" + to_string(labelcounter);
+    labelcounter++;
+
+    string while_end = "while_end" + to_string(labelcounter);
+    labelcounter++;
+
+
+
 
     switch(type)
     {
@@ -621,8 +643,14 @@ void iteration_statement::compile(mips& mp)const{
       mp.b(condition);
       mp.nop();
 
+      state_expr.info.continue_jump_label = third_part;//if meet continue jump to this
+      state_expr.info.break_jump_label = while_end;//if meet break jump to this
+
       mp.add_label(statement);
       er->compile(state_expr);//get statement
+
+      mp.add_label(third_part);
+      b(condition);
 
       mp.add_label(condition);
       yi->compile(cond_expr);//get conidtion expression
@@ -630,12 +658,21 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, statement);//if true go to statement
       mp.nop();
 
+      //end of while looop
+      mp.add_label(while_end);
+
       case 1://same as case 0, but condition and statement are reversed.
       mp.b(statement);
       mp.nop();
 
+      cond_expr.info.continue_jump_label = third_part;//if meet continue jump to this
+      cond_expr.info.break_jump_label = while_end;//if meet break jump to this
+
       mp.add_label(condition);
       yi->compile(cond_expr);
+
+      mp.add_label(third_part);
+      b(statement);
 
       mp.add_label(statement);
       er->compile(state_expr);
@@ -643,14 +680,25 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, condition);//if true go to statement
       mp.nop();
 
+      //end of while looop
+      mp.add_label(while_end);
+
       case 2:
-      yi->compile(cond_expr);//make init part
+      yi->compile(cond_expr);//make init part(int i = 0)
+      //start of for loop
+      mp.add_label(for_start);
+
       mp.b(statement);
       mp.nop();
 
       //for loop statement branch
       mp.add_label(for_s1);
+      for_state1.info.continue_jump_label = third_part;//if meet continue jump to this
+      for_state1.info.break_jump_label = for_end;//if meet break jump to this
       san->compile(for_state1);
+
+      mp.add_label(third_part);
+      mp.b(for_start);
 
       //for loop condition!!!not statement
       mp.add_label(statement);
@@ -659,16 +707,35 @@ void iteration_statement::compile(mips& mp)const{
       mp.bne(2, 0, for_s1);//if true go to statement
       mp.nop();
 
+      //end of for loop
+      mp.add_label(for_end);
+
       case 3:
       yi->compile(cond_expr);//make init part
+      //start of for loop
+      mp.add_label(for_start);
+
       mp.b(statement);
       mp.nop();
 
       //for loop statement branch
       mp.add_label(for_s2);
+      for_state2.info.continue_jump_label = third_part;//if meet continue jump to this
+      for_state2.info.break_jump_label = for_end;//if meet break jump to this
       si->compile(for_state2);
-      //iteration expression
+      // if(for_state2.info._continue == true)
+      // {
+      //   mp.b(for_increment);
+      //   mp.nop();
+      //   mp.add_label(for_increment);
+      // }
+      mp.add_label(third_part);
       san->compile(for_state1);
+      mp.b(for_start);
+      // if(for_state2.info._break == true)
+      // {
+      //   mp.nop();
+      // }
 
       //for loop condition!!!not statement
       mp.add_label(statement);
@@ -676,6 +743,9 @@ void iteration_statement::compile(mips& mp)const{
       mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
+
+      //end of for loop
+      mp.add_label(for_end);
     }
   }
 
@@ -694,11 +764,13 @@ void jump_statement::compile(mips& mp) const {
     break;
     case 1:
     //CONTINUE
-
-    NotImplemented();
+    mp.b(mp.info.continue_jump_label);//there is a continue waiting to be sloved!
+    mp.nop();
     break;
     case 2:
-    NotImplemented();
+    //BREAK
+    mp.b(mp.info.break_jump_label);//there is a break waiting to be sloved!
+    mp.nop();
     break;
     case 3: // simply "return; " gives error
     NotImplemented();

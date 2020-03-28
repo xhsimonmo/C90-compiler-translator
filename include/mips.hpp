@@ -69,6 +69,9 @@ public:
     int result_index;//use for statement expression result index
     string new_array_name;
     string call_array_name;
+
+    string continue_jump_label;
+    string break_jump_label;
   };
 
   temp_result info;
