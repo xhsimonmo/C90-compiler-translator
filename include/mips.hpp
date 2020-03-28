@@ -185,21 +185,45 @@ public:
     return "int";//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
-  int find_array(string name)
+  int find_array(string name, bool global)
   {
-    for(int i = 0; i < array_collection.size(); i++)
+    bool find = false;
+    int index;
+    for(int i = 0; i < array_collection[current_frame].size(); i++)
     {
       if(name == array_collection[current_frame][i].name)
       {
-        return i;
+        index = i;
+        find = true;
       }
     }
+    if(find == false)//if can't find in frame arrays, then it should be global
+    {
+      global = true;
+      for(int i = 0; i < array_collection[0].size(); i++)
+      {
+        if(name == array_collection[0][i].name)
+        {
+          index = i;
+        }
+      }
+    }
+    return index;
   }
 
   //requires initialisation everytime before use
   vector<switch_content>switch_info;
 
-
+  void _word(string w)
+  {
+    string mp = ".word " + w;
+    mpcode_collection[current_frame].push_back(mp);
+  }
+  void global(string name)
+  {
+    string mp = name + ":";
+    mpcode_collection[current_frame].push_back(mp);
+  }
   void add_label(string label)
   {
     string mp = label + ":";
