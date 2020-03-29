@@ -593,6 +593,7 @@ void selection_statement::compile(mips& mp)const
     //then make the if statement(if is true)
     //mips sta_mp;
     ifsta->compile(sta_mp);
+    //in_frame = true;//still in the frame
     mp.add_label(below_if);
     break;
 
@@ -604,6 +605,7 @@ void selection_statement::compile(mips& mp)const
     //then make the if statement(if is true)
     //mips sta_mp;
     ifsta->compile(sta_mp);
+    //in_frame = true;//still in the frame
     mp.b(below_if);
 
     //else statement
@@ -875,7 +877,8 @@ void primary_expression :: compile(mips& mp) const{
     std::cerr << "get a primary expression as number :" << element<< '\n';
     mp.info.result = element;
     //mp.comment("get a primary expression as number : "+element);
-    if(in_frame){
+    if(!in_enum){ // we don't do it in enum
+      //std::cerr << "inframe!" << '\n';
       mp.li(2,element);
       result_count = result_count -4;
       mp.sw(2,result_offset(),30);
@@ -971,6 +974,8 @@ void postfix_expression::compile(mips& mp)const{
     ptr->compile(mp);
     mp.jal(mp.info.func_name ); //maybe need to add f()?
     mp.nop();
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
     case 2: //postfix_expression '(' argument_expression_list ')'
     ptr->compile(mp);
@@ -983,6 +988,9 @@ void postfix_expression::compile(mips& mp)const{
     {
       arg_count_collection[current_frame] = caller_arg_count;
     }
+    mp.nop();
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     caller_arg_count = 0; // reset
     mp.nop();
     break;
@@ -1370,6 +1378,7 @@ void enum_specifier :: compile(mips& mp)const
 {
   debug(cname);
   mp.enum_count = 0;
+  in_enum = true;
   debug(cname);
   switch (type) {
     case 0:
@@ -1383,6 +1392,7 @@ void enum_specifier :: compile(mips& mp)const
     mp.info.func_name = enum_name;//don't do anything,just a declaration, what about implementation
     break;
   }
+  in_enum = false;
 }
 
 void enumerator_list :: compile(mips& mp)const

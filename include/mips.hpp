@@ -31,6 +31,7 @@ extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<int> arg_count_collection;//this is the counter of arguments callee function
 
 extern vector<stack_content> enum_var; // store enum object, actually just like global variable
+extern bool in_enum;
 
 struct array_struct
 {
