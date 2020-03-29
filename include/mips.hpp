@@ -30,12 +30,15 @@ extern vector<vector<stack_content>>stack_collection;
 extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<int> arg_count_collection;//this is the counter of arguments callee function
 
+extern vector<stack_content> enum_var; // store enum object, actually just like global variable
+
 struct array_struct
 {
   string name;
   string size;
   vector<int>array_add;//store array initializer address;
 };
+
 extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
 // vector<array_struct>global_array;
 // array_collection.push_back(global_array);//0 index of array_collection is global arrays
@@ -53,11 +56,12 @@ inline int result_offset(){
   return offset;
 }
 
-
 inline void initilise_arg(bool b);
+
+//////////////////////////mips class///////////////////////
 class mips{
 public:
-  bool registers[32];
+  //bool registers[32];
 
   //store temporary result
   struct temp_result
@@ -77,8 +81,10 @@ public:
 
   temp_result info;
 
+  int enum_count;
   mips()//initialisation
   {
+    enum_count = 0;
     //registers[32] = { 0 }; // TODO something not right about indent
     // labelcounter = 0;
   }
@@ -142,6 +148,7 @@ public:
     auto it = mpcode_collection[current_frame].begin();
     //info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
     int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + -1*result_count+ 4; // 4 is compulsory but nor necessary,just to be safe
+    std::cerr << " ////////////////current max arg count: " << arg_count_collection[current_frame] <<'\n';
     memory_allocate = -4*memory_allocate;
     string str_memory_allocate = to_string(memory_allocate);
     string function_header = "addiu $29,$29,"+str_memory_allocate;
@@ -156,16 +163,20 @@ public:
   //find a variable's position in stack
   int find_variable(string var_name, vector<stack_content>variables)
   {
-    bool find = false;
     int var_add;
-
       for (int i = 0; i < variables.size(); i++)
       {
         if(variables[i].name == var_name)
         {
-          find = true;
+
           var_add = variables[i].address;
           return var_add;
+        }
+      }
+      for(int j = 0; j < enum_var.size();j++)
+      {
+        if(enum_var[j].name == var_name){
+          return -3;
         }
       }
 
@@ -174,14 +185,11 @@ public:
 
   string find_variable_type(string var_name, vector<stack_content>variables)
   {
-    bool find = false;
     string var_type;
-
       for (int i = 0; i < variables.size(); i++)
       {
         if(variables[i].name == var_name)
         {
-          find = true;
           var_type = variables[i].type;
           //std::cerr << "get type:" <<var_type << '\n';
           return var_type;

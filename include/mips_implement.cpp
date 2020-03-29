@@ -113,7 +113,7 @@ void external_declaration::compile(mips& mp)const
     ptr->compile(mp);
     break;
     case 1:
-    NotImplemented();
+    ptr->compile(mp);
     break;
   }
 }
@@ -146,7 +146,7 @@ void init_declarator::compile(mips& mp)const{
      string init_name = mp.info.func_name;
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      int offset = result_offset();
-     stack_content tmp = {init_name,offset};
+     stack_content tmp = {init_name,offset,"int"};
      stack_collection[current_frame].push_back(tmp);
    }
    else{
@@ -154,8 +154,8 @@ void init_declarator::compile(mips& mp)const{
      string init_name = mp.info.func_name;
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      int offset = result_offset();
-     mp.comment("result_offset in init_declarator: " + to_string(offset));
-     stack_content tmp = {init_name,offset};
+     //mp.comment("result_offset in init_declarator: " + to_string(offset));
+     stack_content tmp = {init_name,offset,"int"};
      stack_collection[current_frame].push_back(tmp);
      two -> compile(mp);
      mp.sw(2,offset,30);
@@ -849,19 +849,34 @@ void primary_expression :: compile(mips& mp) const{
     var_index = mp.find_variable(element,stack_collection[current_frame]);//fetch address of the variable
     mp.info.var_index = var_index;
     mp.info.func_type = mp.find_variable_type(element,stack_collection[current_frame]);
-    if(var_index != -1) //this variable indeed has been saved,not a funciton name and stuff like that
+    if(var_index != -1 and var_index != -3) //this variable indeed has been saved,not a funciton name and stuff like that
     {
       mp.lw(2,var_index,30);//load value to $2
       result_count = result_count - 4;
       mp.sw(2,result_offset(),30);
     }
+    else if(var_index == -3)
+    {
+      for(int j = 0; j < enum_var.size();j++)
+      {
+        if(enum_var[j].name == element){
+          mp.info.result = to_string(enum_var[j].address);
+        }
+      }
+      mp.li(2,mp.info.result);
+      result_count = result_count - 4;
+      mp.sw(2,result_offset(),30);
+    }
     break;
     case 1:
+    std::cerr << "get a primary expression as number :" << element<< '\n';
     mp.info.result = element;
-    mp.comment("get a primary expression as number : "+element);
-    mp.li(2,element);
-    result_count = result_count -4;
-    mp.sw(2,result_offset(),30);
+    //mp.comment("get a primary expression as number : "+element);
+    if(in_frame){
+      mp.li(2,element);
+      result_count = result_count -4;
+      mp.sw(2,result_offset(),30);
+    }
     break;
 
     case 2:
@@ -961,6 +976,11 @@ void postfix_expression::compile(mips& mp)const{
     caller_arg_count = 0;
     opt -> compile(another_mp);
     mp.jal(function_name);
+    if(arg_count_collection[current_frame] < caller_arg_count)
+    {
+      arg_count_collection[current_frame] = caller_arg_count;
+    }
+    caller_arg_count = 0; // reset
     mp.nop();
     break;
     case 3:
@@ -969,7 +989,7 @@ void postfix_expression::compile(mips& mp)const{
     case 4:
     NotImplemented();
     break;
-    case 5:
+    case 5: // a++
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     variable_name = mp.info.func_name;
@@ -1170,11 +1190,11 @@ void declaration::compile(mips& mp)const
    }
    else{
      spec -> compile(mp); // declaration_spec
-     mips another_mp;
-     lt->compile(another_mp); // eg. a = 1;
-     // std::cerr << "type subsstitute in: " <<  mp.info.func_type<<'\n';
-     // std::cerr << "current type at back: " <<stack_collection[current_frame].back().type  << '\n';
-     stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
+     if(in_frame){
+       mips another_mp;
+       lt->compile(another_mp); // eg. a = 1;
+       stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
+     }
    }
 }
 
@@ -1295,6 +1315,7 @@ void abstract_declarator::compile(mips& mp)const
 // 	| DEFAULT ':' statement
 // 	;
 void labeled_statement::compile(mips& mp)const{
+  debug(cname);
   string case_number;
   mips another_mp;
   string case_label = "Label " + to_string(labelcounter);
@@ -1339,5 +1360,49 @@ void labeled_statement::compile(mips& mp)const{
 
     labelcounter++;
 
+  }
+}
+
+void enum_specifier :: compile(mips& mp)const
+{
+  debug(cname);
+  mp.enum_count = 0;
+  debug(cname);
+  switch (type) {
+    case 0:
+    ptr ->compile(mp);
+    break;
+    case 1:
+    ptr ->compile(mp);
+    mp.info.func_name = enum_name;//what to do with this name, in doubt
+    break;
+    case 2:
+    mp.info.func_name = enum_name;//don't do anything,just a declaration, what about implementation
+    break;
+  }
+}
+
+void enumerator_list :: compile(mips& mp)const
+{
+  debug(cname);
+  left -> compile(mp);
+  //mips another_mp;
+  right -> compile(mp);
+}
+
+void enumerator :: compile(mips& mp)const
+{ // special case of use for enum, address field used to store the value
+  debug(cname);
+  if(ptr == NULL){
+    stack_content tmp = {id, mp.enum_count, "int"};
+    enum_var.push_back(tmp);
+    mp.enum_count++;
+  }
+  else{
+    ptr -> compile(mp);
+    mp.enum_count = std::stoi(mp.info.result);
+    stack_content tmp = {id, mp.enum_count, "int"};
+    enum_var.push_back(tmp);
+    mp.enum_count++;
   }
 }

@@ -12,6 +12,7 @@ vector<vector<stack_content>>stack_collection;
 vector<vector<string>> mpcode_collection;
 vector<int> arg_count_collection;
 vector<vector<array_struct>> array_collection;
+vector<stack_content> enum_var;
 bool in_frame = false;
 
 bool arg_reg[4];

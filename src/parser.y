@@ -38,7 +38,7 @@
 %type<expr> exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type<expr> init_declarator_list init_declarator storage_class_specifier type_specifier specifier_qualifier_list declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration
 %type<expr> type_name abstract_declarator direct_abstract_declarator initializer initializer_list statement labeled_statement compound_statement declaration_list statement_list expression_statement selection_statement
-%type<expr> iteration_statement jump_statement translation_unit external_declaration function_definition
+%type<expr> iteration_statement jump_statement translation_unit external_declaration function_definition enum_specifier enumerator_list enumerator
 
 %type<number> unary_operator assignment_operator
 %type<str> IDENTIFIER CONSTANT STRING_LITERAL
@@ -231,7 +231,7 @@ type_specifier
 	| SIGNED   {$$ = new type_specifier(7); std::cerr << "type_specifier signed 8" << std::endl;}
 	| UNSIGNED   {$$ = new type_specifier(8); std::cerr << "type_specifier signed unsigned 9" << std::endl;}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
-	| ENUM   {$$ = new type_specifier(9); std::cerr << "enum" << std::endl;}
+	| enum_specifier   {$$ = $1; std::cerr << "type_specifier signed enum 10" << std::endl;}
 	| TYPE_NAME   {$$ = new type_specifier(10); std::cerr << "type_name" << std::endl;}
 	;
 /////////////////////////////////struct ////////////////////////////////////////////////
@@ -254,15 +254,15 @@ struct_declaration_list
 struct_declaration
 	: specifier_qualifier_list struct_declarator_list ';'
 	; */
-/////////////////////////////////struct ////////////////////////////////////////////////
+/*////////////////////////////////struct ///////////////////////////////////////////////*/
 
 specifier_qualifier_list
 	: type_specifier specifier_qualifier_list {$$ = new specifier_qualifier_list($1,$2); std::cerr << "specifier_qualifier_list 0" << std::endl;}
 	| type_specifier  {$$ = $1;  std::cerr << "specifier_qualifier_list 1" << std::endl;}
-	//| type_qualifier specifier_qualifier_list
-	//| type_qualifier
+	/*/| type_qualifier specifier_qualifier_list
+	//| type_qualifier */
 	;
- /////////////////////////////////struct && enum////////////////////////////////////////////////
+ /*////////////////////////////////struct ///////////////////////////////////////////////*/
 /* struct_declarator_list
 	: struct_declarator
 	| struct_declarator_list ',' struct_declarator
@@ -272,30 +272,31 @@ struct_declarator
 	: declarator
 	| ':' constant_expression
 	| declarator ':' constant_expression
-	;
+	; */
+/*////////////////////////////////struct ///////////////////////////////////////////////*/
 
 enum_specifier
-	: ENUM '{' enumerator_list '}'
-	| ENUM IDENTIFIER '{' enumerator_list '}'
-	| ENUM IDENTIFIER
+	: ENUM '{' enumerator_list '}'     {$$ = new enum_specifier(0,$3); std::cerr << "enum_specifier 0" << std::endl;}
+	| ENUM IDENTIFIER '{' enumerator_list '}'    {$$ = new enum_specifier(1,*$2,$4); std::cerr << "enum_specifier 1" << std::endl;}
+	| ENUM IDENTIFIER        {$$ = new enum_specifier(2,*$2); std::cerr << "enum_specifier 2" << std::endl;}
 	;
 
 enumerator_list
-	: enumerator
-	| enumerator_list ',' enumerator
+	: enumerator   {$$ = $1; std::cerr << "enumerator_list 0" << std::endl;}
+	| enumerator_list ',' enumerator    {$$ = new enumerator_list($1,$3); std::cerr << "enumerator_list 1" << std::endl;}
 	;
 
 enumerator
-	: IDENTIFIER
-	| IDENTIFIER '=' constant_expression
-	; */
+	: IDENTIFIER     {$$ = new enumerator(*$1); std::cerr << "enumerator 0" << std::endl;}
+	| IDENTIFIER '=' constant_expression     {$$ = new enumerator(*$1,$3); std::cerr << "enumerator 0" << std::endl;}
+	;
 
 /* type_qualifier       no need to Implement type_qualifier
 	: CONST
 	： VOLATILE
 	; */
 
- /////////////////////////////////struct && enum////////////////////////////////////////////////
+ /////////////////////////////////struct ////////////////////////////////////////////////
 
 declarator
 	: pointer direct_declarator  {$$ = new declarator($1, $2);  std::cerr << "declarator 0" << std::endl;}

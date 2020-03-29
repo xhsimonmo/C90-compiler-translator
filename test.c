@@ -1,8 +1,6 @@
+int g(int a, int b, int c, int d, int e);
+
 int f()
 {
-    if(0){
-        return 11;
-    }else{
-        return 10;
-    }
+    return g(1,2,3,4,5);
 }
