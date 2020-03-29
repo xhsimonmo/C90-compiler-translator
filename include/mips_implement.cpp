@@ -662,6 +662,9 @@ void selection_statement::compile(mips& mp)const
 // 	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
 // 	;
 void iteration_statement::compile(mips& mp)const{
+
+    mp.comment("In Iteration!");
+
     string condition = "condition" + to_string(labelcounter);
     labelcounter++;
     mips cond_expr;
@@ -744,7 +747,9 @@ void iteration_statement::compile(mips& mp)const{
       //end of while looop
       mp.add_label(while_end);
       break;
+
       case 2:
+      mp.comment("it's a for loop!");
       yi->compile(cond_expr);//make init part(int i = 0)
       //start of for loop
       mp.add_label(for_start);
@@ -771,7 +776,9 @@ void iteration_statement::compile(mips& mp)const{
       //end of for loop
       mp.add_label(for_end);
       break;
+
       case 3:
+      mp.comment("it's a for loop!");
       yi->compile(cond_expr);//make init part
       //start of for loop
       mp.add_label(for_start);
