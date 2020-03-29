@@ -428,7 +428,7 @@ iteration_statement
 	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5); std::cerr << "iteration_statement 0 " << std::endl;}
 	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);std::cerr << "iteration_statement 1 " << std::endl;}
 	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);std::cerr << "iteration_statement 2 " << std::endl;}
-	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
+	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(3, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
 	;
 
 jump_statement
