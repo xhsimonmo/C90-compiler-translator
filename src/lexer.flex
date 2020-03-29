@@ -65,7 +65,7 @@ L?'(\\.|[^\\'])+'    { yylval.str = new std::string(yytext); return(CONSTANT); }
 {D}*"."{D}+({E})?{FS}?    { yylval.str = new std::string(yytext); return(CONSTANT); }
 {D}+"."{D}*({E})?{FS}?    { yylval.str = new std::string(yytext); return(CONSTANT); }
 
-L?\"(\\.|[^\\"])*\"    { yylval.str = new std::string(yytext); return(STRING_LITERAL); }
+L?\"(\\.|[^\\"])*\"    { yylval.str = new std::string(yytext);printf("get a string literal "); return(STRING_LITERAL); }
 
 "..."            { /*count();*/ return(ELLIPSIS); }
 ">>="            { /*count();*/ return(RIGHT_ASSIGN); }

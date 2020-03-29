@@ -164,15 +164,19 @@ public:
   //find a variable's position in stack
   int find_variable(string var_name, vector<stack_content>variables)
   {
-    int var_add;
+    int var_add = -1;
       for (int i = 0; i < variables.size(); i++)
       {
         if(variables[i].name == var_name)
         {
 
           var_add = variables[i].address;
-          return var_add;
+          // return var_add;
         }
+      }
+      if(var_add != -1)//indeed find a var
+      {
+        return var_add; // temparory method to return the most recent va declared
       }
       for(int j = 0; j < enum_var.size();j++)
       {

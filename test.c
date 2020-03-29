@@ -1,6 +1,8 @@
-int g(int a, int b, int c, int d, int e);
-
 int f()
 {
-    return g(1,2,3,4,5);
+    int x;
+    for(x=0; x<1; x=x+1){
+
+    }
+    return x+19937;
 }

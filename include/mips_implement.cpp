@@ -808,7 +808,7 @@ void iteration_statement::compile(mips& mp)const{
       //for loop condition!!!not statement
       mp.add_label(statement);
       er->compile(state_expr);//get statement
-      mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
+      //mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
 
