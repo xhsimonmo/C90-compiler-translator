@@ -972,14 +972,15 @@ void postfix_expression::compile(mips& mp)const{
     case 5:
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
-    variable_name = another_mp.info.func_name;
+    variable_name = mp.info.func_name;
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,"1");
     mp.sw(2,mp.find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
     ptr -> compile(mp);
-    variable_name = another_mp.info.func_name;
+    variable_name = mp.info.func_name;
+    mp.comment("variable name: " + variable_name);
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
     mp.addiu(2,2,"-1");
     mp.sw(2,mp.find_variable(variable_name, stack_collection[current_frame]),30);
