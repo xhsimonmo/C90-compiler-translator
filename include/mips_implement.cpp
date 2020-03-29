@@ -145,6 +145,7 @@ void init_declarator::compile(mips& mp)const{
      one -> compile(mp);
      string init_name = mp.info.func_name;
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
+     result_count = result_count -4;
      int offset = result_offset();
      stack_content tmp = {init_name,offset,"int"};
      stack_collection[current_frame].push_back(tmp);
@@ -153,6 +154,7 @@ void init_declarator::compile(mips& mp)const{
      one -> compile(mp);
      string init_name = mp.info.func_name;
      //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
+     result_count = result_count -4;
      int offset = result_offset();
      //mp.comment("result_offset in init_declarator: " + to_string(offset));
      stack_content tmp = {init_name,offset,"int"};
@@ -487,16 +489,16 @@ void shift_expression::compile(mips& mp)const
   case 1://"<<"
 
   mp.sllv(2, 2, 3);
-  mp.sw(2, mp.info.var_index, 30);
-  // result_count = result_count -4;
-  // mp.sw(2, result_offset(), 30);//save the result in
+  //mp.sw(2, mp.info.var_index, 30);
+   result_count = result_count -4;
+   mp.sw(2, result_offset(), 30);//save the result in
   break;
 
   case 2://">>"
   mp.srav(2, 2, 3);
-  mp.sw(2, mp.info.var_index, 30);
-  // result_count = result_count -4;
-  // mp.sw(2, result_offset(), 30);//save the result in
+  //mp.sw(2, mp.info.var_index, 30);
+   result_count = result_count -4;
+   mp.sw(2, result_offset(), 30);//save the result in
   break;
  }
 }
