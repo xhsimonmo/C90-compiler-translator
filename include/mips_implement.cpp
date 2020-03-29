@@ -709,10 +709,12 @@ void iteration_statement::compile(mips& mp)const{
 
       mp.add_label(condition);
       yi->compile(cond_expr);//get conidtion expression
-      mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
+      //std::cerr << "finish compiling condition" << '\n';
+      //mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
+      //std::cerr << "bne" << '\n';
       mp.bne(2, 0, statement);//if true go to statement
       mp.nop();
-
+      break;
       //end of while looop
       mp.add_label(while_end);
 
@@ -737,7 +739,7 @@ void iteration_statement::compile(mips& mp)const{
 
       //end of while looop
       mp.add_label(while_end);
-
+      break;
       case 2:
       yi->compile(cond_expr);//make init part(int i = 0)
       //start of for loop
@@ -764,7 +766,7 @@ void iteration_statement::compile(mips& mp)const{
 
       //end of for loop
       mp.add_label(for_end);
-
+      break;
       case 3:
       yi->compile(cond_expr);//make init part
       //start of for loop
@@ -801,6 +803,7 @@ void iteration_statement::compile(mips& mp)const{
 
       //end of for loop
       mp.add_label(for_end);
+      break;
     }
   }
 
