@@ -233,7 +233,6 @@ void direct_declarator::compile(mips& mp)const
 
 void assignment_expression::compile(mips& mp)const
 {
-  //no unary expression
   if(p_five == NULL)
   {
     p_one->compile(mp);
@@ -528,16 +527,22 @@ void unary_expression::compile(mips& mp)const
     ptr ->compile(mp);
     sizeof_process(mp);
     break;
-    case 4:// &
-    NotImplemented();
+    case 4:// & address of
+    ptr ->compile(mp);
+    mp.addiu(2,30,to_string(mp.info.var_index)); // FP + offset
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
     case 5: // *
-    NotImplemented();
+    ptr ->compile(mp); // address stored in $2
+    mp.lw(2,0,2);
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
     case 6: // +
     ptr->compile(mp);
-    // result_count = result_count - 4;
-    // mp.sw(2,result_offset(),30);
+    result_count = result_count - 4;
+    mp.sw(2,result_offset(),30);
     break;
     case 7: // -
     ptr -> compile(mp);
@@ -808,11 +813,7 @@ void iteration_statement::compile(mips& mp)const{
       //for loop condition!!!not statement
       mp.add_label(statement);
       er->compile(state_expr);//get statement
-<<<<<<< HEAD
       //mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
-=======
-      // mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
->>>>>>> 9987f4b84ed8afc50f27ba3ddd85686ea3966a2a
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
 
@@ -898,9 +899,14 @@ void primary_expression :: compile(mips& mp) const{
     }
     break;
 
-    case 2:
-    NotImplemented();
+    case 2:{ // STRING_LITERAL
+    char character = element[1];
+    int ascii = int(character);
+    mp.li(2,to_string(ascii));
+    result_count = result_count -4;
+    mp.sw(2,result_offset(),30);
     break;
+    }
 
     case 3:
     expre_ptr -> compile(mp);

@@ -171,13 +171,13 @@ public:
         {
 
           var_add = variables[i].address;
-          // return var_add;
+           return var_add;
         }
       }
-      if(var_add != -1)//indeed find a var
-      {
-        return var_add; // temparory method to return the most recent va declared
-      }
+      // if(var_add != -1)//indeed find a var
+      // {
+      //   return var_add; // temparory method to return the most recent va declared
+      // }
       for(int j = 0; j < enum_var.size();j++)
       {
         if(enum_var[j].name == var_name){
