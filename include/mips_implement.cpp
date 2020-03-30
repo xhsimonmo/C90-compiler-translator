@@ -1033,7 +1033,7 @@ void postfix_expression::compile(mips& mp)const{
     offset = array_collection[current_frame+1][array_index].array_add[index];
     mp.comment("offset: " + to_string(offset));
     mp.comment("5");
-    mp.sw(2, offset, 30);//store the result in $2; $2 stores the address
+    mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
     mp.info.var_index = offset;
     current_frame = temp_current_frame;
     break;
