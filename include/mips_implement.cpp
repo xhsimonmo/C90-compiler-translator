@@ -692,30 +692,34 @@ void selection_statement::compile(mips& mp)const
     //initialise vector
     vector<switch_content>switch_temp;
     mp.switch_info = switch_temp;
-
+    mp.info.break_jump_label = switch_label;
     //add label to be the first element
     switch_content info;
     info.label = switch_label;
     mp.switch_info.push_back(info);
-
-    mp.lw(2, expre_mp.info.result_index, 30);//store switch variable's value in $2
+    string condition = "switchcondition"+to_string(labelcounter);
+    mp.b(condition);// evaluate condition first
+    mp.lw(2, expre_mp.info.var_index, 30);//store switch variable's value in $2
     ifsta->compile(mp);//obtain all case information!
 
     //start from 1 to avoid the label (index 0)
+    mp.add_label(condition);
     for(int i = 1; i < mp.switch_info.size(); i++)
     {
-      if(mp.switch_info[i].case_num != "defalut")
+      if(mp.switch_info[i].case_num != "default")
       {
         case_number = mp.switch_info[i].case_num;
-        mp.addi(3, 3, case_number);//load case number into $3
+        std::cerr << "case number is: " << case_number << '\n';
+        mp.li(3, case_number);//load case number into $3
         mp.beq(2, 3, mp.switch_info[i].label);//if same jump to the corresponding label
         mp.nop();
       }
       else
       {
+        std::cerr << ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;got default" << '\n';
         //find default case
         //TODO: may not work: default doesn't have to be at the end
-        mp.beq(0, 0, mp.switch_info[i].label);
+        mp.b(mp.switch_info[i].label);
       }
     }
     mp.add_label(switch_label);
@@ -1044,6 +1048,23 @@ void postfix_expression::compile(mips& mp)const{
     case 0://read from array
     mp.comment("read from array!");
     ptr->compile(another_mp);//fill array name (in all frame arrays)
+
+    if(another_mp.info.func_type.find('*') != std::string::npos)
+    {
+      int pointer_offset = result_offset();
+      opt -> compile(mp);
+      mp.li(2,mp.info.result);
+      mp.li(3,"4");
+      mp.mult(2,3);
+      mp.mflo(2);
+      mp.lw(3, pointer_offset,30);
+      mp.add(2,2,3);
+      mp.lw(2,0,2);
+      result_count = result_count -4;
+      mp.sw(2, result_offset(), 30);//save the result in
+    }
+    else
+    {
     name = another_mp.info.func_name;
     mp.comment("array name: " + name);
     array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
@@ -1066,6 +1087,9 @@ void postfix_expression::compile(mips& mp)const{
     mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
     mp.info.var_index = offset;
     current_frame = temp_current_frame;
+    result_count = result_count -4;
+    mp.sw(2, result_offset(), 30);//save the result in
+    }
     break;
 
     case 1:
@@ -1103,8 +1127,13 @@ void postfix_expression::compile(mips& mp)const{
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     variable_name = mp.info.func_name;
+    if(mp.info.func_type.find('*') != std::string::npos){
+      mp.addiu(2,2,"4");
+    }
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
-    mp.addiu(2,2,"1");
+    else{
+      mp.addiu(2,2,"1");
+    }
     mp.sw(2,mp.find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
@@ -1281,8 +1310,8 @@ void storage_class_specifier::compile(mips& mp)const{
 
 void statement_list::compile(mips& mp)const{
   l -> compile(mp);
-  mips another_mp;
-  r -> compile (another_mp);
+  //mips another_mp;
+  r -> compile (mp);
 }
 
 void specifier_qualifier_list::compile(mips& mp)const{
@@ -1468,9 +1497,10 @@ void labeled_statement::compile(mips& mp)const{
   debug(cname);
   string case_number;
   mips another_mp;
-  string case_label = "Label " + to_string(labelcounter);
+  string case_label = "Label" + to_string(labelcounter);
   string end_label;
   switch_content info;
+  labelcounter++;
 
   switch(type)
   {
@@ -1480,14 +1510,15 @@ void labeled_statement::compile(mips& mp)const{
 
     case 1:
     //get switch finish label
-    end_label = mp.switch_info[0].case_num;
+    end_label = mp.switch_info[0].label;
 
     mp.add_label(case_label);
     one->compile(another_mp);//obtain case number(in $2)
     case_number = another_mp.info.result;
+
     two->compile(mp);//evaluate statement
 
-    mp.b(end_label);
+    //mp.b(end_label);
     mp.nop();
 
     //store info for this case
@@ -1496,8 +1527,9 @@ void labeled_statement::compile(mips& mp)const{
     mp.switch_info.push_back(info);
 
     labelcounter++;
-
+    break;
     case 2:
+    end_label = mp.switch_info[0].label;
     mp.add_label(case_label);
     one->compile(mp);//evaluate statement
     mp.b(end_label);
@@ -1509,7 +1541,7 @@ void labeled_statement::compile(mips& mp)const{
     mp.switch_info.push_back(info);
 
     labelcounter++;
-
+    break;
   }
 }
 
