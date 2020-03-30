@@ -41,9 +41,8 @@ struct array_struct
 };
 
 extern vector<vector<array_struct>> array_collection;//store array info for each frame(index = frame index)
-// vector<array_struct>global_array;
-// array_collection.push_back(global_array);//0 index of array_collection is global arrays
 extern int array_index;//current array index in current frame
+
 
 //contain the case number and its corresponding statement label
 struct switch_content
@@ -73,8 +72,7 @@ public:
     //note: var_index need to be negative
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
-    string new_array_name;
-    string call_array_name;
+    string array_name;
 
     string break_jump_label;
     string continue_jump_label;
@@ -113,22 +111,8 @@ public:
 
     //make an array stac for each frame
     vector<array_struct>array_stack;
-    //array_collection.push_back(array_stack);
-    //array_index = 0;//everytime meet array declaration, +1
+    array_collection.push_back(array_stack);//0 index of array_collection is global arrays
 
-    //define this in function_definition
-   //make a new vector for mips code when start a new frame_stack
-    // vector<string>mips_code;
-    // mpcode_collection[current_frame]_collection.push_back(mips_code);
-    // initilise_arg(true);//all argument available at the beginning
-    // arg_overflow = 0;
-    // string imm = "-12";
-    // addiu(29,29,imm);
-    // sw(30, 4,29);
-    // sw(31,8,29);
-    // // this instruction is added at the end_frame: addiu(29,29,offset)
-    // move(30,29);
-    // nop();
     result_count = 0;
     nop();
     end_frame = true;//hasn't met finish_frame yet
@@ -206,15 +190,30 @@ public:
     return "int";//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
-  int find_array(string name, bool global_array)
+  int find_array(string name, bool global)
   {
-    for(int i = 0; i < array_collection.size(); i++)
+    bool find = false;
+    int index;
+    for(int i = 0; i < array_collection[current_frame+1].size(); i++)
     {
-      if(name == array_collection[current_frame][i].name)
+      if(name == array_collection[current_frame+1][i].name)
       {
-        return i;
+        index = i;
+        find = true;
       }
     }
+    if(find == false)//if can't find in frame arrays, then it should be global
+    {
+      global = true;
+      for(int i = 0; i < array_collection[0].size(); i++)
+      {
+        if(name == array_collection[0][i].name)
+        {
+          index = i;
+        }
+      }
+    }
+    return index;
   }
 
   //requires initialisation everytime before use

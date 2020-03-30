@@ -60,6 +60,7 @@ int main(int argc, char *argv[]){
 
      vector<array_struct>global_array;
      array_collection.push_back(global_array);//0 index of array_collection is global arrays
+     std::cerr<<"initialise array collection for global, output array collection size: " << array_collection.size() << std::endl;
 
      root -> compile(mp);
      string generated_mips;

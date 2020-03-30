@@ -198,14 +198,16 @@ void direct_declarator::compile(mips& mp)const
     case 2:
     if(in_frame == false)//if global
     {
-      current_frame = 0;
+      current_frame = -1;
     }
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     one->compile(another_mp);//this should fill in the array name;
-    array_name = another_mp.info.func_name;//TODO: use func_name?
+    array_name = another_mp.info.func_name;
+    std::cerr<<"Array declaration with name: " << array_name << std::endl;
     a.name = array_name;
-    array_collection[current_frame].push_back(a);
+    std::cerr<<"Array coll size: " << array_collection.size() << std::endl;
+    array_collection[current_frame+1].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global)
     if(in_frame == false)//if global
     {
       //mp.global(array_name);
@@ -992,25 +994,25 @@ void postfix_expression::compile(mips& mp)const{
 
   switch (type) {
     case 0://read from array
-    std::cerr<<"read from array 1" << std::endl;
     mp.comment("read from array!");
     ptr->compile(another_mp);//fill array name (in all frame arrays)
-    name = another_mp.info.call_array_name;
-    std::cerr<<"read from array 2" << std::endl;
+    name = another_mp.info.func_name;
+    std::cerr<<"read from array" << std::endl;
     std::cerr<<"array name: " << name << std::endl;
     array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
+    std::cerr<<"come here? array index: " << array_index << std::endl;
     if(global_array == true)//if it is reading from a global array
     {
+      std::cerr<<"global array"<< std::endl;
       current_frame = 0;
     }
     opt->compile(mp);//should store index in $2; store index in info.result
     index = stoi(mp.info.result);//array element index
     // mp.sll(2, 2, 2);//x4 to get byte increment
-    offset = array_collection[current_frame][array_index].array_add[0];
+    offset = array_collection[current_frame+1][array_index].array_add[0];
     increment = offset + index * 4;
     // mp.addi(2, 2, to_string(offset));
     mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
-
     current_frame = temp_current_frame;
     break;
 
@@ -1111,8 +1113,8 @@ void initializer::compile(mips& mp) const
     {
       p->compile(mp);//this should store all identifier address in mp;
       size = stoi(mp.info.result);//size of the array
-      last_index = array_collection[current_frame].size() - 1;
-      offset = array_collection[current_frame][last_index].array_add[0];
+      last_index = array_collection[current_frame+1].size() - 1;
+      offset = array_collection[current_frame+1][last_index].array_add[0];
       //allocate space for array elements
       for(int i = 0; i < size; i++)
       {
@@ -1122,10 +1124,10 @@ void initializer::compile(mips& mp) const
       }
       //TODO: unsure about numbers: li instead of lw?
       //it's the last array in frame
-      index = array_collection[current_frame].size()-1;
-      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+      index = array_collection[current_frame+1].size()-1;
+      for(int i = 0; i < array_collection[current_frame+1][index].array_add.size(); i++)
       {
-        mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+        mp.lw(2, array_collection[current_frame+1][index].array_add[i], 30);
         mp.nop();
         mp.sw(2, element[i], 30);
       }
@@ -1133,7 +1135,7 @@ void initializer::compile(mips& mp) const
     current_frame = temp_current_frame;
 
     case 1:
-    //same as above
+    //array initialisation
     if(in_frame == false)//if global
     {
       current_frame = 0;
@@ -1147,8 +1149,8 @@ void initializer::compile(mips& mp) const
     {
       p->compile(mp);//this should store all identifier address in mp;
       size = stoi(mp.info.result);//size of the array
-      last_index = array_collection[current_frame].size() - 1;
-      offset = array_collection[current_frame][last_index].array_add[0];
+      last_index = array_collection[current_frame+1].size() - 1;
+      offset = array_collection[current_frame+1][last_index].array_add[0];
       //allocate space for array elements
       for(int i = 0; i < size; i++)
       {
@@ -1158,10 +1160,10 @@ void initializer::compile(mips& mp) const
       }
       //TODO: unsure about numbers: li instead of lw?
       //it's the last array in frame
-      index = array_collection[current_frame].size()-1;
-      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+      index = array_collection[current_frame+1].size()-1;
+      for(int i = 0; i < array_collection[current_frame+1][index].array_add.size(); i++)
       {
-        mp.lw(2, array_collection[current_frame][index].array_add[i], 30);
+        mp.lw(2, array_collection[current_frame+1][index].array_add[i], 30);
         mp.nop();
         mp.sw(2, element[i], 30);
       }
