@@ -6,8 +6,6 @@
 
   extern const astnode * g_root; // A way of getting the AST out
 
-  //extern FILE *yyin; // pointer to input stream
-
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
@@ -215,9 +213,6 @@ init_declarator
 storage_class_specifier
 	: TYPEDEF  {$$ = new storage_class_specifier(0); std::cerr << "storage_class_specifier typedef 0 " << std::endl;}
 	| EXTERN   {$$ = new storage_class_specifier(1);  std::cerr << "storage_class_specifier typedef 1 " << std::endl;}
-//	| STATIC
-//	| AUTO
-//	| REGISTER
 	;
 
 type_specifier
