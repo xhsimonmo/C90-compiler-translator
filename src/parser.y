@@ -60,7 +60,7 @@ primary_expression
 
 postfix_expression
 	: primary_expression                                   {$$ = $1; std::cerr << "postfix expression 1" << std::endl;}
-	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);std::cerr << "postfix expression 2" << std::endl;}
+	| postfix_expression '[' expression ']'                {$$ = new postfix_expression(0, $1, $3);std::cerr << "postfix expression 222222222222222222222222222222222222222222222" << std::endl;}
 	| postfix_expression '(' ')'                           {$$ = new postfix_expression(1, $1);std::cerr << "postfix expression 3" << std::endl;}
 	| postfix_expression '(' argument_expression_list ')'  {$$ = new postfix_expression(2, $1, $3);std::cerr << "postfix expression 4" << std::endl;}
 	| postfix_expression '.' IDENTIFIER                    {$$ = new postfix_expression(3, $1, *$3);std::cerr << "postfix expression 5" << std::endl;}
