@@ -248,12 +248,15 @@ void assignment_expression::compile(mips& mp)const
     switch(type)
     {
       case 0:{ // =
-      mp.unary_type = false; // used to check whether got an *x type in lvalue
-      p_one->compile(mp); // *x or x, $2 store the, unary_type will be set true if got *x
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
       int index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
       mp.nop();
-      if(!mp.unary_type){
+      if(!mp.isunary){
       //std::cerr << "current functype in assignment:" <<mp.info.func_type << '\n';
        // if(mp.info.func_type.find('*') != std::string::npos)
        // {
@@ -269,7 +272,7 @@ void assignment_expression::compile(mips& mp)const
        mp.lw(2,index, 30);
        mp.sw(3,0,2);
      }
-     mp.unary_type = false;
+     mp.isunary = false;
       break;
     }
       case 1://"*="
@@ -466,21 +469,43 @@ void multiplicative_expression::compile(mips& mp)const
 
 void additive_expression::compile(mips& mp)const
 {
+  mp.isnumber = false;
   int l_index;
   int r_index;
-  add->compile(mp);
-  l_index = result_offset();
   mips another_mp;
+  another_mp.isunary = mp.isunary;
+  another_mp.info.func_type = mp.info.func_type;
+
+  add->compile(mp);
+  if(mp.info.func_type.find('*') != std::string::npos && mp.isnumber && !mp.isunary){
+    mp.li(3, "4"); // default int
+    mp.mult(2, 3);
+    mp.mflo(2);
+    result_count = result_count -4;
+    mp.sw(2, result_offset(), 30);//save the result in
+  }
+  l_index = result_offset();
+
   mul->compile(another_mp);
+  if(another_mp.info.func_type.find('*') != std::string::npos && another_mp.isnumber && !another_mp.isunary)
+  {
+    mp.li(3, "4"); // default int
+    mp.mult(2, 3);
+    mp.mflo(2);
+    result_count = result_count -4;
+    mp.sw(2, result_offset(), 30);//save the result in
+  }
   r_index = result_offset();
+
   mp.comment("load right index from memory");
   mp.lw(3,r_index,30);
   mp.comment("load left index from memory");
   mp.lw(2,l_index,30);
+
   switch (type) {
 
   case 1://"+"
-  mp.comment("additive expression");
+  //mp.comment("additive expression");
   mp.add(2, 2, 3);
   result_count = result_count - 4;
   mp.sw(2,result_offset(),30);
@@ -557,7 +582,7 @@ void unary_expression::compile(mips& mp)const
     break;
     case 5: // *
     ptr ->compile(mp); // address stored in $2
-    mp.unary_type = true;
+    mp.isunary = true;
     mp.lw(2,0,2); // load the content of address in $2 to $2
     result_count = result_count - 4;
     mp.sw(2,result_offset(),30);
@@ -920,6 +945,7 @@ void primary_expression :: compile(mips& mp) const{
       result_count = result_count -4;
       mp.sw(2,result_offset(),30);
     }
+    mp.isnumber = true;
     break;
 
     case 2:{ // STRING_LITERAL
@@ -956,6 +982,15 @@ void parameter_declaration :: compile(mips& mp) const{
     string variable_name = another_mp.info.func_name;//get name of variable, like a;
     int availability = arg_check();
     int arg_reg = availability + 4;
+    string variable_type;
+    if(another_mp.info.func_type == "*") // got a pointer type
+    {
+       variable_type = mp.info.func_type + another_mp.info.func_type;
+    }
+    else{
+       variable_type = mp.info.func_type;
+    }
+    std::cerr << "current type: " << variable_type << '\n';
     // std::cerr << "current register in parameter:" << arg_reg<<'\n';
     // std::cerr << "current frame in parameter:" << current_frame<<'\n';
     // std::cerr << "stack_collection size: " <<stack_collection.size() <<'\n';
@@ -963,13 +998,13 @@ void parameter_declaration :: compile(mips& mp) const{
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
       //std::cerr << "less than 4 parameters, current offset: " << offset<<  '\n';
-      stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
+      stack_content stack = {variable_name, ((arg_reg-4)*4+12), variable_type};
       stack_collection[current_frame].push_back(stack);
 
     }
     else{ //case when more than 4 arguments
       //std::cerr << "more than 4 parameter: current offset: " << (arg_reg+arg_overflow+1)*4+12 <<'\n';
-      stack_content stack = {variable_name, ((arg_reg+arg_overflow+1)*4+12), "int"};
+      stack_content stack = {variable_name, ((arg_reg+arg_overflow+1)*4+12), variable_type};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }
