@@ -28,7 +28,13 @@ private:
 
 // void pointer::compile(mips& mp)const
 // {
-//   NotImplemented();
+//   if(ptr == NULL)
+//   {
+//     mp.info.func_type = "*";
+//   }
+//   else{
+//     ptr -> compile(mp);
+//   }
 // }
 
 #endif
