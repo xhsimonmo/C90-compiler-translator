@@ -1,7 +1,8 @@
 #include "menu.hpp"
 #include "ast.hpp"
 #include"mips.hpp"
-
+#include <stdio.h>
+#include <string.h>
 void function_definition::compile(mips& mp)const
 {
   // declarator;
@@ -144,7 +145,6 @@ void init_declarator::compile(mips& mp)const{
    {
      one -> compile(mp);
      string init_name = mp.info.func_name;
-     //int offset = -4 * (stack_collection[current_frame].size() + -1*result_count);
      result_count = result_count -4;
      int offset = result_offset();
      stack_content tmp = {init_name,offset,"int"};
@@ -159,8 +159,10 @@ void init_declarator::compile(mips& mp)const{
      //mp.comment("result_offset in init_declarator: " + to_string(offset));
      stack_content tmp = {init_name,offset,"int"};
      stack_collection[current_frame].push_back(tmp);
-     two -> compile(mp);
+     mips another_mp;
+     two -> compile(another_mp);
      mp.sw(2,offset,30);
+     std::cerr << "init_declarator: " << mp.info.func_type << '\n';
    }
 }
 
@@ -262,14 +264,32 @@ void assignment_expression::compile(mips& mp)const
 
     switch(type)
     {
-      case 0:
+      case 0:{ // =
       mp.comment("Assignment!!!!!");
-      p_one->compile(mp);
+      mp.unary_type = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, unary_type will be set true if got *x
+      int index = mp.info.var_index;
       p_five->compile(another_mp);
       mp.nop();
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.unary_type){
+      //std::cerr << "current functype in assignment:" <<mp.info.func_type << '\n';
+       // if(mp.info.func_type.find('*') != std::string::npos)
+       // {
+       //  //std::cerr << " pointer assignment" << '\n';
+       // }
+       // else{
+        //std::cerr << "non pointer assignment" << '\n';
+        mp.sw(2, mp.info.var_index, 30);
+       // }
+     }
+     else{
+       mp.move(3,2);
+       mp.lw(2,index, 30);
+       mp.sw(3,0,2);
+     }
+     mp.unary_type = false;
       break;
-
+    }
       case 1://"*="
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
@@ -555,7 +575,8 @@ void unary_expression::compile(mips& mp)const
     break;
     case 5: // *
     ptr ->compile(mp); // address stored in $2
-    mp.lw(2,0,2);
+    mp.unary_type = true;
+    mp.lw(2,0,2); // load the content of address in $2 to $2
     result_count = result_count - 4;
     mp.sw(2,result_offset(),30);
     break;
@@ -1242,9 +1263,16 @@ void specifier_qualifier_list::compile(mips& mp)const{
 
 void pointer::compile(mips& mp)const
 {
-  NotImplemented();
-}
+  if(ptr == NULL)
+  {
 
+    mp.info.func_type = "*";
+    // std::cerr << "/////////////inside pointer: " <<mp.info.func_type  <<'\n';
+  }
+  else{
+    ptr -> compile(mp);
+  }
+}
 void declaration_list::compile(mips& mp)const{
   p_o -> compile(mp);
   mips another_mp;
@@ -1271,16 +1299,30 @@ void declaration::compile(mips& mp)const
      if(in_frame){
        mips another_mp;
        lt->compile(another_mp); // eg. a = 1;
-       stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
+       std::cerr << "another_mp.info.func_type: " << another_mp.info.func_type <<'\n';
+       if(another_mp.info.func_type == "*") // got a pointer type
+       {
+         std::cerr << "pointer detected." << '\n';
+         string pointer_type = mp.info.func_type + another_mp.info.func_type;
+         std::cerr << "pointer type for pointer: " << pointer_type <<'\n';
+         stack_collection[current_frame].back().type = pointer_type;
+       }
+       else{
+         std::cerr << "pointer not detected." << '\n';
+         stack_collection[current_frame].back().type = mp.info.func_type;//update type of variable
+       }
      }
    }
 }
 
-void declarator::compile(mips&mp)const
+void declarator::compile(mips&mp)const   // 	: pointer direct_declarator
 {
+    direct_decla -> compile(mp);
+    std::cerr << "declarator 2: " << mp.info.func_type << '\n';
     ptr ->compile(mp);
-    mips another_mp;
-    direct_decla -> compile(another_mp);
+    std::cerr << "declarator 1: " << mp.info.func_type << '\n';
+    //mips another_mp;
+    // direct_decla -> compile(mp);
 }
 
 void direct_abstract_declarator :: compile(mips& mp)const
@@ -1338,7 +1380,7 @@ void relational_expression::compile(mips& mp)const{
     case 5: //!=
     mp.sne(2,2,3);
     break;
-    case 6: //& (pointer dereference)
+    case 6: //&
     mp._and(2,2,3);
     break;
     case 7:

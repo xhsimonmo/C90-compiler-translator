@@ -82,8 +82,10 @@ public:
   temp_result info;
 
   int enum_count;
+  bool unary_type;
   mips()//initialisation
   {
+    unary_type = false;
     enum_count = 0;
     info.array_init_counter = 0;
     //registers[32] = { 0 }; // TODO something not right about indent
@@ -135,7 +137,7 @@ public:
     auto it = mpcode_collection[current_frame].begin();
     //info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
     int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + -1*result_count+ 4; // 4 is compulsory but nor necessary,just to be safe
-    std::cerr << " ////////////////current max arg count: " << arg_count_collection[current_frame] <<'\n';
+    //std::cerr << " ////////////////current max arg count: " << arg_count_collection[current_frame] <<'\n';
     memory_allocate = -4*memory_allocate;
     string str_memory_allocate = to_string(memory_allocate);
     string function_header = "addiu $29,$29,"+str_memory_allocate;
@@ -540,6 +542,9 @@ inline void sizeof_process(mips& mp){
   }else if(rvalue == "signed"){
     size = 4;
   }else if(rvalue == "unsigned"){
+    size = 4;
+  }
+  else{
     size = 4;
   }
   // else if(rvalue == ""){
