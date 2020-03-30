@@ -665,7 +665,6 @@ void selection_statement::compile(mips& mp)const
 
     case 2:
     //switch statement
-
     //initialise vector
     vector<switch_content>switch_temp;
     mp.switch_info = switch_temp;
