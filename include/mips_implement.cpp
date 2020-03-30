@@ -201,7 +201,7 @@ void direct_declarator::compile(mips& mp)const
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     one->compile(another_mp);//this should fill in the array name;
-    array_name = another_mp.info.new_array_name;
+    array_name = another_mp.info.func_name;//TODO: use func_name?
     a.name = array_name;
     array_collection[current_frame].push_back(a);
     if(in_frame == false)//if global
@@ -814,6 +814,10 @@ void iteration_statement::compile(mips& mp)const{
       mp.add_label(statement);
       er->compile(state_expr);//get statement
       //mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
+<<<<<<< HEAD
+=======
+      // mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
+>>>>>>> b10043f4f7e68dd4fbdf82985251c682d705529c
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
 
@@ -971,8 +975,12 @@ void postfix_expression::compile(mips& mp)const{
 
   switch (type) {
     case 0://read from array
+    std::cerr<<"read from array 1" << std::endl;
+    mp.comment("read from array!");
     ptr->compile(another_mp);//fill array name (in all frame arrays)
     name = another_mp.info.call_array_name;
+    std::cerr<<"read from array 2" << std::endl;
+    std::cerr<<"array name: " << name << std::endl;
     array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
     if(global_array == true)//if it is reading from a global array
     {
