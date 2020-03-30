@@ -73,6 +73,7 @@ public:
     int var_index;//store previous results' index(in stack vector)
     int result_index;//use for statement expression result index
     string array_name;
+    int array_init_counter;//count initializer
 
     string break_jump_label;
     string continue_jump_label;
@@ -88,6 +89,7 @@ public:
     isunary = false;
     enum_count = 0;
     isnumber = false;
+    info.array_init_counter = 0;
     //registers[32] = { 0 }; // TODO something not right about indent
     // labelcounter = 0;
   }

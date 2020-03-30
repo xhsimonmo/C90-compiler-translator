@@ -53,8 +53,6 @@ extern int yydebug;
 
   extern const astnode * g_root; // A way of getting the AST out
 
-  //extern FILE *yyin; // pointer to input stream
-
   //! This is to fix problems when generating C++
   // We are declaring the functions provided by Flex, so
   // that Bison generated code can call them.
@@ -62,7 +60,7 @@ extern int yydebug;
    void yyerror(const char *);
 
 
-#line 66 "src/parser.tab.hpp"
+#line 64 "src/parser.tab.hpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -134,13 +132,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 20 "src/parser.y"
+#line 18 "src/parser.y"
 
   astnode * expr;
   int number;
   std::string * str;;
 
-#line 144 "src/parser.tab.hpp"
+#line 142 "src/parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
