@@ -182,6 +182,7 @@ void direct_declarator::compile(mips& mp)const
   //create a new array
   array_struct a;
   int temp_current_frame = current_frame;
+  int size;
 
   switch(type)
   {
@@ -200,17 +201,33 @@ void direct_declarator::compile(mips& mp)const
     }
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
+    size = stoi(mp.info.result);//size of the array
     one->compile(another_mp);//this should fill in the array name;
     array_name = another_mp.info.func_name;
     std::cerr<<"Array declaration with name: " << array_name << std::endl;
     a.name = array_name;
+    a.size = size;
     std::cerr<<"Array coll size: " << array_collection.size() << std::endl;
-    array_collection[current_frame+1].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global)
+
     if(in_frame == false)//if global
     {
       //mp.global(array_name);
     }
+
+    //array initialisation:initialise all to 0
+    if(in_frame == true)
+    {
+      for (int i = 0; i < size; i++)
+      {
+        result_count = result_count - 4;
+        mp.sw(0, result_offset(), 30);//initialise all with 0
+        a.array_add.push_back(result_offset());//store array content address
+      }
+    }
+
+    array_collection[current_frame+1].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global
     current_frame = temp_current_frame;
+
     break;
 
     case 3:
@@ -246,6 +263,7 @@ void assignment_expression::compile(mips& mp)const
     switch(type)
     {
       case 0:
+      mp.comment("Assignment!!!!!");
       p_one->compile(mp);
       p_five->compile(another_mp);
       mp.nop();
@@ -816,10 +834,7 @@ void iteration_statement::compile(mips& mp)const{
       mp.add_label(statement);
       er->compile(state_expr);//get statement
       //mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
-<<<<<<< HEAD
-=======
       // mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
->>>>>>> b10043f4f7e68dd4fbdf82985251c682d705529c
       mp.bne(2, 0, for_s2);//if true go to statement
       mp.nop();
 
@@ -970,7 +985,6 @@ void postfix_expression::compile(mips& mp)const{
   string name;
   int array_index;
   int index;
-  int increment;
 
   int temp_current_frame = current_frame;
   bool global_array = false;//to see if it is global array
@@ -980,22 +994,26 @@ void postfix_expression::compile(mips& mp)const{
     mp.comment("read from array!");
     ptr->compile(another_mp);//fill array name (in all frame arrays)
     name = another_mp.info.func_name;
-    std::cerr<<"read from array" << std::endl;
-    std::cerr<<"array name: " << name << std::endl;
+    mp.comment("array name: " + name);
     array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
-    std::cerr<<"come here? array index: " << array_index << std::endl;
+    mp.comment("1");
     if(global_array == true)//if it is reading from a global array
     {
-      std::cerr<<"global array"<< std::endl;
-      current_frame = 0;
+      mp.comment("global array");
+      current_frame = -1;
     }
+    mp.comment("2");
     opt->compile(mp);//should store index in $2; store index in info.result
     index = stoi(mp.info.result);//array element index
+    mp.comment("3");
+    std::cerr << "index is " << index << std::endl;
     // mp.sll(2, 2, 2);//x4 to get byte increment
-    offset = array_collection[current_frame+1][array_index].array_add[0];
-    increment = offset + index * 4;
-    // mp.addi(2, 2, to_string(offset));
-    mp.sw(2, increment, 30);//store the result in $2; $2 stores the address
+    mp.comment("4");
+    offset = array_collection[current_frame+1][array_index].array_add[index];
+    mp.comment("offset: " + to_string(offset));
+    mp.comment("5");
+    mp.sw(2, offset, 30);//store the result in $2; $2 stores the address
+    mp.info.var_index = offset;
     current_frame = temp_current_frame;
     break;
 
@@ -1006,6 +1024,7 @@ void postfix_expression::compile(mips& mp)const{
     result_count = result_count - 4;
     mp.sw(2,result_offset(),30);
     break;
+
     case 2: //postfix_expression '(' argument_expression_list ')'
     ptr->compile(mp);
     function_name = mp.info.func_name;
@@ -1072,102 +1091,121 @@ void argument_expression_list::compile(mips& mp)const{
 void initializer::compile(mips& mp) const
 {
   debug(cname);
-  int size;
-  int element[size];
-  int index;
-  int offset;
-  int last_index;
-  int temp_current_frame = current_frame;
+  // int size;
+  // int element[size];
+  // int index;
+  // int offset;
+  // int last_index;
+  // int temp_current_frame = current_frame;
+  p->compile(mp);
 
-  switch(type)
-  {
-    case 0:
-    //array initialisation
-    if(in_frame == false)//if global
-    {
-      current_frame = 0;
-      p->compile(mp);//this should store all identifier address in mp;
-      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
-      {
-        mp._word("TO:unknown");
-      }
-    }
-    else
-    {
-      p->compile(mp);//this should store all identifier address in mp;
-      size = stoi(mp.info.result);//size of the array
-      last_index = array_collection[current_frame+1].size() - 1;
-      offset = array_collection[current_frame+1][last_index].array_add[0];
-      //allocate space for array elements
-      for(int i = 0; i < size; i++)
-      {
-        mp.sw(0, offset, 30);
-        element[i] = offset;
-        offset = offset + 4;
-      }
-      //TODO: unsure about numbers: li instead of lw?
-      //it's the last array in frame
-      index = array_collection[current_frame+1].size()-1;
-      for(int i = 0; i < array_collection[current_frame+1][index].array_add.size(); i++)
-      {
-        mp.lw(2, array_collection[current_frame+1][index].array_add[i], 30);
-        mp.nop();
-        mp.sw(2, element[i], 30);
-      }
-    }
-    current_frame = temp_current_frame;
-
-    case 1:
-    //array initialisation
-    if(in_frame == false)//if global
-    {
-      current_frame = 0;
-      p->compile(mp);//this should store all identifier address in mp;
-      for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
-      {
-        mp._word("TO:unknown");
-      }
-    }
-    else
-    {
-      p->compile(mp);//this should store all identifier address in mp;
-      size = stoi(mp.info.result);//size of the array
-      last_index = array_collection[current_frame+1].size() - 1;
-      offset = array_collection[current_frame+1][last_index].array_add[0];
-      //allocate space for array elements
-      for(int i = 0; i < size; i++)
-      {
-        mp.sw(0, offset, 30);
-        element[i] = offset;
-        offset = offset + 4;
-      }
-      //TODO: unsure about numbers: li instead of lw?
-      //it's the last array in frame
-      index = array_collection[current_frame+1].size()-1;
-      for(int i = 0; i < array_collection[current_frame+1][index].array_add.size(); i++)
-      {
-        mp.lw(2, array_collection[current_frame+1][index].array_add[i], 30);
-        mp.nop();
-        mp.sw(2, element[i], 30);
-      }
-    }
-    current_frame = temp_current_frame;
-  }
+    // case 0:
+    // //array initialisation
+    // if(in_frame == false)//if global
+    // {
+    //   current_frame = 0;
+    //   p->compile(mp);//this should store all identifier address in mp;
+    //   for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
+    //   {
+    //     mp._word("TO:unknown");
+    //   }
+    // }
+    // else
+    // {
+    //   p->compile(mp);//this should store all identifier address in mp;
+    //   size = stoi(mp.info.result);//size of the array
+    //   last_index = array_collection[current_frame+1].size() - 1;
+    //   offset = array_collection[current_frame+1][last_index].array_add[0];
+    //   //allocate space for array elements
+    //   for(int i = 0; i < size; i++)
+    //   {
+    //     mp.sw(0, offset, 30);
+    //     element[i] = offset;
+    //     offset = offset + 4;
+    //   }
+    //   //TODO: unsure about numbers: li instead of lw?
+    //   //it's the last array in frame
+    //   index = array_collection[current_frame+1].size()-1;
+    //   for(int i = 0; i < array_collection[current_frame+1][index].array_add.size(); i++)
+    //   {
+    //     mp.lw(2, array_collection[current_frame+1][index].array_add[i], 30);
+    //     mp.nop();
+    //     mp.sw(2, element[i], 30);
+    //   }
+    // }
+    // current_frame = temp_current_frame;
 }
 
-
+// initializer_list
+// 	: initializer                            {$$ = new initializer_list(0, $1); std::cerr << "initializer_list 0" << std::endl;}
+// 	| initializer_list ',' initializer       {$$ = new initializer_list(1, $1, $3); std::cerr << "initializer_list 1" << std::endl;}
+// 	;
 void initializer_list::compile(mips& mp) const
 {
-  mips another_mp;
+  int index;
+  int offset;
+  int temp_current_frame = current_frame;//save current frame value(in case it changes in global)
+  debug(cname);
+
   switch(type)
   {
     case 0:
-    left->compile(mp);
+    if(in_frame == false)//if global
+    {
+      mp.comment("Global!!");
+      current_frame = 0;
+      left->compile(mp);//this should store all identifier address in mp;
+      mp._word(mp.info.result);
+
+      current_frame = temp_current_frame;
+    }
+    else
+    {
+      mp.comment("not Global!!");
+      left->compile(mp);
+      mp.comment("here?");
+
+      //it's the last array in frame
+      index = array_collection[current_frame+1].size() - 1;
+      mp.comment("current array index: " + to_string(index));
+      // array_size = array_collection[current_frame+1][index].size;
+      offset = array_collection[current_frame+1][index].array_add[mp.info.array_init_counter];
+      mp.comment("offset: " + to_string(offset));
+      mp.comment("counter: " + to_string(mp.info.array_init_counter));
+      mp.comment("Number" + mp.info.result);
+      mp.sw(2, offset, 30);
+      mp.info.array_init_counter++;
+    }
     break;
 
     case 1:
-    left->compile(another_mp);
-    right->compile(mp);
+    left->compile(mp);//should add up previous counter
+    if(in_frame == false)//if global
+    {
+      mp.comment("Global!!");
+      current_frame = 0;
+      right->compile(mp);//this should store all identifier address in mp;
+      mp._word(mp.info.result);
+
+      current_frame = temp_current_frame;
+    }
+    else
+    {
+      mp.comment("not Global!!");
+      right->compile(mp);
+      mp.comment("here?");
+
+      //it's the last array in frame
+      index = array_collection[current_frame+1].size() - 1;
+      mp.comment("current array index: " + to_string(index));
+      // array_size = array_collection[current_frame+1][index].size;
+      offset = array_collection[current_frame+1][index].array_add[mp.info.array_init_counter];
+      mp.comment("offset: " + to_string(offset));
+      mp.comment("counter: " + to_string(mp.info.array_init_counter));
+      mp.comment("Number" + mp.info.result);
+      mp.sw(2, offset, 30);
+      mp.info.array_init_counter++;
+    }
   }
 }
 
