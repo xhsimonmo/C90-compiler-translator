@@ -203,7 +203,7 @@ void direct_declarator::compile(mips& mp)const
     }
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
-    size = stoi(mp.info.result);//size of the array
+    size = std::stoi(mp.info.result);//size of the array
     one->compile(another_mp);//this should fill in the array name;
     array_name = another_mp.info.func_name;
     std::cerr<<"Array declaration with name: " << array_name << std::endl;
@@ -742,9 +742,6 @@ void iteration_statement::compile(mips& mp)const{
     string while_end = "while_end" + to_string(labelcounter);
     labelcounter++;
 
-
-
-
     switch(type)
     {
       case 0:
@@ -1025,7 +1022,7 @@ void postfix_expression::compile(mips& mp)const{
     }
     mp.comment("2");
     opt->compile(mp);//should store index in $2; store index in info.result
-    index = stoi(mp.info.result);//array element index
+    index = std::stoi(mp.info.result);//array element index
     mp.comment("3");
     std::cerr << "index is " << index << std::endl;
     // mp.sll(2, 2, 2);//x4 to get byte increment
