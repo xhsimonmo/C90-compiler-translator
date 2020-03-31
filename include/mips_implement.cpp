@@ -270,15 +270,25 @@ void assignment_expression::compile(mips& mp)const
       //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
       mp.nop();
-      if(!mp.isunary){
-        mp.sw(2, mp.info.var_index, 30);
-     }
-     else{
-       mp.move(3,2);
-       mp.lw(2,index, 30);
-       mp.sw(3,0,2);
-     }
-     mp.isunary = false;
+      if(!mp.isunary)
+      {
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          // mp.comment("Show me the array element index: " + to_string(mp.info.array_element_add));
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
+      }else
+      {
+        mp.move(3,2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
     }
       case 1://"*="
@@ -296,7 +306,16 @@ void assignment_expression::compile(mips& mp)const
         mp.nop();
         mp.mult(2, 3);
         mp.mflo(2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
      }
      else{
        mp.lw(3, loffset, 30);
@@ -324,7 +343,16 @@ void assignment_expression::compile(mips& mp)const
         mp.nop();
         mp.div(3, 2);
         mp.mflo(2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
      }
      else{
        mp.lw(3, loffset, 30);
@@ -352,7 +380,16 @@ void assignment_expression::compile(mips& mp)const
         mp.nop();
         mp.div(3, 2);
         mp.mfhi(2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
      }
      else{
        mp.lw(3, loffset, 30);
@@ -384,7 +421,16 @@ void assignment_expression::compile(mips& mp)const
           mp.mflo(2);
           mp.lw(3, loffset, 30);
           mp.add(2,2,3);
-          mp.sw(2, mp.info.var_index, 30);
+          // mp.sw(2, mp.info.var_index, 30);
+          if(mp.info.array_element_add == 0)//index is constant
+          {
+            mp.sw(2, mp.info.var_index, 30);//index is variable
+          }
+          else{
+            mp.lw(3, mp.info.array_element_add, 30);
+            mp.sw(2, 0, 3);
+            mp.info.array_element_add = 0;
+          }
         }
         else{
           mp.lw(3, loffset, 30);
@@ -419,7 +465,16 @@ void assignment_expression::compile(mips& mp)const
           mp.mflo(2);
           mp.lw(3, loffset, 30);
           mp.sub(2,3,2);
-          mp.sw(2, mp.info.var_index, 30);
+          // mp.sw(2, mp.info.var_index, 30);
+          if(mp.info.array_element_add == 0)//index is constant
+          {
+            mp.sw(2, mp.info.var_index, 30);//index is variable
+          }
+          else{
+            mp.lw(3, mp.info.array_element_add, 30);
+            mp.sw(2, 0, 3);
+            mp.info.array_element_add = 0;
+          }
         }
         else{
           mp.lw(3, loffset, 30);
@@ -449,7 +504,16 @@ void assignment_expression::compile(mips& mp)const
       if(!mp.isunary){
         mp.lw(3, loffset, 30);
         mp.sllv(2, 3, 2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
       }
       else{
         mp.lw(3, loffset, 30);
@@ -473,7 +537,16 @@ void assignment_expression::compile(mips& mp)const
       if(!mp.isunary){
         mp.lw(3, loffset, 30);
         mp.srav(2, 3, 2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
       }
       else{
         mp.lw(3, loffset, 30);
@@ -499,7 +572,16 @@ void assignment_expression::compile(mips& mp)const
       if(!mp.isunary){
         mp.lw(3, loffset, 30);
         mp._and(2, 3, 2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
       }
       else{
         mp.lw(3, loffset, 30);
@@ -523,7 +605,16 @@ void assignment_expression::compile(mips& mp)const
       if(!mp.isunary){
         mp.lw(3, loffset, 30);
         mp._xor(2, 3, 2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
       }
       else{
         mp.lw(3, loffset, 30);
@@ -547,7 +638,16 @@ void assignment_expression::compile(mips& mp)const
       if(!mp.isunary){
         mp.lw(3, loffset, 30);
         mp._or(2, 3, 2);
-        mp.sw(2, mp.info.var_index, 30);
+        // mp.sw(2, mp.info.var_index, 30);
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else{
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
       }
       else{
         mp.lw(3, loffset, 30);
@@ -1240,39 +1340,45 @@ void postfix_expression::compile(mips& mp)const{
         element = array_collection[0][array_index].array_add[index];
         mp.addi(2, 0, to_string(element));
       }
-      mp.comment("2");
-      opt->compile(mp);//should store index in $2; store index in info.result
-      mp.comment("3");
-      std::cerr << "index is " << index << std::endl;
-      // mp.sll(2, 2, 2);//x4 to get byte increment
-      mp.comment("4");
-      if(mp.isnumber == true)//if array index is a number
+      else//if it's reading from a local array
       {
+        mp.comment("2");
+        opt->compile(mp);//should store index in $2; store index in info.result
         index = std::stoi(mp.info.result);//array element index
-        offset = array_collection[current_frame+1][array_index].array_add[index];
-        mp.comment("offset: " + to_string(offset));
-        mp.comment("5");
-        mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
-        mp.info.var_index = offset;
-      }
-      else//if array index is a variable; index value should be stored in $2
-      {
-        offset = array_collection[current_frame+1][array_index].array_add[0];//get the first offset
-        mp.sll(2, 2, 2);//multiply by 4
-        mp.sub(2, 0, 2);//make it negative
-        mp.addi(2, 2, to_string(offset));//offset-4*$2(index)
-        mp.add(2, 30, 2);
+        mp.comment("3");
+        std::cerr << "index is " << index << std::endl;
+        // mp.sll(2, 2, 2);//x4 to get byte increment
+        mp.comment("4");
+        if(mp.isnumber == true)//if array index is a number
+        {
+          mp.comment("Array index is a number!");
+          offset = array_collection[current_frame+1][array_index].array_add[index];
+          mp.comment("offset: " + to_string(offset));
+          mp.comment("5");
+          mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
+          mp.info.var_index = offset;
+        }
+        else//if array index is a variable; index value should be stored in $2
+        {
+          mp.comment("Array index is not a number!");
+          offset = array_collection[current_frame+1][array_index].array_add[0];//get the first offset
+          mp.sll(2, 2, 2);//multiply by 4
+          mp.sub(2, 0, 2);//make it negative
+          mp.addi(2, 2, to_string(offset));//offset-4*$2(index)
+          mp.add(2, 30, 2);
 
-        //store address of the element in $3
+          //store address of the element in $3
+          result_count = result_count - 4;
+          mp.sw(2, result_offset(), 30);//initialise all with 0
+          mp.info.array_element_add = result_offset();//store array content address
+
+          mp.lw(2, 0, 2);
+        }
+        // current_frame = temp_current_frame;
         result_count = result_count - 4;
-        mp.sw(2, result_offset(), 30);//initialise all with 0
-        mp.info.array_element_add = result_offset();//store array content address
-
-        mp.lw(2, 0, 2);
+        mp.sw(2, result_offset(), 30);//save the result in
       }
-      // current_frame = temp_current_frame;
-      result_count = result_count - 4;
-      mp.sw(2, result_offset(), 30);//save the result in
+
 
     }
     break;
