@@ -265,13 +265,15 @@ void assignment_expression::compile(mips& mp)const
     switch(type)
     {
       case 0:{ // =
-      mp.comment("Assignment!!!!!");
-      mp.unary_type = false; // used to check whether got an *x type in lvalue
-      p_one->compile(mp); // *x or x, $2 store the, unary_type will be set true if got *x
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
       int index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
       mp.nop();
-      if(!mp.unary_type){
+      if(!mp.isunary){
       //std::cerr << "current functype in assignment:" <<mp.info.func_type << '\n';
        // if(mp.info.func_type.find('*') != std::string::npos)
        // {
@@ -287,7 +289,7 @@ void assignment_expression::compile(mips& mp)const
        mp.lw(2,index, 30);
        mp.sw(3,0,2);
      }
-     mp.unary_type = false;
+     mp.isunary = false;
       break;
     }
       case 1://"*="
@@ -484,21 +486,43 @@ void multiplicative_expression::compile(mips& mp)const
 
 void additive_expression::compile(mips& mp)const
 {
+  mp.isnumber = false;
   int l_index;
   int r_index;
-  add->compile(mp);
-  l_index = result_offset();
   mips another_mp;
+  another_mp.isunary = mp.isunary;
+  another_mp.info.func_type = mp.info.func_type;
+
+  add->compile(mp);
+  if(mp.info.func_type.find('*') != std::string::npos && mp.isnumber && !mp.isunary){
+    mp.li(3, "4"); // default int
+    mp.mult(2, 3);
+    mp.mflo(2);
+    result_count = result_count -4;
+    mp.sw(2, result_offset(), 30);//save the result in
+  }
+  l_index = result_offset();
+
   mul->compile(another_mp);
+  if(another_mp.info.func_type.find('*') != std::string::npos && another_mp.isnumber && !another_mp.isunary)
+  {
+    mp.li(3, "4"); // default int
+    mp.mult(2, 3);
+    mp.mflo(2);
+    result_count = result_count -4;
+    mp.sw(2, result_offset(), 30);//save the result in
+  }
   r_index = result_offset();
+
   mp.comment("load right index from memory");
   mp.lw(3,r_index,30);
   mp.comment("load left index from memory");
   mp.lw(2,l_index,30);
+
   switch (type) {
 
   case 1://"+"
-  mp.comment("additive expression");
+  //mp.comment("additive expression");
   mp.add(2, 2, 3);
   result_count = result_count - 4;
   mp.sw(2,result_offset(),30);
@@ -575,7 +599,7 @@ void unary_expression::compile(mips& mp)const
     break;
     case 5: // *
     ptr ->compile(mp); // address stored in $2
-    mp.unary_type = true;
+    mp.isunary = true;
     mp.lw(2,0,2); // load the content of address in $2 to $2
     result_count = result_count - 4;
     mp.sw(2,result_offset(),30);
@@ -669,30 +693,34 @@ void selection_statement::compile(mips& mp)const
     //initialise vector
     vector<switch_content>switch_temp;
     mp.switch_info = switch_temp;
-
+    mp.info.break_jump_label = switch_label;
     //add label to be the first element
     switch_content info;
     info.label = switch_label;
     mp.switch_info.push_back(info);
-
-    mp.lw(2, expre_mp.info.result_index, 30);//store switch variable's value in $2
+    string condition = "switchcondition"+to_string(labelcounter);
+    mp.b(condition);// evaluate condition first
+    mp.lw(2, expre_mp.info.var_index, 30);//store switch variable's value in $2
     ifsta->compile(mp);//obtain all case information!
 
     //start from 1 to avoid the label (index 0)
+    mp.add_label(condition);
     for(int i = 1; i < mp.switch_info.size(); i++)
     {
-      if(mp.switch_info[i].case_num != "defalut")
+      if(mp.switch_info[i].case_num != "default")
       {
         case_number = mp.switch_info[i].case_num;
-        mp.addi(3, 3, case_number);//load case number into $3
+        std::cerr << "case number is: " << case_number << '\n';
+        mp.li(3, case_number);//load case number into $3
         mp.beq(2, 3, mp.switch_info[i].label);//if same jump to the corresponding label
         mp.nop();
       }
       else
       {
+        std::cerr << ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;got default" << '\n';
         //find default case
         //TODO: may not work: default doesn't have to be at the end
-        mp.beq(0, 0, mp.switch_info[i].label);
+        mp.b(mp.switch_info[i].label);
       }
     }
     mp.add_label(switch_label);
@@ -936,6 +964,7 @@ void primary_expression :: compile(mips& mp) const{
       result_count = result_count -4;
       mp.sw(2,result_offset(),30);
     }
+    mp.isnumber = true;
     break;
 
     case 2:{ // STRING_LITERAL
@@ -972,6 +1001,15 @@ void parameter_declaration :: compile(mips& mp) const{
     string variable_name = another_mp.info.func_name;//get name of variable, like a;
     int availability = arg_check();
     int arg_reg = availability + 4;
+    string variable_type;
+    if(another_mp.info.func_type == "*") // got a pointer type
+    {
+       variable_type = mp.info.func_type + another_mp.info.func_type;
+    }
+    else{
+       variable_type = mp.info.func_type;
+    }
+    std::cerr << "current type: " << variable_type << '\n';
     // std::cerr << "current register in parameter:" << arg_reg<<'\n';
     // std::cerr << "current frame in parameter:" << current_frame<<'\n';
     // std::cerr << "stack_collection size: " <<stack_collection.size() <<'\n';
@@ -979,13 +1017,13 @@ void parameter_declaration :: compile(mips& mp) const{
       int offset = (arg_reg-4)*4+12;
       mp.sw(arg_reg, offset,30);//point upwards add 12 because we have ra and sp stored in beginning
       //std::cerr << "less than 4 parameters, current offset: " << offset<<  '\n';
-      stack_content stack = {variable_name, ((arg_reg-4)*4+12), "int"};
+      stack_content stack = {variable_name, ((arg_reg-4)*4+12), variable_type};
       stack_collection[current_frame].push_back(stack);
 
     }
     else{ //case when more than 4 arguments
       //std::cerr << "more than 4 parameter: current offset: " << (arg_reg+arg_overflow+1)*4+12 <<'\n';
-      stack_content stack = {variable_name, ((arg_reg+arg_overflow+1)*4+12), "int"};
+      stack_content stack = {variable_name, ((arg_reg+arg_overflow+1)*4+12), variable_type};
       stack_collection[current_frame].push_back(stack);
       arg_overflow++;
     }
@@ -1011,6 +1049,23 @@ void postfix_expression::compile(mips& mp)const{
     case 0://read from array
     mp.comment("read from array!");
     ptr->compile(another_mp);//fill array name (in all frame arrays)
+
+    if(another_mp.info.func_type.find('*') != std::string::npos)
+    {
+      int pointer_offset = result_offset();
+      opt -> compile(mp);
+      mp.li(2,mp.info.result);
+      mp.li(3,"4");
+      mp.mult(2,3);
+      mp.mflo(2);
+      mp.lw(3, pointer_offset,30);
+      mp.add(2,2,3);
+      mp.lw(2,0,2);
+      result_count = result_count -4;
+      mp.sw(2, result_offset(), 30);//save the result in
+    }
+    else
+    {
     name = another_mp.info.func_name;
     mp.comment("array name: " + name);
     array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
@@ -1033,6 +1088,9 @@ void postfix_expression::compile(mips& mp)const{
     mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
     mp.info.var_index = offset;
     current_frame = temp_current_frame;
+    result_count = result_count -4;
+    mp.sw(2, result_offset(), 30);//save the result in
+    }
     break;
 
     case 1:
@@ -1070,8 +1128,13 @@ void postfix_expression::compile(mips& mp)const{
     //mips another_mp; //start a new mips class so info.result is empty at first
     ptr -> compile(mp);
     variable_name = mp.info.func_name;
+    if(mp.info.func_type.find('*') != std::string::npos){
+      mp.addiu(2,2,"4");
+    }
     //mp.lw(2,find_variable(variable_name, stack_collection[current_frame]),30)
-    mp.addiu(2,2,"1");
+    else{
+      mp.addiu(2,2,"1");
+    }
     mp.sw(2,mp.find_variable(variable_name, stack_collection[current_frame]),30);
     break;
     case 6: // a--
@@ -1248,8 +1311,8 @@ void storage_class_specifier::compile(mips& mp)const{
 
 void statement_list::compile(mips& mp)const{
   l -> compile(mp);
-  mips another_mp;
-  r -> compile (another_mp);
+  //mips another_mp;
+  r -> compile (mp);
 }
 
 void specifier_qualifier_list::compile(mips& mp)const{
@@ -1435,9 +1498,10 @@ void labeled_statement::compile(mips& mp)const{
   debug(cname);
   string case_number;
   mips another_mp;
-  string case_label = "Label " + to_string(labelcounter);
+  string case_label = "Label" + to_string(labelcounter);
   string end_label;
   switch_content info;
+  labelcounter++;
 
   switch(type)
   {
@@ -1447,14 +1511,15 @@ void labeled_statement::compile(mips& mp)const{
 
     case 1:
     //get switch finish label
-    end_label = mp.switch_info[0].case_num;
+    end_label = mp.switch_info[0].label;
 
     mp.add_label(case_label);
     one->compile(another_mp);//obtain case number(in $2)
     case_number = another_mp.info.result;
+
     two->compile(mp);//evaluate statement
 
-    mp.b(end_label);
+    //mp.b(end_label);
     mp.nop();
 
     //store info for this case
@@ -1463,8 +1528,9 @@ void labeled_statement::compile(mips& mp)const{
     mp.switch_info.push_back(info);
 
     labelcounter++;
-
+    break;
     case 2:
+    end_label = mp.switch_info[0].label;
     mp.add_label(case_label);
     one->compile(mp);//evaluate statement
     mp.b(end_label);
@@ -1476,7 +1542,7 @@ void labeled_statement::compile(mips& mp)const{
     mp.switch_info.push_back(info);
 
     labelcounter++;
-
+    break;
   }
 }
 

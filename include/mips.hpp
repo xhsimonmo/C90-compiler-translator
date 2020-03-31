@@ -82,11 +82,13 @@ public:
   temp_result info;
 
   int enum_count;
-  bool unary_type;
+  bool isunary;
+  bool isnumber;
   mips()//initialisation
   {
-    unary_type = false;
+    isunary = false;
     enum_count = 0;
+    isnumber = false;
     info.array_init_counter = 0;
     //registers[32] = { 0 }; // TODO something not right about indent
     // labelcounter = 0;
@@ -543,6 +545,12 @@ inline void sizeof_process(mips& mp){
     size = 4;
   }else if(rvalue == "unsigned"){
     size = 4;
+  }
+  else if(rvalue == "int*"){
+    size = 8;
+  }
+  else if(rvalue == "double*"){
+    size = 8;
   }
   else{
     size = 4;
