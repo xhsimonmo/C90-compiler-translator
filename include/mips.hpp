@@ -92,6 +92,7 @@ public:
     enum_count = 0;
     isnumber = false;
     info.array_init_counter = 0;
+    info.array_element_add = 0;
     //registers[32] = { 0 }; // TODO something not right about indent
     // labelcounter = 0;
   }
@@ -196,7 +197,7 @@ public:
     return "int";//not a variable declared before,in this case, could be a name of function, address can't be -1 anyway
   }
 
-  int find_array(string name, bool global)
+  int find_array(string name, bool& global)
   {
     bool find = false;
     int index;
@@ -210,12 +211,14 @@ public:
     }
     if(find == false)//if can't find in frame arrays, then it should be global
     {
+      std::cerr << "Can't find in local array, try global." << std::endl;
       global = true;
       for(int i = 0; i < array_collection[0].size(); i++)
       {
         if(name == array_collection[0][i].name)
         {
           index = i;
+          std::cerr << "Index: " << index << std::endl;
         }
       }
     }

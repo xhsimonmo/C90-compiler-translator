@@ -214,6 +214,8 @@ void direct_declarator::compile(mips& mp)const
         a.array_add.push_back(0);//store global array element value: 0 initially
       }
       array_collection[0].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global
+      std::cerr << "Add first element to global array! Size: " << array_collection[0].size() << std::endl;
+      std::cerr << "the global array size: " << size << std::endl;
     }
     else
     {
@@ -277,7 +279,7 @@ void assignment_expression::compile(mips& mp)const
           mp.sw(2, mp.info.var_index, 30);//index is variable
         }
         else{
-          // mp.comment("Show me the array element index: " + to_string(mp.info.array_element_add));
+          mp.comment("Array element address: " + to_string(mp.info.array_element_add));
           mp.lw(3, mp.info.array_element_add, 30);
           mp.sw(2, 0, 3);
           mp.info.array_element_add = 0;
@@ -1327,6 +1329,8 @@ void postfix_expression::compile(mips& mp)const{
       mp.comment("1");
       if(global_array == true)//if it is reading from a global array
       {
+        std::cerr << "call global array! array index: " << array_index << std::endl;
+        std::cerr << "Size: " << array_collection[0].size() << std::endl;
         mp.comment("Call global array!");
         // array_size = array_collection[0][array_index].size;
         // for (int i = 0; i < array_size; i++)
@@ -1344,7 +1348,6 @@ void postfix_expression::compile(mips& mp)const{
       {
         mp.comment("2");
         opt->compile(mp);//should store index in $2; store index in info.result
-        index = std::stoi(mp.info.result);//array element index
         mp.comment("3");
         std::cerr << "index is " << index << std::endl;
         // mp.sll(2, 2, 2);//x4 to get byte increment
@@ -1352,6 +1355,7 @@ void postfix_expression::compile(mips& mp)const{
         if(mp.isnumber == true)//if array index is a number
         {
           mp.comment("Array index is a number!");
+          index = std::stoi(mp.info.result);//array element index
           offset = array_collection[current_frame+1][array_index].array_add[index];
           mp.comment("offset: " + to_string(offset));
           mp.comment("5");
@@ -1362,7 +1366,12 @@ void postfix_expression::compile(mips& mp)const{
         {
           mp.comment("Array index is not a number!");
           offset = array_collection[current_frame+1][array_index].array_add[0];//get the first offset
-          mp.sll(2, 2, 2);//multiply by 4
+          // mp.sll(2, 2, 2);//multiply by 4
+
+          mp.addi(3, 0, "4");
+          mp.mult(2, 3);
+          mp.mflo(2);
+
           mp.sub(2, 0, 2);//make it negative
           mp.addi(2, 2, to_string(offset));//offset-4*$2(index)
           mp.add(2, 30, 2);
@@ -1462,49 +1471,7 @@ void argument_expression_list::compile(mips& mp)const{
 void initializer::compile(mips& mp) const
 {
   debug(cname);
-  // int size;
-  // int element[size];
-  // int index;
-  // int offset;
-  // int last_index;
-  // int temp_current_frame = current_frame;
   p->compile(mp);
-
-    // case 0:
-    // //array initialisation
-    // if(in_frame == false)//if global
-    // {
-    //   current_frame = 0;
-    //   p->compile(mp);//this should store all identifier address in mp;
-    //   for(int i = 0; i < array_collection[current_frame][index].array_add.size(); i++)
-    //   {
-    //     mp._word("TO:unknown");
-    //   }
-    // }
-    // else
-    // {
-    //   p->compile(mp);//this should store all identifier address in mp;
-    //   size = stoi(mp.info.result);//size of the array
-    //   last_index = array_collection[current_frame+1].size() - 1;
-    //   offset = array_collection[current_frame+1][last_index].array_add[0];
-    //   //allocate space for array elements
-    //   for(int i = 0; i < size; i++)
-    //   {
-    //     mp.sw(0, offset, 30);
-    //     element[i] = offset;
-    //     offset = offset + 4;
-    //   }
-    //   //TODO: unsure about numbers: li instead of lw?
-    //   //it's the last array in frame
-    //   index = array_collection[current_frame+1].size()-1;
-    //   for(int i = 0; i < array_collection[current_frame+1][index].array_add.size(); i++)
-    //   {
-    //     mp.lw(2, array_collection[current_frame+1][index].array_add[i], 30);
-    //     mp.nop();
-    //     mp.sw(2, element[i], 30);
-    //   }
-    // }
-    // current_frame = temp_current_frame;
 }
 
 // initializer_list
