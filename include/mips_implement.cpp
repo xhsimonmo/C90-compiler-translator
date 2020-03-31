@@ -270,20 +270,19 @@ void assignment_expression::compile(mips& mp)const
       //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
       mp.nop();
-      if(!mp.isunary){
-<<<<<<< HEAD
-        mp.sw(2, mp.info.var_index, 30);
-=======
-      //std::cerr << "current functype in assignment:" <<mp.info.func_type << '\n';
-       // if(mp.info.func_type.find('*') != std::string::npos)
-       // {
-       //  //std::cerr << " pointer assignment" << '\n';
-       // }
-       // else{
-        //std::cerr << "non pointer assignment" << '\n';
-       mp.sw(2, mp.info.var_index, 30);
-       // }
->>>>>>> 5620860c625a61d66bd1096b8e358348309a578b
+      if(!mp.isunary)
+      {
+        if(mp.info.array_element_add == 0)//index is constant
+        {
+          mp.sw(2, mp.info.var_index, 30);//index is variable
+        }
+        else
+        {
+          mp.lw(3, mp.info.array_element_add, 30);
+          mp.sw(2, 0, 3);
+          mp.info.array_element_add = 0;
+        }
+      }
      }
      else{
        mp.move(3,2);
