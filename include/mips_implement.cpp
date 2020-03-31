@@ -61,6 +61,7 @@ void function_definition::compile(mips& mp)const
     if(end_frame == true){
       mp.finish_frame();
     }
+    in_frame = false;
   }
 }
 
@@ -922,6 +923,8 @@ void selection_statement::compile(mips& mp)const
     mp.nop();
     //then make the if statement(if is true)
     //mips sta_mp;
+    sta_mp.info.continue_jump_label = mp.info.continue_jump_label;//if meet continue jump to this
+    sta_mp.info.break_jump_label = mp.info.break_jump_label;//if meet break jump to this
     ifsta->compile(sta_mp);
     //in_frame = true;//still in the frame
     mp.add_label(below_if);
@@ -934,6 +937,8 @@ void selection_statement::compile(mips& mp)const
     mp.nop();
     //then make the if statement(if is true)
     //mips sta_mp;
+    sta_mp.info.continue_jump_label = mp.info.continue_jump_label;//if meet continue jump to this
+    sta_mp.info.break_jump_label = mp.info.break_jump_label;//if meet break jump to this
     ifsta->compile(sta_mp);
     //in_frame = true;//still in the frame
     mp.b(below_if);
@@ -941,6 +946,8 @@ void selection_statement::compile(mips& mp)const
     //else statement
     mp.add_label(else_label);
     // mips s_mp;
+    s_mp.info.continue_jump_label = mp.info.continue_jump_label;//if meet continue jump to this
+    s_mp.info.break_jump_label = mp.info.break_jump_label;//if meet break jump to this
     elsesta->compile(s_mp);
     mp.add_label(below_if);
     break;
@@ -962,6 +969,7 @@ void selection_statement::compile(mips& mp)const
     ifsta->compile(mp);//obtain all case information!
 
     //start from 1 to avoid the label (index 0)
+    mp.b(switch_label);
     mp.add_label(condition);
     for(int i = 1; i < mp.switch_info.size(); i++)
     {
@@ -975,7 +983,7 @@ void selection_statement::compile(mips& mp)const
       }
       else
       {
-        std::cerr << ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;got default" << '\n';
+
         //find default case
         //TODO: may not work: default doesn't have to be at the end
         mp.b(mp.switch_info[i].label);
@@ -991,7 +999,7 @@ void selection_statement::compile(mips& mp)const
 // 	: WHILE '(' expression ')' statement   {$$ = new iteration_statement(0, $3, $5); std::cerr << "iteration_statement 0 " << std::endl;}
 // 	| DO statement WHILE '(' expression ')' ';'    {$$ = new iteration_statement(1, $2, $5);std::cerr << "iteration_statement 1 " << std::endl;}
 // 	| FOR '(' expression_statement expression_statement ')' statement    {$$ = new iteration_statement(2, $3, $4, $6);std::cerr << "iteration_statement 2 " << std::endl;}
-// 	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(0, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
+// 	| FOR '(' expression_statement expression_statement expression ')' statement   {$$ = new iteration_statement(3, $3, $4, $5, $7);std::cerr << "iteration_statement 3 " << std::endl;}
 // 	;
 void iteration_statement::compile(mips& mp)const{
 
@@ -1025,6 +1033,8 @@ void iteration_statement::compile(mips& mp)const{
     string third_part = "label" + to_string(labelcounter);
     labelcounter++;
 
+
+
     string while_end = "while_end" + to_string(labelcounter);
     labelcounter++;
 
@@ -1050,10 +1060,10 @@ void iteration_statement::compile(mips& mp)const{
       //std::cerr << "bne" << '\n';
       mp.bne(2, 0, statement);//if true go to statement
       mp.nop();
-      break;
+
       //end of while looop
       mp.add_label(while_end);
-
+      break;
       case 1://same as case 0, but condition and statement are reversed.
       mp.b(statement);
       mp.nop();
@@ -1114,7 +1124,7 @@ void iteration_statement::compile(mips& mp)const{
 
       mp.b(statement);
       mp.nop();
-
+      std::cerr << "///////////////////third_part is " << third_part <<  '\n';
       //for loop statement branch
       mp.add_label(for_s2);
       for_state2.info.continue_jump_label = third_part;//if meet continue jump to this
@@ -1127,6 +1137,8 @@ void iteration_statement::compile(mips& mp)const{
       //   mp.add_label(for_increment);
       // }
       mp.add_label(third_part);
+      for_state1.info.continue_jump_label = third_part;//if meet continue jump to this
+      for_state1.info.break_jump_label = for_end;//if meet break jump to this
       san->compile(for_state1);
       mp.b(for_start);
       // if(for_state2.info._break == true)
@@ -1136,6 +1148,8 @@ void iteration_statement::compile(mips& mp)const{
 
       //for loop condition!!!not statement
       mp.add_label(statement);
+      state_expr.info.continue_jump_label = third_part;//if meet continue jump to this
+      state_expr.info.break_jump_label = for_end;//if meet break jump to this
       er->compile(state_expr);//get statement
       //mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
       // mp.lw(2, cond_expr.info.result_index, 30);//store expression result in r2
@@ -1164,6 +1178,7 @@ void jump_statement::compile(mips& mp) const {
     case 1:
     //CONTINUE
     mp.b(mp.info.continue_jump_label);//there is a continue waiting to be sloved!
+    //mp.comment("below continue jump");
     mp.nop();
     break;
     case 2:

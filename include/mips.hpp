@@ -129,7 +129,7 @@ public:
   void finish_frame()
   {
 
-    in_frame = false;
+    //in_frame = false;
     comment("////////ending current frame//////");
     move(29,30);//move sp up to same location as fp
     lw(31, 8, 29);
@@ -141,7 +141,7 @@ public:
 
     auto it = mpcode_collection[current_frame].begin();
     //info.var_index = info.var_index + 4;//TODO probably not necessary, but in case
-    int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + -1*result_count+ 4; // 4 is compulsory but nor necessary,just to be safe
+    int memory_allocate = stack_collection[current_frame].size() + arg_count_collection[current_frame] + -1*result_count+ 88; // 4 is compulsory but nor necessary,just to be safe
     //std::cerr << " ////////////////current max arg count: " << arg_count_collection[current_frame] <<'\n';
     memory_allocate = -4*memory_allocate;
     string str_memory_allocate = to_string(memory_allocate);
@@ -561,10 +561,10 @@ inline void sizeof_process(mips& mp){
     size = 4;
   }
   else if(rvalue == "int*"){
-    size = 8;
+    size = 4;
   }
   else if(rvalue == "double*"){
-    size = 8;
+    size = 4;
   }
   else{
     size = 4;
