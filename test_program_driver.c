@@ -1,7 +1,8 @@
 
-int f();
+int g(int x);
 
 int main()
 {
-    return !(f()==19938);
+    int x;
+    return !( (g(1)+g(2))==21);
 }

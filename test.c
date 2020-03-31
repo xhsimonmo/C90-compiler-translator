@@ -1,8 +1,10 @@
-int f()
+int g(int x)
 {
-    int x;
-    for(x=0; x<1; x=x+1){
-
+    switch(x)
+    {
+        case 1:
+            return 10;
+        case 2:
+            return 11;
     }
-    return x+19937;
 }
