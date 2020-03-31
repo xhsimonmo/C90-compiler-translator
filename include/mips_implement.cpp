@@ -966,6 +966,7 @@ void selection_statement::compile(mips& mp)const
     ifsta->compile(mp);//obtain all case information!
 
     //start from 1 to avoid the label (index 0)
+    mp.b(switch_label);
     mp.add_label(condition);
     for(int i = 1; i < mp.switch_info.size(); i++)
     {
