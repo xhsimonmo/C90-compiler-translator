@@ -910,6 +910,9 @@ void selection_statement::compile(mips& mp)const
   string switch_label = "end_switch" + to_string(labelcounter);
   string case_number;
 
+  string condition = "switchcondition"+to_string(labelcounter);
+  labelcounter++;
+
   switch(type)
   {
     case 0:
@@ -953,7 +956,7 @@ void selection_statement::compile(mips& mp)const
     switch_content info;
     info.label = switch_label;
     mp.switch_info.push_back(info);
-    string condition = "switchcondition"+to_string(labelcounter);
+
     mp.b(condition);// evaluate condition first
     mp.lw(2, expre_mp.info.var_index, 30);//store switch variable's value in $2
     ifsta->compile(mp);//obtain all case information!
