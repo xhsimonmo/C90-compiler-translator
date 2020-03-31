@@ -261,28 +261,21 @@ void assignment_expression::compile(mips& mp)const
   else
   {
     mips another_mp;
-
+    int index;
+    int loffset;
     switch(type)
     {
       case 0:{ // =
       mp.isunary = false; // used to check whether got an *x type in lvalue
       p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
-      int index = mp.info.var_index;
+      index = mp.info.var_index;
       another_mp.info.func_type = mp.info.func_type;
       another_mp.isunary = mp.isunary;
-      std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
       mp.nop();
       if(!mp.isunary){
-      //std::cerr << "current functype in assignment:" <<mp.info.func_type << '\n';
-       // if(mp.info.func_type.find('*') != std::string::npos)
-       // {
-       //  //std::cerr << " pointer assignment" << '\n';
-       // }
-       // else{
-        //std::cerr << "non pointer assignment" << '\n';
         mp.sw(2, mp.info.var_index, 30);
-       // }
      }
      else{
        mp.move(3,2);
@@ -293,116 +286,280 @@ void assignment_expression::compile(mips& mp)const
       break;
     }
       case 1://"*="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.mult(2, 3);
-      mp.mflo(2);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp.nop();
+        mp.mult(2, 3);
+        mp.mflo(2);
+        mp.sw(2, mp.info.var_index, 30);
+     }
+     else{
+       mp.lw(3, loffset, 30);
+       mp.nop();
+       mp.mult(2, 3);
+       mp.mflo(3);
+       mp.lw(2,index, 30);
+       mp.sw(3,0,2);
+     }
+     mp.isunary = false;
       break;
 
       case 2://"/="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.div(2, 3);
-      mp.mflo(2);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp.nop();
+        mp.div(3, 2);
+        mp.mflo(2);
+        mp.sw(2, mp.info.var_index, 30);
+     }
+     else{
+       mp.lw(3, loffset, 30);
+       mp.nop();
+       mp.div(3, 2);
+       mp.mflo(3);
+       mp.lw(2,index, 30);
+       mp.sw(3,0,2);
+     }
+     mp.isunary = false;
       break;
 
       case 3://"%="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.div(2, 3);
-      mp.mfhi(2);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp.nop();
+        mp.div(3, 2);
+        mp.mfhi(2);
+        mp.sw(2, mp.info.var_index, 30);
+     }
+     else{
+       mp.lw(3, loffset, 30);
+       mp.nop();
+       mp.div(3, 2);
+       mp.mfhi(3);
+       mp.lw(2,index, 30);
+       mp.sw(3,0,2);
+     }
+     mp.isunary = false;
       break;
 
       case 4://"+="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.add(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+
+        if(mp.info.func_type.find('*') != std::string::npos)
+        {
+          mp.li(3,"4");
+          mp.mult(2,3);
+          mp.mflo(2);
+          mp.lw(3, loffset, 30);
+          mp.add(2,2,3);
+          mp.sw(2, mp.info.var_index, 30);
+        }
+        else{
+          mp.lw(3, loffset, 30);
+          mp.add(2,2,3);
+          mp.sw(2, mp.info.var_index, 30);
+        }
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp.add(3,2,3);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
 
       case 5://"-="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.sub(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        if(mp.info.func_type.find('*') != std::string::npos)
+        {
+          mp.li(3,"4");
+          mp.mult(2,3);
+          mp.mflo(2);
+          mp.lw(3, loffset, 30);
+          mp.sub(2,3,2);
+          mp.sw(2, mp.info.var_index, 30);
+        }
+        else{
+          mp.lw(3, loffset, 30);
+          mp.sub(2,3,2);
+          mp.sw(2, mp.info.var_index, 30);
+        }
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp.sub(3,3,2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
 
       case 6://"<<="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.sllv(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp.sllv(2, 3, 2);
+        mp.sw(2, mp.info.var_index, 30);
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp.sllv(3, 3, 2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
 
       case 7://">>="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp.srav(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp.srav(2, 3, 2);
+        mp.sw(2, mp.info.var_index, 30);
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp.srav(3, 3, 2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
 
       case 8://"&="
       // mp.lw(2, mp.info.var_index, 30);
       // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp._and(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp._and(2, 3, 2);
+        mp.sw(2, mp.info.var_index, 30);
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp._and(3, 3, 2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
 
       case 9://"^="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp._xor(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp._xor(2, 3, 2);
+        mp.sw(2, mp.info.var_index, 30);
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp._xor(3, 3, 2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
 
       case 10://"|="
-      // mp.lw(2, mp.info.var_index, 30);
-      // mp.lw(3, another_mp.info.var_index, 30);
+      mp.isunary = false; // used to check whether got an *x type in lvalue
+      p_one->compile(mp); // *x or x, $2 store the, isunary will be set true if got *x
+      loffset= result_offset();
+      index = mp.info.var_index;
+      another_mp.info.func_type = mp.info.func_type;
+      another_mp.isunary = mp.isunary;
+      //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
-      mp.move(3, 2);
-      p_one->compile(mp);
       mp.nop();
-      mp._or(2, 2, 3);
-      mp.sw(2, mp.info.var_index, 30);
+      if(!mp.isunary){
+        mp.lw(3, loffset, 30);
+        mp._or(2, 3, 2);
+        mp.sw(2, mp.info.var_index, 30);
+      }
+      else{
+        mp.lw(3, loffset, 30);
+        mp._or(3, 3, 2);
+        mp.lw(2,index, 30);
+        mp.sw(3,0,2);
+      }
+      mp.isunary = false;
       break;
     }
 
