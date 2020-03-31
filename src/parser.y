@@ -32,6 +32,8 @@
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
+%token INT_T PINT_T
+
 %type<expr> primary_expression postfix_expression argument_expression_list unary_expression cast_expression multiplicative_expression additive_expression shift_expression relational_expression equality_expression and_expression
 %type<expr> exclusive_or_expression inclusive_or_expression logical_and_expression logical_or_expression conditional_expression assignment_expression expression constant_expression declaration declaration_specifiers
 %type<expr> init_declarator_list init_declarator storage_class_specifier type_specifier specifier_qualifier_list declarator direct_declarator pointer parameter_type_list parameter_list parameter_declaration
@@ -39,7 +41,7 @@
 %type<expr> iteration_statement jump_statement translation_unit external_declaration function_definition enum_specifier enumerator_list enumerator
 
 %type<number> unary_operator assignment_operator
-%type<str> IDENTIFIER CONSTANT STRING_LITERAL
+%type<str> IDENTIFIER CONSTANT STRING_LITERAL PINT_T
 
 
 
@@ -227,7 +229,9 @@ type_specifier
 	| UNSIGNED   {$$ = new type_specifier(8); std::cerr << "type_specifier signed unsigned 9" << std::endl;}
 //	| struct_or_union_specifier   {$$ = new type_specifier("STRUCT");}
 	| enum_specifier   {$$ = $1; std::cerr << "type_specifier signed enum 10" << std::endl;}
-	| TYPE_NAME   {$$ = $1; std::cerr << "type_name" << std::endl;}
+	//| TYPE_NAME   {$$ = $1; std::cerr << "type_name" << std::endl;}
+  | INT_T    {$$ = new type_specifier(9); std::cerr << "type_specifier signed unsigned 9" << std::endl;}
+  | PINT_T   {$$ = new type_specifier(10); std::cerr << "type_specifier signed unsigned 9" << std::endl;}
 	;
 /////////////////////////////////struct ////////////////////////////////////////////////
 /* struct_or_union_specifier
@@ -306,7 +310,8 @@ direct_declarator
 	| direct_declarator '(' parameter_type_list ')'  {$$ = new direct_declarator(4,$1,$3);  std::cerr << "direct_declarator 4" << std::endl;}
 	//| direct_declarator '(' identifier_list ')'  {$$ = new direct_declarator(5,$1,$3);  std::cerr << "direct_declarator 5" << std::endl;} KR style
 	| direct_declarator '(' ')'   {$$ = new direct_declarator(6,$1);  std::cerr << "direct_declarator 6" << std::endl;}
-
+  |PINT_T
+  ;
 pointer
 	: '*' {$$ = new pointer(0); std::cerr << "pointer 0" << std::endl;}
 	//| '*' type_qualifier_list

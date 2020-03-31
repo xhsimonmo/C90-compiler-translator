@@ -54,6 +54,9 @@ void output();
 "volatile"        { /*count();*/ return(VOLATILE); }
 "while"            { /*count();*/ return(WHILE); }
 
+"int_t"     {return(INT_T);}
+"pint_t"    {return(PINT_T);}
+
 {L}({L}|{D})*        { yylval.str = new std::string(yytext); printf("get a type IDENTIFIER 0"); return(check_type()); } /*identifier(name)*/
 
 0[xX]{H}+{IS}?        { yylval.str = new std::string(yytext); printf("get a type 1 ");return(CONSTANT); }    /*hex character constants*/
@@ -66,6 +69,7 @@ L?'(\\.|[^\\'])+'    { yylval.str = new std::string(yytext); return(CONSTANT); }
 {D}+"."{D}*({E})?{FS}?    { yylval.str = new std::string(yytext); return(CONSTANT); }
 
 L?\"(\\.|[^\\"])*\"    { yylval.str = new std::string(yytext);printf("get a string literal "); return(STRING_LITERAL); }
+
 
 "..."            { /*count();*/ return(ELLIPSIS); }
 ">>="            { /*count();*/ return(RIGHT_ASSIGN); }

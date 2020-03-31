@@ -97,10 +97,10 @@ void type_specifier::compile(mips& mp)const
     mp.info.func_type = "unsigned";
     break;
     case 9:
-    mp.info.func_type = "enum";
+    mp.info.func_type = "int";
     break;
     case 10:
-    mp.info.func_type = "type_name";
+    mp.info.func_type = "int*";
     break;
   }
   //don't do anything yet for type specifier, assume INT?
