@@ -29,6 +29,7 @@ struct stack_content
 extern vector<vector<stack_content>>stack_collection;
 extern vector<vector<string>> mpcode_collection;//store generated mips code
 extern vector<int> arg_count_collection;//this is the counter of arguments callee function
+extern vector<string>global_mpcode;
 
 extern vector<stack_content> enum_var; // store enum object, actually just like global variable
 extern bool in_enum;
@@ -74,6 +75,7 @@ public:
     int result_index;//use for statement expression result index
     string array_name;
     int array_init_counter;//count initializer
+    int array_element_add;//stores offset of the address of a[i]
 
     string break_jump_label;
     string continue_jump_label;
@@ -482,8 +484,17 @@ public:
     mpcode_collection[current_frame].push_back(mp);
   }
 
-  void _word(string name){
+  //for global only
+  void _word(string number)
+  {
+    string mp = ".word " + number;
+    global_mpcode.push_back(mp);
+  }
 
+  void global_name(string name)
+  {
+    string mp = name + ":";
+    global_mpcode.push_back(mp);
   }
 
 };
