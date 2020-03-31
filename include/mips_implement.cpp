@@ -270,24 +270,14 @@ void assignment_expression::compile(mips& mp)const
       //std::cerr << "///////////////////func type: " << another_mp.info.func_type << '\n';
       p_five->compile(another_mp);
       mp.nop();
-      if(!mp.isunary)
-      {
-        if(mp.info.array_element_add == 0)//index is constant
-        {
-          mp.sw(2, mp.info.var_index, 30);//index is variable
-        }
-        else
-        {
-          mp.lw(3, mp.info.array_element_add, 30);
-          mp.sw(2, 0, 3);
-          mp.info.array_element_add = 0;
-        }
-      }else
-      {
-        mp.move(3,2);
-        mp.lw(2,index, 30);
-        mp.sw(3,0,2);
-      }
+      if(!mp.isunary){
+        mp.sw(2, mp.info.var_index, 30);
+     }
+     else{
+       mp.move(3,2);
+       mp.lw(2,index, 30);
+       mp.sw(3,0,2);
+     }
      mp.isunary = false;
       break;
     }
