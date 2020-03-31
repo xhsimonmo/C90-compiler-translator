@@ -183,7 +183,6 @@ void direct_declarator::compile(mips& mp)const
   string array_name;
   //create a new array
   array_struct a;
-  int temp_current_frame = current_frame;
   int size;
 
   switch(type)
@@ -197,10 +196,6 @@ void direct_declarator::compile(mips& mp)const
     break;
 
     case 2:
-    if(in_frame == false)//if global
-    {
-      current_frame = -1;
-    }
     //it uses const expression so size is constant
     two->compile(mp);//this should store result to $2
     size = std::stoi(mp.info.result);//size of the array
@@ -211,13 +206,16 @@ void direct_declarator::compile(mips& mp)const
     a.size = size;
     std::cerr<<"Array coll size: " << array_collection.size() << std::endl;
 
-    if(in_frame == false)//if global
+    if(in_frame == false)//if it's a global array
     {
-      //mp.global(array_name);
+      mp.global_name(array_name);
+      for (int i = 0; i < size; i++)
+      {
+        a.array_add.push_back(0);//store global array element value: 0 initially
+      }
+      array_collection[0].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global
     }
-
-    //array initialisation:initialise all to 0
-    if(in_frame == true)
+    else
     {
       for (int i = 0; i < size; i++)
       {
@@ -225,10 +223,8 @@ void direct_declarator::compile(mips& mp)const
         mp.sw(0, result_offset(), 30);//initialise all with 0
         a.array_add.push_back(result_offset());//store array content address
       }
+      array_collection[current_frame+1].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global
     }
-
-    array_collection[current_frame+1].push_back(a);//for all array, we use current fram+1 as index (because index 0 is left for global
-    current_frame = temp_current_frame;
 
     break;
 
@@ -275,7 +271,19 @@ void assignment_expression::compile(mips& mp)const
       p_five->compile(another_mp);
       mp.nop();
       if(!mp.isunary){
+<<<<<<< HEAD
         mp.sw(2, mp.info.var_index, 30);
+=======
+      //std::cerr << "current functype in assignment:" <<mp.info.func_type << '\n';
+       // if(mp.info.func_type.find('*') != std::string::npos)
+       // {
+       //  //std::cerr << " pointer assignment" << '\n';
+       // }
+       // else{
+        //std::cerr << "non pointer assignment" << '\n';
+       mp.sw(2, mp.info.var_index, 30);
+       // }
+>>>>>>> 5620860c625a61d66bd1096b8e358348309a578b
      }
      else{
        mp.move(3,2);
@@ -1085,6 +1093,7 @@ void jump_statement::compile(mips& mp) const {
 void primary_expression :: compile(mips& mp) const{
   debug(cname);
   int var_index;
+  mp.isnumber = false;
   switch (type) {
     case 0: // got IDENTIFIER
     std::cerr << "IDENTIFIER:" << element << '\n';
@@ -1198,9 +1207,10 @@ void postfix_expression::compile(mips& mp)const{
   string name;
   int array_index;
   int index;
+  int array_size;
 
-  int temp_current_frame = current_frame;
   bool global_array = false;//to see if it is global array
+  int element;
 
   switch (type) {
     case 0://read from array
@@ -1223,30 +1233,59 @@ void postfix_expression::compile(mips& mp)const{
     }
     else
     {
-    name = another_mp.info.func_name;
-    mp.comment("array name: " + name);
-    array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
-    mp.comment("1");
-    if(global_array == true)//if it is reading from a global array
-    {
-      mp.comment("global array");
-      current_frame = -1;
-    }
-    mp.comment("2");
-    opt->compile(mp);//should store index in $2; store index in info.result
-    index = std::stoi(mp.info.result);//array element index
-    mp.comment("3");
-    std::cerr << "index is " << index << std::endl;
-    // mp.sll(2, 2, 2);//x4 to get byte increment
-    mp.comment("4");
-    offset = array_collection[current_frame+1][array_index].array_add[index];
-    mp.comment("offset: " + to_string(offset));
-    mp.comment("5");
-    mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
-    mp.info.var_index = offset;
-    current_frame = temp_current_frame;
-    result_count = result_count -4;
-    mp.sw(2, result_offset(), 30);//save the result in
+      name = another_mp.info.func_name;
+      mp.comment("array name: " + name);
+      array_index = mp.find_array(name, global_array);//index of array in all arrays of current frame
+      mp.comment("1");
+      if(global_array == true)//if it is reading from a global array
+      {
+        mp.comment("Call global array!");
+        // array_size = array_collection[0][array_index].size;
+        // for (int i = 0; i < array_size; i++)
+        // {
+        //   result_count = result_count - 4;
+        //   mp.sw(0, result_offset(), 30);//initialise all with 0
+        //   a.array_add[i] = result_offset();//store array content address
+        // }
+        opt->compile(mp);//should store index in $2; store index in info.result
+        index = std::stoi(mp.info.result);//array element index
+        element = array_collection[0][array_index].array_add[index];
+        mp.addi(2, 0, to_string(element));
+      }
+      mp.comment("2");
+      opt->compile(mp);//should store index in $2; store index in info.result
+      mp.comment("3");
+      std::cerr << "index is " << index << std::endl;
+      // mp.sll(2, 2, 2);//x4 to get byte increment
+      mp.comment("4");
+      if(mp.isnumber == true)//if array index is a number
+      {
+        index = std::stoi(mp.info.result);//array element index
+        offset = array_collection[current_frame+1][array_index].array_add[index];
+        mp.comment("offset: " + to_string(offset));
+        mp.comment("5");
+        mp.lw(2, offset, 30);//store the result in $2; $2 stores the address
+        mp.info.var_index = offset;
+      }
+      else//if array index is a variable; index value should be stored in $2
+      {
+        offset = array_collection[current_frame+1][array_index].array_add[0];//get the first offset
+        mp.sll(2, 2, 2);//multiply by 4
+        mp.sub(2, 0, 2);//make it negative
+        mp.addi(2, 2, to_string(offset));//offset-4*$2(index)
+        mp.add(2, 30, 2);
+
+        //store address of the element in $3
+        result_count = result_count - 4;
+        mp.sw(2, result_offset(), 30);//initialise all with 0
+        mp.info.array_element_add = result_offset();//store array content address
+
+        mp.lw(2, 0, 2);
+      }
+      // current_frame = temp_current_frame;
+      result_count = result_count - 4;
+      mp.sw(2, result_offset(), 30);//save the result in
+
     }
     break;
 
@@ -1382,7 +1421,6 @@ void initializer_list::compile(mips& mp) const
 {
   int index;
   int offset;
-  int temp_current_frame = current_frame;//save current frame value(in case it changes in global)
   debug(cname);
 
   switch(type)
@@ -1391,11 +1429,11 @@ void initializer_list::compile(mips& mp) const
     if(in_frame == false)//if global
     {
       mp.comment("Global!!");
-      current_frame = 0;
       left->compile(mp);//this should store all identifier address in mp;
       mp._word(mp.info.result);
-
-      current_frame = temp_current_frame;
+      index = array_collection[0].size() - 1;
+      array_collection[0][index].array_add[mp.info.array_init_counter] = std::stoi(mp.info.result);
+      mp.info.array_init_counter++;
     }
     else
     {
@@ -1417,15 +1455,15 @@ void initializer_list::compile(mips& mp) const
     break;
 
     case 1:
-    left->compile(mp);//should add up previous counter
+    right->compile(mp);//should add up previous counter
     if(in_frame == false)//if global
     {
       mp.comment("Global!!");
-      current_frame = 0;
       right->compile(mp);//this should store all identifier address in mp;
       mp._word(mp.info.result);
-
-      current_frame = temp_current_frame;
+      index = array_collection[0].size() - 1;
+      array_collection[0][index].array_add[mp.info.array_init_counter] = std::stoi(mp.info.result);
+      mp.info.array_init_counter++;
     }
     else
     {

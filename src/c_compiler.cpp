@@ -10,6 +10,7 @@ int current_frame = 0;
 int labelcounter;
 vector<vector<stack_content>>stack_collection;
 vector<vector<string>> mpcode_collection;
+vector<string>global_mpcode;
 vector<int> arg_count_collection;
 vector<vector<array_struct>> array_collection;
 vector<stack_content> enum_var;
@@ -64,6 +65,11 @@ int main(int argc, char *argv[]){
 
      root -> compile(mp);
      string generated_mips;
+     for(int i = 0; i < global_mpcode.size(); i++)
+     {
+       generated_mips += global_mpcode[i];
+       generated_mips += "\n";
+     }
      for(int i = 0; i < mpcode_collection.size();i++)
      {
        for(auto it = mpcode_collection[i].begin(); it !=mpcode_collection[i].end();it++ )
