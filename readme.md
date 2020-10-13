@@ -1,4 +1,4 @@
-2019/2020 Compilers Coursework
+C90 Compiler and Translator
 ==============================
 
 There is a language processing project in Imperial College third year, it contains two components:
